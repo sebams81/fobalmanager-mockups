@@ -357,8 +357,8 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
         cabecera = encabezado_club()
     else:
         cabecera = '' if portada else encabezado_club() + navegacion(activa)
-    otra = {'a': ('menu-b.html', 'Ver la opción B: La oficina del técnico'), 'b': ('menu-a.html', 'Ver la opción A: Centro de mando')}
-    extra_pie = f'<a href="{otra[menu][0]}">{otra[menu][1]} →</a>' if menu else ''
+    otra = {}
+    extra_pie = f'<a href="{otra[menu][0]}">{otra[menu][1]} →</a>' if menu in otra else ''
     doc = f'''<!doctype html>
 <html lang="es-AR">
 <head>
@@ -409,15 +409,13 @@ def portada():
         f'<li class="seccion"><a href="{archivo}"><span class="muestra-menu">{dibujo}</span>'
         f'<div><span class="volanta">{volanta}</span><h3>{e(titulo)}</h3><p>{e(texto)}</p></div></a></li>'
         for archivo, dibujo, volanta, titulo, texto in (
-            ('menu-a.html', pictograma('competencia'), 'Opción A', 'Centro de mando',
-             'El próximo partido en el centro y todo lo demás agrupado en cuatro áreas: el equipo, la competencia, el mercado y el club.'),
             ('menu-b.html', objeto('pizarron'), 'Opción B', 'La oficina del técnico',
              'Cada sección es un objeto de tu oficina: el pizarrón, el teléfono, el diario, la agenda, la carpeta del plantel…'),
         )
     )
     comparar = f'''<section class="comparar-menus" aria-labelledby="t-menus">
-<h2 id="t-menus">El menú principal: dos propuestas</h2>
-<p class="suave">Todavía no elegimos. Mirá las dos y contanos con cuál te quedarías.</p>
+<h2 id="t-menus">El menú principal: propuestas en evaluación</h2>
+<p class="suave">Todavía no elegimos. Mirá las propuestas y contanos con cuál te quedarías.</p>
 <ul class="tarjetas-menu" role="list">{menus}</ul></section>'''
     opinion = (
         '<div class="opinion">'
@@ -796,35 +794,11 @@ def panel_partido(clase=''):
 
 
 def menu_a():
-    s = estados_menu()
-    areas = [
-        ('equipo', 'El equipo', [('Plantel', 'plantel.html', s['plantel'], False),
-                                 ('Alineación', 'previa.html', s['alineacion'], False),
-                                 ('Táctica', 'previa.html', s['tactica'], False)]),
-        ('competencia', 'La competencia', [('Tabla', 'tabla.html', s['tabla'], False),
-                                           ('Calendario', 'calendario', s['calendario'], False),
-                                           ('Resultados', 'resultados', s['resultados'], False)]),
-        ('mercado', 'El mercado', [('Fichajes', 'fichajes', s['fichajes'], True),
-                                   ('Ojeadores', 'ojeadores', s['ojeadores'], True),
-                                   ('Contratos', 'contratos', s['contratos'], False)]),
-        ('club', 'El club', [('Caja', 'caja', s['caja'], False),
-                             ('Estadio', 'estadio', s['estadio'], False),
-                             ('Dirigencia', 'club.html#dirigencia', s['dirigencia'], False)]),
-    ]
-    bloques = ''
-    for clave, titulo, enlaces in areas:
-        items = ''.join(f'<li>{enlace_menu(*x)}</li>' for x in enlaces)
-        bloques += (
-            f'<section class="area area-{clave}" aria-labelledby="t-{clave}">'
-            f'<h2 id="t-{clave}" class="area-titulo">{pictograma(clave)}<span>{e(titulo)}</span></h2>'
-            f'<ul class="area-enlaces" role="list">{items}</ul></section>'
-        )
-    cuerpo = f'''<h1 class="sr">Menú principal, opción A: Centro de mando</h1>
-<div class="centro-mando">
-{panel_partido()}
-<nav class="areas" aria-label="Secciones del club">{bloques}</nav>
-</div>'''
-    pagina('menu-a.html', 'Menú principal (opción A)', cuerpo, clase_body='menu-pantalla menu-a', menu='a')
+    """La opción A se retiró (RN-739): queda solo un aviso, sin enlaces que lleven a ella."""
+    cuerpo = '''<h1 class="titulo-pantalla">Propuesta en rediseño</h1>
+<section class="seccion"><p>La opción A del menú principal se está rediseñando y por ahora no está disponible.</p>
+<p>Mientras tanto, mirá las otras propuestas del menú desde la <a href="index.html">portada</a>.</p></section>'''
+    pagina('menu-a.html', 'Propuesta en rediseño', cuerpo, clase_body='portada')
 
 
 # Objetos de la oficina, en orden de importancia (es el orden del foco). Posición en la escena de la PC, en %.

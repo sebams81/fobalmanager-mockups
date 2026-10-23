@@ -12,11 +12,10 @@ en el navegador. En la primera visita se elige uno al azar, para no sesgar las o
 
 ## Menú principal: dos propuestas
 
-Hay dos propuestas de menú principal para comparar, con acceso desde la portada y cada una enlazada a la otra
-desde el pie. Ninguna está elegida.
+Hay propuestas de menú principal para comparar, con acceso desde la portada. Ninguna está elegida.
 
-- `menu-a.html`, "Centro de mando": el próximo partido en el centro y cuatro áreas alrededor (El equipo,
-  La competencia, El mercado y El club).
+- `menu-a.html`: la opción A ("Centro de mando") se retiró porque se parecía demasiado al menú de un juego
+  existente. Queda solo un aviso de "propuesta en rediseño", sin enlaces que lleven a ella.
 - `menu-b.html`, "La oficina del técnico": cada sección es un objeto de la oficina (pizarrón, carpeta,
   planilla, teléfono, diario, agenda, sobre y ventana). La puerta del centro es el próximo partido.
 
