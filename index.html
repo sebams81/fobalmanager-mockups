@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portada · Fobalmanager (maqueta)</title>
+<meta name="description" content="Maqueta visual de Fobalmanager, un manager de fútbol en el navegador. Diseño ilustrativo, sin funciones.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>(function(){var T=["retro","diario","moderno"],F={"retro": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=VT323&display=swap", "diario": "https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Roboto+Condensed:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap", "moderno": "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@700&display=swap"},t=null;try{var q=new URLSearchParams(location.search).get("tema");if(T.indexOf(q)>=0){t=q;localStorage.setItem("fm-tema",q)}else{t=localStorage.getItem("fm-tema")}}catch(x){}if(T.indexOf(t)<0){t=T[Math.floor(Math.random()*3)];try{localStorage.setItem("fm-tema",t)}catch(x){}}document.documentElement.dataset.tema=t;var c={};window.fmFuentes=function(k){if(c[k])return;c[k]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=F[k];document.head.appendChild(l)};window.fmFuentes(t)})();</script>
+<link rel="stylesheet" href="css/temas.css">
+<link rel="stylesheet" href="css/base.css">
+</head>
+<body class="portada">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-club" viewBox="0 0 24 24"><path d="M5 4h14v8c0 5-3.5 8-7 9-3.5-1-7-4-7-9z"/><path d="M5 9h14"/></symbol><symbol id="i-plantel" viewBox="0 0 24 24"><path d="M8 3 3 6l2 4 2-1v12h10V9l2 1 2-4-5-3c-1 2-2.5 3-4 3S9 5 8 3z"/></symbol><symbol id="i-previa" viewBox="0 0 24 24"><path d="M3 4h18v13H3z"/><path d="m8 21 4-4 4 4"/><path d="m6 8 2 2m0-2-2 2"/><path d="M15 9.5a1.5 1.5 0 1 0 .01 0"/><path d="M9 13c2 1 4 0 5.5-2"/></symbol><symbol id="i-partido" viewBox="0 0 24 24"><path d="M4 9h16v11H4z"/><path d="m7 9 10-5"/><path d="M9 12a2.5 2.5 0 1 0 .01 0"/><path d="M14 13h3m-3 3h3"/></symbol><symbol id="i-tabla" viewBox="0 0 24 24"><path d="M4 5h16M4 10h16M4 15h16M4 20h16"/><path d="M9 5v15"/></symbol><symbol id="i-pausa" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol><symbol id="i-ritmo" viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4"/></symbol><symbol id="i-cambio" viewBox="0 0 24 24"><path d="M4 8h13l-3-3m6 11H7l3 3"/></symbol><symbol id="i-opinion" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8m-8 3h5"/></symbol></svg>
+<div class="barra-maqueta"><p class="aviso"><span>Fobalmanager</span><strong>Maqueta: diseño ilustrativo, sin funciones</strong></p><fieldset class="selector-tema"><legend>Estilo visual</legend><label><input type="radio" name="tema" value="retro">Retro</label><label><input type="radio" name="tema" value="diario">Diario</label><label><input type="radio" name="tema" value="moderno">Moderno</label></fieldset></div>
+
+
+<main id="contenido">
+
+<h1 class="wordmark">Fobalmanager</h1>
+<p class="bajada">Fobalmanager es un manager de fútbol que se juega en el navegador: armás el plantel, das las indicaciones y seguís el partido relatado minuto a minuto, como por la radio.</p>
+<p class="bajada">Un juego de largo aliento en un fútbol inventado. Si jugaste a PC Fútbol o a Hattrick, te va a resultar familiar.</p>
+<div class="opinion"><p>Probá los tres estilos y decinos cuál te gusta y qué le falta. En el fútbol todos opinan; acá te lo pedimos.</p><a class="boton principal" href="#" data-opinion><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-opinion"/></svg>Dar mi opinión</a><span class="pendiente" data-opinion-pendiente>[Link del formulario pendiente: se completa en js/maqueta.js]</span></div>
+<h2 class="sr">Pantallas</h2>
+<ul class="tarjetas-pantalla"><li class="seccion"><a href="club.html"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-club"/></svg><span><h2>Inicio del club</h2><p>Lo que pasa en el club esta semana: dirigencia, prensa, vestuario y la próxima fecha.</p></span></a></li><li class="seccion"><a href="plantel.html"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plantel"/></svg><span><h2>Plantel</h2><p>Tus jugadores: quién está para jugar, quién viene falto de fútbol y quién va al banco.</p></span></a></li><li class="seccion"><a href="previa.html"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-previa"/></svg><span><h2>Previa y táctica</h2><p>Formación, indicaciones y pateadores, antes de que ruede la pelota.</p></span></a></li><li class="seccion"><a href="partido.html"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-partido"/></svg><span><h2>Partido en vivo</h2><p>El relato minuto a minuto. Los cambios entran cuando se corta el juego.</p></span></a></li><li class="seccion"><a href="tabla.html"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tabla"/></svg><span><h2>Tabla de posiciones</h2><p>Quién sube, quién entra al octogonal y quién ya mira para abajo.</p></span></a></li></ul>
+<div class="opinion"><p>Probá los tres estilos y decinos cuál te gusta y qué le falta. En el fútbol todos opinan; acá te lo pedimos.</p><a class="boton principal" href="#" data-opinion><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-opinion"/></svg>Dar mi opinión</a><span class="pendiente" data-opinion-pendiente>[Link del formulario pendiente: se completa en js/maqueta.js]</span></div>
+<p class="aclaracion">PC Fútbol y Hattrick son marcas de sus respectivos titulares. Fobalmanager es un proyecto independiente, sin relación, patrocinio ni aval de ellos; se nombran solo como referencia.</p>
+
+</main>
+<footer class="pie"><span>Todo es ficticio: clubes, jugadores, dirigentes, medios, estadios y resultados.</span><a href="#" data-opinion>Dar mi opinión</a><span>Este sitio está alojado en GitHub Pages y carga las fuentes de Google Fonts: ambos pueden registrar tu IP.</span></footer>
+<div class="aviso-maqueta" id="estado-maqueta" role="status" aria-live="polite"></div>
+<script src="js/maqueta.js" defer></script>
+</body>
+</html>

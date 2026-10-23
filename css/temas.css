@@ -1,0 +1,223 @@
+/* Temas visuales. Cada tema define SOLO variables: la disposición vive en base.css y es la misma en los tres. */
+
+:root,
+[data-tema='moderno'] {
+  color-scheme: dark;
+  --c-fondo: #0e1116;
+  --c-superficie: #181d25;
+  --c-superficie-2: #212836;
+  --c-texto: #e8ecf2;
+  --c-texto-suave: #9aa4b2;
+  --c-acento: #4ade80;
+  --c-sobre-acento: #0e1116;
+  --c-acento-2: #60a5fa;
+  --c-gol: #a3e635;
+  --c-amarilla: #facc15;
+  --c-roja: #f87171;
+  --c-etq-gol-tx: #0e1116;
+  --c-etq-gol-bg: #a3e635;
+  --c-etq-amarilla-tx: #0e1116;
+  --c-etq-amarilla-bg: #facc15;
+  --c-etq-roja-tx: #0e1116;
+  --c-etq-roja-bg: #f87171;
+  --c-etq-otra-tx: #e8ecf2;
+  --c-etq-otra-bg: #2b3340;
+  --c-borde: #2b3340;
+  --c-borde-control: #6b7689;
+  --c-foco: #60a5fa;
+  --c-zona-ascenso: #4ade80;
+  --c-zona-octogonal: #60a5fa;
+  --c-zona-descenso: #f87171;
+  --c-boton-principal-bg: var(--c-acento);
+  --c-boton-principal-tx: var(--c-sobre-acento);
+
+  --f-titular: 'Space Grotesk', system-ui, sans-serif;
+  --f-cuerpo: 'Inter', system-ui, sans-serif;
+  --f-numeros: 'Inter', system-ui, sans-serif;
+  --peso-titular: 700;
+  --tam-base: 1.0625rem;
+  --esc-titular: 1;
+  --titular-mayus: none;
+  --titular-espaciado: -0.01em;
+  --interlineado: 1.5;
+
+  --radio-tarjeta: 14px;
+  --radio-control: 10px;
+  --radio-chip: 999px;
+  --borde-ancho: 1px;
+  --borde-estilo: solid;
+  --regla-seccion: none;
+  --sombra-tarjeta: 0 8px 24px rgb(0 0 0 / 0.35);
+  --sombra-control: 0 1px 2px rgb(0 0 0 / 0.4);
+  --textura-fondo: radial-gradient(ellipse at top, rgb(74 222 128 / 0.06), transparent 60%);
+  --textura-destacada: linear-gradient(180deg, rgb(255 255 255 / 0.05), transparent);
+  --borde-destacada: var(--c-borde);
+
+  --icono-trazo: 2;
+  --icono-extremos: round;
+  --icono-uniones: round;
+  --icono-render: auto;
+
+  --boton-mayus: none;
+  --boton-adorno-antes: '';
+  --boton-adorno-despues: '';
+  --volanta-color: var(--c-texto-suave);
+  --volanta-mayus: uppercase;
+  --volanta-prefijo: '';
+  --volanta-espaciado: 0.08em;
+  --transicion: 150ms ease;
+}
+
+[data-tema='retro'] {
+  color-scheme: dark;
+  --c-fondo: #0c110d;
+  --c-superficie: #141c16;
+  --c-superficie-2: #1d2a20;
+  --c-texto: #d8f7cf;
+  --c-texto-suave: #8fb88a;
+  --c-acento: #ffb33a;
+  --c-sobre-acento: #0c110d;
+  --c-acento-2: #7ad7f0;
+  --c-gol: #5cff7a;
+  --c-amarilla: #ffd84a;
+  --c-roja: #ff6b5e;
+  --c-etq-gol-tx: #0c110d;
+  --c-etq-gol-bg: #5cff7a;
+  --c-etq-amarilla-tx: #0c110d;
+  --c-etq-amarilla-bg: #ffd84a;
+  --c-etq-roja-tx: #0c110d;
+  --c-etq-roja-bg: #ff6b5e;
+  --c-etq-otra-tx: #0c110d;
+  --c-etq-otra-bg: #7ad7f0;
+  --c-borde: #2a3d2d;
+  --c-borde-control: #4f7a55;
+  --c-foco: #ffb33a;
+  --c-zona-ascenso: #5cff7a;
+  --c-zona-octogonal: #7ad7f0;
+  --c-zona-descenso: #ff6b5e;
+  --c-boton-principal-bg: var(--c-acento);
+  --c-boton-principal-tx: var(--c-sobre-acento);
+
+  --f-titular: 'VT323', ui-monospace, monospace;
+  --f-cuerpo: 'IBM Plex Mono', ui-monospace, monospace;
+  --f-numeros: 'VT323', ui-monospace, monospace;
+  --peso-titular: 400;
+  --tam-base: 1rem;
+  --esc-titular: 1.35;
+  --titular-mayus: uppercase;
+  --titular-espaciado: 0.04em;
+  --interlineado: 1.55;
+
+  --radio-tarjeta: 0;
+  --radio-control: 0;
+  --radio-chip: 0;
+  --borde-ancho: 4px;
+  --borde-estilo: double;
+  --regla-seccion: 1px dashed var(--c-borde-control);
+  --sombra-tarjeta: inset 2px 2px 0 rgb(255 255 255 / 0.06), inset -2px -2px 0 rgb(0 0 0 / 0.5);
+  --sombra-control: 3px 3px 0 #000;
+  --textura-fondo:
+    repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.22) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 60%, rgb(0 0 0 / 0.35));
+  --textura-destacada: none;
+  --borde-destacada: var(--c-acento);
+
+  --icono-trazo: 2;
+  --icono-extremos: square;
+  --icono-uniones: miter;
+  --icono-render: crispEdges;
+
+  --boton-mayus: uppercase;
+  --boton-adorno-antes: '[ ';
+  --boton-adorno-despues: ' ]';
+  --volanta-color: var(--c-acento-2);
+  --volanta-mayus: uppercase;
+  --volanta-prefijo: '› ';
+  --volanta-espaciado: 0.04em;
+  --transicion: none;
+}
+
+[data-tema='diario'] {
+  color-scheme: light;
+  --c-fondo: #f3eee2;
+  --c-superficie: #fbf8f1;
+  --c-superficie-2: #ece5d4;
+  --c-texto: #1c1a17;
+  --c-texto-suave: #5a5248;
+  --c-acento: #a3161b;
+  --c-sobre-acento: #fbf8f1;
+  --c-acento-2: #1f4e79;
+  --c-gol: #0f5c2e;
+  --c-amarilla: #7a5a00;
+  --c-roja: #a3161b;
+  --c-etq-gol-tx: #fbf8f1;
+  --c-etq-gol-bg: #0f5c2e;
+  --c-etq-amarilla-tx: #5c4300;
+  --c-etq-amarilla-bg: #f5e3a3;
+  --c-etq-roja-tx: #fbf8f1;
+  --c-etq-roja-bg: #a3161b;
+  --c-etq-otra-tx: #fbf8f1;
+  --c-etq-otra-bg: #1c1a17;
+  --c-borde: #c9bfa9;
+  --c-borde-control: #1c1a17;
+  --c-foco: #1f4e79;
+  --c-zona-ascenso: #0f5c2e;
+  --c-zona-octogonal: #1f4e79;
+  --c-zona-descenso: #a3161b;
+  --c-boton-principal-bg: #1c1a17;
+  --c-boton-principal-tx: #fbf8f1;
+
+  --f-titular: 'Oswald', 'Arial Narrow', sans-serif;
+  --f-cuerpo: 'Source Serif 4', Georgia, serif;
+  --f-numeros: 'Roboto Condensed', 'Arial Narrow', sans-serif;
+  --peso-titular: 600;
+  --tam-base: 1.0625rem;
+  --esc-titular: 1.1;
+  --titular-mayus: uppercase;
+  --titular-espaciado: 0.01em;
+  --interlineado: 1.5;
+
+  --radio-tarjeta: 0;
+  --radio-control: 0;
+  --radio-chip: 2px;
+  --borde-ancho: 1px;
+  --borde-estilo: solid;
+  --regla-seccion: 3px double var(--c-texto);
+  --sombra-tarjeta: none;
+  --sombra-control: none;
+  --textura-fondo: radial-gradient(rgb(0 0 0 / 0.035) 1px, transparent 1px) 0 0 / 3px 3px;
+  --textura-destacada: radial-gradient(rgb(0 0 0 / 0.08) 1px, transparent 1.5px) 0 0 / 4px 4px;
+  --borde-destacada: var(--c-texto);
+
+  --icono-trazo: 1.5;
+  --icono-extremos: butt;
+  --icono-uniones: miter;
+  --icono-render: auto;
+
+  --boton-mayus: uppercase;
+  --boton-adorno-antes: '';
+  --boton-adorno-despues: '';
+  --volanta-color: var(--c-acento);
+  --volanta-mayus: uppercase;
+  --volanta-prefijo: '';
+  --volanta-espaciado: 0.06em;
+  --transicion: none;
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  :root,
+  [data-tema] {
+    --textura-fondo: none;
+    --textura-destacada: none;
+    --sombra-tarjeta: none;
+    --sombra-control: none;
+    --c-borde: var(--c-borde-control);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-tema] {
+    --transicion: none;
+  }
+}

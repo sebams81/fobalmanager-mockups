@@ -1,0 +1,72 @@
+[
+  {
+    "minuto": 0,
+    "clase": "tiempo",
+    "texto": "¡Empezó! Atlético Tamarisco recibe a Unión Calandria y la tribuna ya llegó ronca."
+  },
+  {
+    "minuto": 4,
+    "clase": "jugada",
+    "texto": "Aráoz juega corto con Ortúzar, Ortúzar pica por afuera y le gana la espalda a Pozzi, Ortúzar la manda al área... ¡afuera! Se fue cerca del palo."
+  },
+  {
+    "minuto": 11,
+    "clase": "tarjeta",
+    "texto": "Amarilla para Bermúdez. La venía buscando y la encontró."
+  },
+  {
+    "minuto": 17,
+    "clase": "jugada",
+    "texto": "Ferrando levanta la cabeza y encuentra a Ugarteche, Ugarteche le gana el mano a mano a Saldías, Ugarteche define... ¡y la mete Ugarteche! ¡Gol de Atlético Tamarisco! Atlético Tamarisco 1, Unión Calandria 0."
+  },
+  {
+    "minuto": 26,
+    "clase": "jugada",
+    "texto": "Unión Calandria gana un córner, Garcés se impone en el juego aéreo... ¡palo! ¡La pelota se estrella en el poste y sale!"
+  },
+  {
+    "minuto": 38,
+    "clase": "jugada",
+    "texto": "Ferrando la filtra larga y Ortúzar tiene que correr como si lo persiguiera el tesorero del club, Ortúzar se perfila y le pega desde lejos... se la queda el uno, tranquilo, como quien recibe un paquete del correo."
+  },
+  {
+    "minuto": 45,
+    "clase": "tiempo",
+    "texto": "Se van al descanso. Atlético Tamarisco 1, Unión Calandria 0. Hay mate y discusión en los vestuarios."
+  },
+  {
+    "minuto": 46,
+    "clase": "cambio",
+    "texto": "Cambio de entretiempo en Unión Calandria: Pozzi mira el complemento desde el banco y Arregui toma su lugar."
+  },
+  {
+    "minuto": 58,
+    "clase": "jugada",
+    "texto": "Garcés se la da a Arregui, Arregui desborda con una facilidad que ofende, Arregui pone un centro tenso entre el arquero y los centrales, Garcés le pega fuerte y abajo... ¡gol! ¡Garcés la manda a guardar y Atlético Tamarisco saca del medio con mala cara! Atlético Tamarisco 1, Unión Calandria 1."
+  },
+  {
+    "minuto": 66,
+    "clase": "cambio",
+    "texto": "Aráoz juega con la lengua afuera. En Atlético Tamarisco no hace falta GPS para darse cuenta: se prepara Quevedo."
+  },
+  {
+    "minuto": 68,
+    "clase": "cambio",
+    "texto": "Levanta el cartel el cuarto árbitro y Atlético Tamarisco hace el cambio: afuera Aráoz, adentro Quevedo."
+  },
+  {
+    "minuto": 79,
+    "clase": "jugada",
+    "texto": "Quevedo hace la bicicleta y Saldías todavía está pedaleando, Quevedo saca un centro de los que no se pueden desperdiciar, Ugarteche sube como en ascensor... ¡la mete Ugarteche! ¡Gol! ¡Que alguien le avise al cardiólogo de la tribuna! Atlético Tamarisco 2, Unión Calandria 1."
+  },
+  {
+    "minuto": 83,
+    "clase": "cambio",
+    "texto": "El DT de Atlético Tamarisco pide el cambio: Albarracín trota pegado a la raya y espera para reemplazar a Ugarteche."
+  },
+  {
+    "minuto": 86,
+    "clase": "jugada",
+    "texto": "Ocampo saca un misil desde afuera del área... ¡no pasa! ¡Bermúdez se tira con todo y la bloquea con el alma!"
+  }
+]
