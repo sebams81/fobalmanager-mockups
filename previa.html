@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Previa y táctica · Fobalmanager (maqueta)</title>
 <meta name="description" content="Maqueta visual de Fobalmanager, un manager de fútbol en el navegador. Diseño ilustrativo, sin funciones.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script>(function(){var T=["retro","diario","moderno"],F={"retro": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=VT323&display=swap", "diario": "https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Roboto+Condensed:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap", "moderno": "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@700&display=swap"},t=null;try{var q=new URLSearchParams(location.search).get("tema");if(T.indexOf(q)>=0){t=q;localStorage.setItem("fm-tema",q)}else{t=localStorage.getItem("fm-tema")}}catch(x){}if(T.indexOf(t)<0){t=T[Math.floor(Math.random()*3)];try{localStorage.setItem("fm-tema",t)}catch(x){}}document.documentElement.dataset.tema=t;var c={};window.fmFuentes=function(k){if(c[k])return;c[k]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=F[k];document.head.appendChild(l)};window.fmFuentes(t)})();</script>
+<script>(function(){var T=["retro","diario","moderno"],F={"retro": "css/fuentes-retro.css", "diario": "css/fuentes-diario.css", "moderno": "css/fuentes-moderno.css"},t=null;try{var q=new URLSearchParams(location.search).get("tema");if(T.indexOf(q)>=0){t=q;localStorage.setItem("fm-tema",q)}else{t=localStorage.getItem("fm-tema")}}catch(x){}if(T.indexOf(t)<0){t=T[Math.floor(Math.random()*3)];try{localStorage.setItem("fm-tema",t)}catch(x){}}document.documentElement.dataset.tema=t;var c={};window.fmFuentes=function(k){if(c[k])return;c[k]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=F[k];document.head.appendChild(l)};window.fmFuentes(t)})();</script>
 <link rel="stylesheet" href="css/temas.css">
 <link rel="stylesheet" href="css/base.css">
 </head>
@@ -33,7 +31,7 @@
 </div></details>
 <div class="a-la-cancha"><a class="boton principal ancho" href="partido.html">¡A la cancha!</a></div></div></div>
 </main>
-<footer class="pie"><span>Todo es ficticio: clubes, jugadores, dirigentes, medios, estadios y resultados.</span><a href="#" data-opinion>Dar mi opinión</a><span>Este sitio está alojado en GitHub Pages y carga las fuentes de Google Fonts: ambos pueden registrar tu IP.</span></footer>
+<footer class="pie"><span>Todo es ficticio: clubes, jugadores, dirigentes, medios, estadios y resultados.</span><a href="#" data-opinion>Dar mi opinión</a></footer>
 <div class="aviso-maqueta" id="estado-maqueta" role="status" aria-live="polite"></div>
 <script src="js/maqueta.js" defer></script>
 </body>

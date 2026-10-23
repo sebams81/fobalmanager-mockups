@@ -270,11 +270,8 @@ def escudo(sigla, clase='escudo'):
     )
 
 
-FUENTES = {
-    'retro': 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=VT323&display=swap',
-    'diario': 'https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Roboto+Condensed:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap',
-    'moderno': 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@700&display=swap',
-}
+# Fuentes alojadas en el sitio (licencia OFL, ver fuentes/LICENCIAS.md): se carga solo la del tema activo.
+FUENTES = {tema: f'css/fuentes-{tema}.css' for tema in ('retro', 'diario', 'moderno')}
 
 SCRIPT_TEMA = (
     '(function(){var T=["retro","diario","moderno"],F=' + json.dumps(FUENTES) + ',t=null;'
@@ -344,7 +341,6 @@ def pie():
         '<footer class="pie">'
         '<span>Todo es ficticio: clubes, jugadores, dirigentes, medios, estadios y resultados.</span>'
         '<a href="#" data-opinion>Dar mi opinión</a>'
-        '<span>Este sitio está alojado en GitHub Pages y carga las fuentes de Google Fonts: ambos pueden registrar tu IP.</span>'
         '</footer>'
     )
 
@@ -359,8 +355,6 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{e(titulo)} · Fobalmanager (maqueta)</title>
 <meta name="description" content="Maqueta visual de Fobalmanager, un manager de fútbol en el navegador. Diseño ilustrativo, sin funciones.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script>{SCRIPT_TEMA}</script>
 <link rel="stylesheet" href="css/temas.css">
 <link rel="stylesheet" href="css/base.css">

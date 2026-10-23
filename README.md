@@ -39,6 +39,13 @@ Los datos ficticios están en ese archivo. El relato del partido (`fuente/relato
 tal cual de la crónica del juego, con nombres ficticios. No hay dependencias ni paso de armado:
 el sitio es HTML, CSS y un JS chico.
 
+## Fuentes
+
+Las fuentes (VT323, IBM Plex Mono, Oswald, Source Serif 4, Roboto Condensed, Space Grotesk e Inter)
+se bajaron de Google Fonts y están alojadas en `fuentes/`, sin pedidos a terceros. Todas tienen
+licencia SIL Open Font License 1.1; los textos de licencia están en `fuentes/LICENCIAS.md`.
+Cada tema carga solo su CSS de fuentes (`css/fuentes-<tema>.css`).
+
 ## Publicación
 
 GitHub Pages, desde la rama `main` y la carpeta raíz.
