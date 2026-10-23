@@ -8,13 +8,17 @@ import math
 import random
 from pathlib import Path
 
+from ilustraciones import ESCENA, PATRONES, objeto, pictograma
+
 RAIZ = Path(__file__).resolve().parent.parent
 e = html.escape
 
 # ---------------------------------------------------------------- Mundo ficticio
 
 LIGA = '2ª División'
+ETAPA = 'Primera rueda'
 FECHA = 12
+FECHAS = 38  # ida y vuelta entre 20 clubes
 MI_CLUB = 'TAM'
 RIVAL = 'CAL'
 
@@ -243,7 +247,7 @@ def icono(nombre):
 
 def sprite():
     simbolos = ''.join(f'<symbol id="i-{k}" viewBox="0 0 24 24">{v}</symbol>' for k, v in ICONOS.items())
-    return f'<svg width="0" height="0" style="position:absolute" aria-hidden="true">{simbolos}</svg>'
+    return f'<svg width="0" height="0" style="position:absolute" aria-hidden="true">{PATRONES}{simbolos}</svg>'
 
 
 _escudos = [0]
@@ -322,7 +326,7 @@ def encabezado_club():
     return (
         f'<header class="club" style="--club-1:{c1};--club-2:{c2}">{escudo(MI_CLUB)}'
         f'<div><p class="nombre">{e(nombre)}</p>'
-        f'<p class="contexto">{LIGA} · Fecha {FECHA} · {POSICION[MI_CLUB]}°</p></div>'
+        f'<p class="contexto">{LIGA} · {ETAPA} · Fecha {FECHA} de {FECHAS} · {POSICION[MI_CLUB]}°</p></div>'
         '<a class="marca" href="index.html">Fobalmanager</a></header>'
     )
 
@@ -336,18 +340,25 @@ def navegacion(activa):
     return f'<nav class="pantallas" aria-label="Pantallas de la maqueta"><ul>{items}</ul></nav>'
 
 
-def pie():
+def pie(extra=''):
     return (
         '<footer class="pie">'
         '<span>Todo es ficticio: clubes, jugadores, dirigentes, medios, estadios y resultados.</span>'
-        '<a href="#" data-opinion>Dar mi opinión</a>'
+        f'{extra}<a href="#" data-opinion>Dar mi opinión</a>'
         '</footer>'
     )
 
 
-def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''):
-    portada = activa is None
-    cabecera = '' if portada else encabezado_club() + navegacion(activa)
+def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main='', menu=None):
+    """activa: pantalla resaltada en la navegación; None es la portada. menu: 'a' o 'b' en las páginas de menú."""
+    portada = activa is None and menu is None
+    if menu:
+        # El menú ya es la navegación: no lleva la barra de pantallas.
+        cabecera = encabezado_club()
+    else:
+        cabecera = '' if portada else encabezado_club() + navegacion(activa)
+    otra = {'a': ('menu-b.html', 'Ver la opción B: La oficina del técnico'), 'b': ('menu-a.html', 'Ver la opción A: Centro de mando')}
+    extra_pie = f'<a href="{otra[menu][0]}">{otra[menu][1]} →</a>' if menu else ''
     doc = f'''<!doctype html>
 <html lang="es-AR">
 <head>
@@ -359,7 +370,7 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
 <link rel="stylesheet" href="css/temas.css">
 <link rel="stylesheet" href="css/base.css">
 </head>
-<body class="{clase_body}">
+<body class="{clase_body}" style="--club-1:{CLUB[MI_CLUB][2]};--club-2:{CLUB[MI_CLUB][3]}">
 {sprite()}
 {barra_maqueta(portada)}
 {cabecera}
@@ -367,7 +378,7 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
 <main id="contenido">
 {cuerpo}
 </main>
-{pie()}
+{pie(extra_pie)}
 <div class="aviso-maqueta" id="estado-maqueta" role="status" aria-live="polite"></div>
 <script src="js/maqueta.js" defer></script>
 </body>
@@ -376,9 +387,10 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
     (RAIZ / archivo).write_text(doc, encoding='utf-8', newline='\n')
 
 
-def seccion(titulo, cuerpo, volanta='', clase='', etiqueta='section'):
+def seccion(titulo, cuerpo, volanta='', clase='', etiqueta='section', ident=''):
     v = f'<span class="volanta">{e(volanta)}</span>' if volanta else ''
-    return f'<{etiqueta} class="seccion {clase}"><header>{v}<h2>{e(titulo)}</h2></header>{cuerpo}</{etiqueta}>'
+    i = f' id="{ident}"' if ident else ''
+    return f'<{etiqueta} class="seccion {clase}"{i}><header>{v}<h2>{e(titulo)}</h2></header>{cuerpo}</{etiqueta}>'
 
 
 def club_con_escudo(sigla, corto=False):
@@ -390,9 +402,23 @@ def club_con_escudo(sigla, corto=False):
 
 def portada():
     tarjetas = ''.join(
-        f'<li class="seccion"><a href="{archivo}">{icono(clave)}<span><h2>{e(largo)}</h2><p>{e(DESCRIPCIONES[clave])}</p></span></a></li>'
+        f'<li class="seccion"><a href="{archivo}">{icono(clave)}<div><h3>{e(largo)}</h3><p>{e(DESCRIPCIONES[clave])}</p></div></a></li>'
         for clave, archivo, _, largo in PANTALLAS
     )
+    menus = ''.join(
+        f'<li class="seccion"><a href="{archivo}"><span class="muestra-menu">{dibujo}</span>'
+        f'<div><span class="volanta">{volanta}</span><h3>{e(titulo)}</h3><p>{e(texto)}</p></div></a></li>'
+        for archivo, dibujo, volanta, titulo, texto in (
+            ('menu-a.html', pictograma('competencia'), 'Opción A', 'Centro de mando',
+             'El próximo partido en el centro y todo lo demás agrupado en cuatro áreas: el equipo, la competencia, el mercado y el club.'),
+            ('menu-b.html', objeto('pizarron'), 'Opción B', 'La oficina del técnico',
+             'Cada sección es un objeto de tu oficina: el pizarrón, el teléfono, el diario, la agenda, la carpeta del plantel…'),
+        )
+    )
+    comparar = f'''<section class="comparar-menus" aria-labelledby="t-menus">
+<h2 id="t-menus">El menú principal: dos propuestas</h2>
+<p class="suave">Todavía no elegimos. Mirá las dos y contanos con cuál te quedarías.</p>
+<ul class="tarjetas-menu" role="list">{menus}</ul></section>'''
     opinion = (
         '<div class="opinion">'
         '<p>Probá los tres estilos y decinos cuál te gusta y qué le falta. En el fútbol todos opinan; acá te lo pedimos.</p>'
@@ -405,8 +431,9 @@ def portada():
 <p class="bajada">Fobalmanager es un manager de fútbol que se juega en el navegador: armás el plantel, das las indicaciones y seguís el partido relatado minuto a minuto, como por la radio.</p>
 <p class="bajada">Un juego de largo aliento en un fútbol inventado. Si jugaste a PC Fútbol o a Hattrick, te va a resultar familiar.</p>
 {opinion}
-<h2 class="sr">Pantallas</h2>
-<ul class="tarjetas-pantalla">{tarjetas}</ul>
+{comparar}
+<h2 class="titulo-pantallas">Las pantallas</h2>
+<ul class="tarjetas-pantalla" role="list">{tarjetas}</ul>
 {opinion}
 <p class="aclaracion">PC Fútbol y Hattrick son marcas de sus respectivos titulares. Fobalmanager es un proyecto independiente, sin relación, patrocinio ni aval de ellos; se nombran solo como referencia.</p>
 '''
@@ -455,13 +482,13 @@ def pantalla_club():
 <li><span class="volanta">Prensa</span><p>«En Calandria hay prima por ganarnos», asegura El Eco de Tamarisco. No dice quién la paga.</p></li>
 <li><span class="volanta">Vestuario</span><p>Ugarteche pidió patear los penales. Aráoz, el pateador designado, no dijo nada: se quedó media hora más practicando.</p></li>
 </ul>''',
-        volanta='Esta semana',
+        volanta='Esta semana', ident='novedades',
     )
     dirigencia = seccion(
         'Lo que pide la dirigencia',
         '''<dl class="objetivos"><dt>Objetivo principal</dt><dd>Terminar 11° o mejor: como mínimo, jugar el octogonal</dd>
 <dt>Objetivo secundario</dt><dd>Bajar el promedio de edad del plantel</dd></dl>''',
-        volanta='Temporada',
+        volanta='Temporada', ident='dirigencia',
     )
     tabla = seccion('Así estamos', mini_tabla(), volanta=LIGA)
     forma = seccion(
@@ -711,8 +738,128 @@ def pantalla_tabla():
     pagina('tabla.html', 'Tabla de posiciones', cuerpo, 'tabla')
 
 
+# --------------------------------------------------------------- Menú principal: dos propuestas (hito M2)
+
+def nombre_corto(sigla):
+    return CLUB[sigla][1].split(' ', 1)[1]
+
+
+def estados_menu():
+    """Textos de estado ficticios, coherentes con los datos de la maqueta."""
+    r = dict(TABLA)[MI_CLUB]
+    l, gl, v, gv = PARTIDOS_MIOS[-1]
+    moral_baja = sum(1 for j in PLANTEL if j[6] <= 1)
+    por_vencer = sum(1 for j in PLANTEL if j[7] == 'medio año')
+    return {
+        'plantel': f'{len(PLANTEL)} jugadores · {moral_baja} con la moral baja',
+        'alineacion': '4-3-3, el once de la fecha pasada',
+        'tactica': 'Jugarlo parejo, esperar en mitad de cancha',
+        'tabla': f'{POSICION[MI_CLUB]}° con {3 * r["g"] + r["e"]} puntos, zona de octogonal',
+        'calendario': f'{ETAPA}: fecha {FECHA} de {FECHAS}',
+        'resultados': f'Última: {nombre_corto(l)} {gl}, {nombre_corto(v)} {gv}',
+        'fichajes': '2 negociaciones abiertas',
+        'ojeadores': '1 informe nuevo',
+        'contratos': f'{por_vencer} vencen en medio año',
+        'caja': 'Margen justo para sueldos',
+        'estadio': 'Estadio del Bajo: el sábado, de local',
+        'dirigencia': 'Pide entrar al octogonal',
+        'noticias': '3 novedades esta semana',
+        'mercado': '2 negociaciones · 1 informe nuevo',
+        'plantel_b': f'{len(PLANTEL)} jugadores · {por_vencer} contratos por vencer',
+        'tactica_b': '4-3-3 · Jugarlo parejo',
+    }
+
+
+def enlace_menu(rotulo, destino, estado, alerta=False, dibujo=''):
+    """Destino con pantalla en la maqueta: href. Sin pantalla: aviso de maqueta con el nombre de la sección.
+    Con dibujo (opción B), el rótulo y el estado van en una placa debajo del objeto, dentro del mismo enlace."""
+    if '.html' in destino:
+        atributos = f'href="{destino}"'
+    else:
+        atributos = f'href="#" data-maqueta="{e(rotulo)}"'
+    marca = '<span class="alerta" aria-hidden="true">!</span>' if alerta else ''
+    texto = f'<span class="rotulo">{e(rotulo)}</span><span class="sr">: </span><span class="estado">{e(estado)}</span>'
+    if dibujo:
+        return f'<a {atributos}><span class="dibujo">{dibujo}</span><span class="placa">{texto}{marca}</span></a>'
+    return f'<a {atributos}>{texto}{marca}</a>'
+
+
+def panel_partido(clase=''):
+    return f'''<section class="menu-partido proximo seccion destacada {clase}" aria-labelledby="t-prox">
+<header><span class="volanta">Fecha {FECHA} · Sábado 15:30</span><h2 id="t-prox">Próximo partido</h2></header>
+<div class="duelo"><span class="equipo">{escudo(MI_CLUB)}{e(CLUB[MI_CLUB][1])}</span><span class="vs">vs</span>
+<span class="equipo">{escudo(RIVAL)}{e(CLUB[RIVAL][1])}</span></div>
+<p class="datos-partido">De local, en el Estadio del Bajo · el rival viene {POSICION[RIVAL]}°</p>
+<a class="boton volumen jugar" href="previa.html" aria-describedby="jugar-d">Jugar</a>
+<p id="jugar-d" class="nota-jugar">Antes, la previa: formación e indicaciones.</p>
+</section>'''
+
+
+def menu_a():
+    s = estados_menu()
+    areas = [
+        ('equipo', 'El equipo', [('Plantel', 'plantel.html', s['plantel'], False),
+                                 ('Alineación', 'previa.html', s['alineacion'], False),
+                                 ('Táctica', 'previa.html', s['tactica'], False)]),
+        ('competencia', 'La competencia', [('Tabla', 'tabla.html', s['tabla'], False),
+                                           ('Calendario', 'calendario', s['calendario'], False),
+                                           ('Resultados', 'resultados', s['resultados'], False)]),
+        ('mercado', 'El mercado', [('Fichajes', 'fichajes', s['fichajes'], True),
+                                   ('Ojeadores', 'ojeadores', s['ojeadores'], True),
+                                   ('Contratos', 'contratos', s['contratos'], False)]),
+        ('club', 'El club', [('Caja', 'caja', s['caja'], False),
+                             ('Estadio', 'estadio', s['estadio'], False),
+                             ('Dirigencia', 'club.html#dirigencia', s['dirigencia'], False)]),
+    ]
+    bloques = ''
+    for clave, titulo, enlaces in areas:
+        items = ''.join(f'<li>{enlace_menu(*x)}</li>' for x in enlaces)
+        bloques += (
+            f'<section class="area area-{clave}" aria-labelledby="t-{clave}">'
+            f'<h2 id="t-{clave}" class="area-titulo">{pictograma(clave)}<span>{e(titulo)}</span></h2>'
+            f'<ul class="area-enlaces" role="list">{items}</ul></section>'
+        )
+    cuerpo = f'''<h1 class="sr">Menú principal, opción A: Centro de mando</h1>
+<div class="centro-mando">
+{panel_partido()}
+<nav class="areas" aria-label="Secciones del club">{bloques}</nav>
+</div>'''
+    pagina('menu-a.html', 'Menú principal (opción A)', cuerpo, clase_body='menu-pantalla menu-a', menu='a')
+
+
+# Objetos de la oficina, en orden de importancia (es el orden del foco). Posición en la escena de la PC, en %.
+OBJETOS_B = [
+    ('pizarron', 'Táctica y alineación', 'previa.html', 'tactica_b', False, 'pared', (20, 7, 13.75, 35)),
+    ('carpeta', 'Plantel', 'plantel.html', 'plantel_b', True, 'escritorio', (63, 63, 14.5, 32)),
+    ('planilla', 'Tabla', 'tabla.html', 'tabla', False, 'pared', (66.25, 7, 13.75, 35)),
+    ('telefono', 'Mercado', 'mercado', 'mercado', True, 'escritorio', (2, 63, 13, 32)),
+    ('diario', 'Noticias', 'club.html#novedades', 'noticias', True, 'escritorio', (16.5, 63, 14.5, 32)),
+    ('agenda', 'Calendario', 'calendario', 'calendario', False, 'escritorio', (47, 63, 14.5, 32)),
+    ('sobre', 'Caja', 'caja', 'caja', False, 'escritorio', (32.5, 63, 13, 32)),
+    ('ventana', 'Estadio', 'estadio', 'estadio', False, 'lateral', (1.5, 9, 15.5, 44)),
+]
+
+
+def menu_b():
+    s = estados_menu()
+    items = ''
+    for nombre, rotulo, destino, estado, alerta, lugar, (x, y, w, h) in OBJETOS_B:
+        enlace = enlace_menu(rotulo, destino, s[estado], alerta, objeto(nombre))
+        items += (f'<li class="objeto objeto-{nombre} en-{lugar}" '
+                  f'style="--x:{x}%;--y:{y}%;--w:{w}%;--h:{h}%">{enlace}</li>')
+    cuerpo = f'''<h1 class="sr">Menú principal, opción B: La oficina del técnico</h1>
+<div class="oficina">
+{ESCENA}
+{panel_partido('puerta')}
+<nav class="objetos-nav" aria-label="Secciones del club"><ul class="objetos" role="list">{items}</ul></nav>
+</div>'''
+    pagina('menu-b.html', 'Menú principal (opción B)', cuerpo, clase_body='menu-pantalla menu-b', menu='b')
+
+
 if __name__ == '__main__':
     portada()
+    menu_a()
+    menu_b()
     pantalla_club()
     pantalla_plantel()
     pantalla_previa()

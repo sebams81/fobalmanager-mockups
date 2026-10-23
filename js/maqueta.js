@@ -49,11 +49,12 @@ for (const marca of document.querySelectorAll('[data-opinion-pendiente]')) {
   marca.hidden = linkListo;
 }
 
-// Controles que en la maqueta no hacen nada.
+// Controles que en la maqueta no hacen nada. Si data-maqueta nombra una pantalla, el aviso la nombra.
 for (const boton of document.querySelectorAll('[data-maqueta]')) {
   boton.addEventListener('click', (e) => {
     e.preventDefault();
-    anunciar('Es una maqueta: este botón todavía no hace nada.');
+    const pantalla = boton.dataset.maqueta;
+    anunciar(pantalla ? `${pantalla}: esta pantalla todavía no está en la maqueta.` : 'Es una maqueta: este botón todavía no hace nada.');
   });
 }
 

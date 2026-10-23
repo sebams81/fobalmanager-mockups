@@ -66,6 +66,77 @@
   --volanta-prefijo: '';
   --volanta-espaciado: 0.08em;
   --transicion: 150ms ease;
+
+  /* Menú principal (hito M2): ilustraciones planas de noche, trazo grueso redondeado. */
+  --il-tinta: #0b0f16;
+  --il-trazo: 3px;
+  --il-uniones: round;
+  --il-extremos: round;
+  --il-render: geometricPrecision;
+  --il-sombra: rgb(0 0 0 / 0.35);
+  --il-luz: rgb(255 255 255 / 0.22);
+  --il-pared: #22304d;
+  --il-pared-lado: #1a2540;
+  --il-pared-a: #22304d;
+  --il-pared-b: #22304d;
+  --il-piso: url(#tablones) #3a2f2a;
+  --il-tablon-a: #3a2f2a;
+  --il-madera: #c98a52;
+  --il-madera-2: #8a5530;
+  --il-pizarra: #166534;
+  --il-tiza: #ecfdf5;
+  --il-papel: #f8fafc;
+  --il-papel-2: #cbd5e1;
+  --il-kraft: #d6a461;
+  --il-kraft-2: #b5853f;
+  --il-billete: #86efac;
+  --il-billete-2: #4ade80;
+  --il-metal: #a5b4c8;
+  --il-metal-2: #64748b;
+  --il-rojo: #ef4444;
+  --il-rojo-2: #b91c1c;
+  --il-azul: #3b82f6;
+  --il-cuero: #7c3aed;
+  --il-corcho: #c08a55;
+  --il-vidrio: #1e3a8a;
+  --il-cielo: #1e3a8a;
+  --il-cesped: #22c55e;
+  --il-oro: #fbbf24;
+  --il-oscuro: #1e293b;
+  --il-lampara: #fde68a;
+  --il-persiana: #e2e8f0;
+  --il-calabaza: #a16207;
+  --il-yerba: #65a30d;
+
+  --rotulo-bg: rgb(14 17 22 / 0.92);
+  --rotulo-tx: #e8ecf2;
+  --rotulo-estado: #b6c0cd;
+  --rotulo-borde: 1px solid #3b4556;
+  --rotulo-radio: 12px;
+  --rotulo-fuente: var(--f-titular);
+  --rotulo-mayus: none;
+  --oficina-escritorio: linear-gradient(180deg, #2a2320, #1f1a17);
+  --puerta-marco: #8a5530;
+  --puerta-hoja: #c98a52;
+
+  --panel-barra-bg: var(--c-superficie-2);
+  --panel-barra-tx: var(--c-texto);
+  --panel-barra-borde: 3px solid var(--c-acento);
+  --panel-bisel: 0 8px 24px rgb(0 0 0 / 0.35);
+  --enlace-menu-bg: var(--c-superficie-2);
+  --enlace-menu-borde: 1px solid var(--c-borde);
+  --c-alerta-bg: #facc15;
+  --c-alerta-tx: #0e1116;
+
+  --vol-cara: linear-gradient(180deg, #5ee08f, #3cc56f);
+  --vol-tx: #0e1116;
+  --vol-luz: rgb(255 255 255 / 0.4);
+  --vol-sombra: rgb(0 0 0 / 0.12);
+  --vol-base: #1e7a45;
+  --vol-dx: 0px;
+  --vol-prof: 5px;
+  --vol-radio: 14px;
+  --vol-bisel: 2px;
 }
 
 [data-tema='retro'] {
@@ -91,7 +162,7 @@
   --c-etq-otra-bg: #7ad7f0;
   --c-borde: #2a3d2d;
   --c-borde-control: #4f7a55;
-  --c-foco: #ffb33a;
+  --c-foco: #7ad7f0;
   --c-zona-ascenso: #5cff7a;
   --c-zona-octogonal: #7ad7f0;
   --c-zona-descenso: #ff6b5e;
@@ -135,6 +206,77 @@
   --volanta-prefijo: '› ';
   --volanta-espaciado: 0.04em;
   --transicion: none;
+
+  /* Menú principal: paleta limitada y saturada, tinta negra gruesa, bordes pixelados y sombras en damero. */
+  --il-tinta: #000;
+  --il-trazo: 3.5px;
+  --il-uniones: miter;
+  --il-extremos: square;
+  --il-render: crispEdges;
+  --il-sombra: url(#damero) #000;
+  --il-luz: rgb(255 255 255 / 0.3);
+  --il-pared: url(#franjas) #2d5d7b;
+  --il-pared-lado: #1d3f57;
+  --il-pared-a: #2d5d7b;
+  --il-pared-b: #275370;
+  --il-piso: url(#tablones) #6b3e26;
+  --il-tablon-a: #6b3e26;
+  --il-madera: #b5651d;
+  --il-madera-2: #7a3f12;
+  --il-pizarra: #1f7a3a;
+  --il-tiza: #f4f4e8;
+  --il-papel: #f4ecd0;
+  --il-papel-2: #d4c69c;
+  --il-kraft: #d49a4a;
+  --il-kraft-2: #a8742c;
+  --il-billete: #6fdc6a;
+  --il-billete-2: #3fae3a;
+  --il-metal: #b4c0cc;
+  --il-metal-2: #6c7a88;
+  --il-rojo: #e8322b;
+  --il-rojo-2: #a8150f;
+  --il-azul: #2f6fd6;
+  --il-cuero: #b8323a;
+  --il-corcho: #d0924f;
+  --il-vidrio: #9fe3ff;
+  --il-cielo: #5aaeea;
+  --il-cesped: #2fbf4a;
+  --il-oro: #ffc23a;
+  --il-oscuro: #1a1a2e;
+  --il-lampara: #fff27a;
+  --il-persiana: #f4ecd0;
+  --il-calabaza: #8a5a1a;
+  --il-yerba: #6fbf2a;
+
+  --rotulo-bg: #000;
+  --rotulo-tx: #ffb33a;
+  --rotulo-estado: #d8f7cf;
+  --rotulo-borde: 2px solid #ffb33a;
+  --rotulo-radio: 0;
+  --rotulo-fuente: var(--f-titular);
+  --rotulo-mayus: uppercase;
+  --oficina-escritorio: repeating-linear-gradient(180deg, #7a3f12 0 22px, #6b3610 22px 24px);
+  --puerta-marco: #7a3f12;
+  --puerta-hoja: #b5651d;
+
+  --panel-barra-bg: #7ad7f0;
+  --panel-barra-tx: #0c110d;
+  --panel-barra-borde: 0;
+  --panel-bisel: inset 3px 3px 0 rgb(255 255 255 / 0.12), inset -3px -3px 0 rgb(0 0 0 / 0.6);
+  --enlace-menu-bg: var(--c-superficie-2);
+  --enlace-menu-borde: 2px solid var(--c-borde-control);
+  --c-alerta-bg: #ff6b5e;
+  --c-alerta-tx: #0c110d;
+
+  --vol-cara: #ffb33a;
+  --vol-tx: #0c110d;
+  --vol-luz: #ffe0a3;
+  --vol-sombra: #b06f0c;
+  --vol-base: #7a4a08;
+  --vol-dx: 4px;
+  --vol-prof: 4px;
+  --vol-radio: 0;
+  --vol-bisel: 3px;
 }
 
 [data-tema='diario'] {
@@ -202,6 +344,77 @@
   --volanta-prefijo: '';
   --volanta-espaciado: 0.06em;
   --transicion: none;
+
+  /* Menú principal: grabado de imprenta. Solo tinta, papel, grises en trama de puntos y un rojo. */
+  --il-tinta: #1c1a17;
+  --il-trazo: 2.5px;
+  --il-uniones: miter;
+  --il-extremos: butt;
+  --il-render: geometricPrecision;
+  --il-sombra: url(#trama-oscura) #1c1a17;
+  --il-luz: transparent;
+  --il-pared: url(#trama-clara) #e9e2d0;
+  --il-pared-lado: url(#trama-media) #c9bfa9;
+  --il-pared-a: #fbf8f1;
+  --il-pared-b: #fbf8f1;
+  --il-piso: url(#trama-oscura) #8a8378;
+  --il-tablon-a: #fbf8f1;
+  --il-madera: url(#trama-media) #c9bfa9;
+  --il-madera-2: url(#trama-oscura) #8a8378;
+  --il-pizarra: #1c1a17;
+  --il-tiza: #fbf8f1;
+  --il-papel: #fbf8f1;
+  --il-papel-2: url(#trama-clara) #e9e2d0;
+  --il-kraft: url(#trama-clara) #e9e2d0;
+  --il-kraft-2: url(#trama-media) #c9bfa9;
+  --il-billete: #fbf8f1;
+  --il-billete-2: url(#trama-clara) #e9e2d0;
+  --il-metal: url(#trama-clara) #e9e2d0;
+  --il-metal-2: url(#trama-media) #c9bfa9;
+  --il-rojo: #a3161b;
+  --il-rojo-2: #a3161b;
+  --il-azul: url(#trama-oscura) #8a8378;
+  --il-cuero: url(#trama-oscura) #8a8378;
+  --il-corcho: url(#trama-media) #c9bfa9;
+  --il-vidrio: #fbf8f1;
+  --il-cielo: #fbf8f1;
+  --il-cesped: url(#trama-media) #c9bfa9;
+  --il-oro: url(#trama-clara) #e9e2d0;
+  --il-oscuro: #1c1a17;
+  --il-lampara: #fbf8f1;
+  --il-persiana: #fbf8f1;
+  --il-calabaza: url(#trama-oscura) #8a8378;
+  --il-yerba: url(#trama-media) #c9bfa9;
+
+  --rotulo-bg: #fbf8f1;
+  --rotulo-tx: #1c1a17;
+  --rotulo-estado: #4a443c;
+  --rotulo-borde: 1px solid #1c1a17;
+  --rotulo-radio: 0;
+  --rotulo-fuente: var(--f-titular);
+  --rotulo-mayus: uppercase;
+  --oficina-escritorio: radial-gradient(rgb(0 0 0 / 0.16) 1.2px, transparent 1.6px) 0 0 / 5px 5px, #e3dbc7;
+  --puerta-marco: #1c1a17;
+  --puerta-hoja: #c9bfa9;
+
+  --panel-barra-bg: #1c1a17;
+  --panel-barra-tx: #fbf8f1;
+  --panel-barra-borde: 0;
+  --panel-bisel: none;
+  --enlace-menu-bg: transparent;
+  --enlace-menu-borde: 1px solid var(--c-borde);
+  --c-alerta-bg: #a3161b;
+  --c-alerta-tx: #fbf8f1;
+
+  --vol-cara: #1c1a17;
+  --vol-tx: #fbf8f1;
+  --vol-luz: transparent;
+  --vol-sombra: transparent;
+  --vol-base: #a3161b;
+  --vol-dx: 4px;
+  --vol-prof: 4px;
+  --vol-radio: 0;
+  --vol-bisel: 0px;
 }
 
 @media (prefers-contrast: more), (forced-colors: active) {
@@ -212,6 +425,12 @@
     --sombra-tarjeta: none;
     --sombra-control: none;
     --c-borde: var(--c-borde-control);
+    --il-sombra: transparent;
+    --il-luz: transparent;
+    --oficina-escritorio: var(--c-fondo);
+    --panel-bisel: none;
+    --vol-luz: transparent;
+    --vol-sombra: transparent;
   }
 }
 

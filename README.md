@@ -4,11 +4,26 @@ Maquetas públicas de Fobalmanager, un manager de fútbol en el navegador, para 
 Son ilustrativas y no tienen funciones. Todo el contenido es ficticio: clubes, jugadores, dirigentes,
 medios, estadios, escudos y resultados.
 
-Hay cinco pantallas (inicio del club, plantel, previa y táctica, partido en vivo y tabla de posiciones)
+Hay dos propuestas de menú principal y cinco pantallas (inicio del club, plantel, previa y táctica, partido en vivo y tabla de posiciones)
 con una única estructura y tres temas visuales: Retro, Diario y Moderno. Un tema cambia solo
 colores, tipografía, texturas, íconos y bordes, mediante las variables de `css/temas.css`.
 La disposición vive en `css/base.css` y es la misma en los tres. El tema elegido se recuerda
 en el navegador. En la primera visita se elige uno al azar, para no sesgar las opiniones.
+
+## Menú principal: dos propuestas
+
+Hay dos propuestas de menú principal para comparar, con acceso desde la portada y cada una enlazada a la otra
+desde el pie. Ninguna está elegida.
+
+- `menu-a.html`, "Centro de mando": el próximo partido en el centro y cuatro áreas alrededor (El equipo,
+  La competencia, El mercado y El club).
+- `menu-b.html`, "La oficina del técnico": cada sección es un objeto de la oficina (pizarrón, carpeta,
+  planilla, teléfono, diario, agenda, sobre y ventana). La puerta del centro es el próximo partido.
+
+En el celular, el partido va arriba y las áreas u objetos en grilla; desde 64rem (1024 px), la composición
+completa. Las ilustraciones son SVG propios (`fuente/ilustraciones.py`). Usan clases de material (madera,
+papel, metal…) que cada tema pinta con las variables `--il-*` de `css/temas.css`: el dibujo es el mismo en
+los tres temas. Las secciones sin pantalla en la maqueta muestran un aviso.
 
 ## Link del formulario de opinión
 
@@ -29,7 +44,8 @@ Agregá `?tema=retro`, `?tema=diario` o `?tema=moderno` a cualquier URL, por eje
 
 ## Editar el contenido
 
-Las páginas HTML se generan con `fuente/generar.py` (Python 3, solo biblioteca estándar):
+Las páginas HTML se generan con `fuente/generar.py` y `fuente/ilustraciones.py` (Python 3, solo biblioteca
+estándar):
 
 ```sh
 python fuente/generar.py
