@@ -298,6 +298,7 @@ SCRIPT_TEMA = (
     'else{t=localStorage.getItem("fm-tema")}}catch(x){}'
     'if(T.indexOf(t)<0){t=T[Math.floor(Math.random()*T.length)];try{localStorage.setItem("fm-tema",t)}catch(x){}}'
     'document.documentElement.dataset.tema=t;var c={};'
+    'try{if(localStorage.getItem("fm-invertir-club")==="1")document.documentElement.dataset.invertirClub=""}catch(x){}'
     'window.fmFuentes=function(k){if(c[k])return;c[k]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=F[k];document.head.appendChild(l)};'
     'window.fmFuentes(t)})();'
 )
@@ -319,12 +320,32 @@ DESCRIPCIONES = {
 }
 
 
-def selector_tema():
+def luminosidad(color):
+    """Luminosidad perceptual (L de OKLab, de 0 a 1) de un color #rrggbb."""
+    lineal = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+              for c in (int(color[i:i + 2], 16) / 255 for i in (1, 3, 5))]
+    r, g, b = lineal
+    l = (0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b) ** (1 / 3)
+    m = (0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b) ** (1 / 3)
+    s = (0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b) ** (1 / 3)
+    return 0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s
+
+
+def colores_identidad(sigla):
+    """RN-753: el color más oscuro del club va a la base y el otro al acento. Empate: el orden del club."""
+    c1, c2 = CLUB[sigla][2], CLUB[sigla][3]
+    return (c2, c1) if luminosidad(c2) < luminosidad(c1) else (c1, c2)
+
+
+def selector_tema(con_club):
     opciones = ''.join(
         f'<label><input type="radio" name="tema" value="{v}">{t}</label>'
         for v, t in (('retro', 'Retro'), ('diario', 'Diario'), ('moderno', 'Moderno'), ('pizarra', 'Pizarra'))
     )
-    return f'<fieldset class="selector-tema"><legend>Estilo visual</legend>{opciones}</fieldset>'
+    # Solo se ve en los temas que usan los colores del club (--control-identidad) y en las páginas con club.
+    invertir = ('<label class="invertir-club"><input type="checkbox" name="invertir-club">Invertir colores del club</label>'
+                if con_club else '')
+    return f'<fieldset class="selector-tema"><legend>Estilo visual</legend>{opciones}{invertir}</fieldset>'
 
 
 def barra_maqueta(portada):
@@ -332,7 +353,7 @@ def barra_maqueta(portada):
     return (
         '<div class="barra-maqueta">'
         f'<p class="aviso">{volver}<strong>Maqueta: diseño ilustrativo, sin funciones</strong></p>'
-        f'{selector_tema()}</div>'
+        f'{selector_tema(not portada)}</div>'
     )
 
 
@@ -378,7 +399,9 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
     otra = {'b': ('menu-c.html', 'Ver la opción C: La cancha'), 'c': ('menu-b.html', 'Ver la opción B: La oficina del técnico')}
     extra_pie = f'<a href="{otra[menu][0]}">{otra[menu][1]} →</a>' if menu in otra else ''
     # Los colores del club van en <html>, donde se declaran los temas. La portada no tiene club: valor por defecto.
-    identidad = '' if portada else f' style="--club-1:{CLUB[MI_CLUB][2]};--club-2:{CLUB[MI_CLUB][3]}"'
+    base, acento = colores_identidad(MI_CLUB)
+    identidad = '' if portada else (f' style="--club-1:{CLUB[MI_CLUB][2]};--club-2:{CLUB[MI_CLUB][3]};'
+                                    f'--club-base:{base};--club-acento:{acento}"')
     doc = f'''<!doctype html>
 <html lang="es-AR"{identidad}>
 <head>

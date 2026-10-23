@@ -20,10 +20,11 @@
   --lh-titulo: 1.15;
   --lh-cuerpo: 1.5;
 
-  /* Colores de identidad: los del club del manager (--club-1 y --club-2, en <html>). Sin club, turquesa y naranja
-     de época. Cada tema puede derivar de acá su paleta; hoy lo hace Retro. */
-  --identidad-1: var(--club-1, #16a6a0);
-  --identidad-2: var(--club-2, #ff8a1f);
+  /* Colores de identidad (RN-753): los del club del manager, ya ordenados en <html> (--club-base, el más oscuro;
+     --club-acento, el otro). Sin club, turquesa y naranja de época. Cada tema puede derivar de acá su paleta y
+     mostrar el control de invertirlos con --control-identidad; hoy lo hace Retro. */
+  --identidad-1: var(--club-base, #16a6a0);
+  --identidad-2: var(--club-acento, #ff8a1f);
 
   /* Granos finos (SVG con ruido) para texturas: oscuro sobre fondos claros, claro sobre fondos oscuros. */
   --grano-oscuro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -33,6 +34,7 @@
 :root,
 [data-tema='moderno'] {
   color-scheme: dark;
+  --control-identidad: none;
   --c-fondo: #0d1117;
   --c-superficie: #161b22;
   --c-superficie-2: #1f2630;
@@ -173,6 +175,7 @@
    --identidad-2. Cada paso conserva la luminosidad de la escalera original, para que el contraste no dependa del
    club. Sin marco de ventana de sistema ni la combinación gris con azul marino (criterio de legal). */
 [data-tema='retro'] {
+  --control-identidad: flex;
   /* Respaldo: valor por defecto ya calculado, para navegadores sin color relativo. */
   --r-0: #001513;
   --r-1: #001f1d;
@@ -363,6 +366,7 @@
 
 [data-tema='diario'] {
   color-scheme: light;
+  --control-identidad: none;
   --c-fondo: #f3eee2;
   --c-superficie: #fbf8f1;
   --c-superficie-2: #ece5d4;
@@ -499,6 +503,7 @@
    el cuerpo, las tablas, los números y los botones van en letra legible. */
 [data-tema='pizarra'] {
   color-scheme: dark;
+  --control-identidad: none;
   --c-fondo: #1d3b2f;
   --c-superficie: #22463a;
   --c-superficie-2: #2a5244;
@@ -637,6 +642,12 @@
   --vol-prof: 4px;
   --vol-radio: 8px;
   --vol-bisel: 2px;
+}
+
+/* "Invertir colores del club": el acento pasa a la base y la base al acento. Sin club no cambia nada. */
+:root[data-invertir-club] {
+  --identidad-1: var(--club-acento, #16a6a0);
+  --identidad-2: var(--club-base, #ff8a1f);
 }
 
 @media (prefers-contrast: more), (forced-colors: active) {

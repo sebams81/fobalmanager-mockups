@@ -179,6 +179,11 @@ svg.icono {
   white-space: pre;
 }
 
+.selector-tema .invertir-club {
+  display: var(--control-identidad, none);
+  grid-column: 1 / -1;
+}
+
 .selector-tema label:has(input:focus-visible) {
   outline: 3px solid var(--c-foco);
   outline-offset: 2px;
@@ -1444,7 +1449,13 @@ details.plan .resumen-plan {
   }
 
   .selector-tema {
-    grid-template-columns: auto repeat(4, 7rem);
+    grid-template-columns: auto repeat(4, 7rem) auto;
+  }
+
+  /* Separado de los temas: es otra elección, no un quinto tema. */
+  .selector-tema .invertir-club {
+    grid-column: auto;
+    margin-left: var(--e-4);
   }
 
   .selector-tema legend {

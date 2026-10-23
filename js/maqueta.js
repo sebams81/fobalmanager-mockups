@@ -31,6 +31,21 @@ for (const radio of document.querySelectorAll('input[name="tema"]')) {
   });
 }
 
+// Invertir colores del club (RN-753): el script del <head> ya aplicó la elección guardada.
+for (const caja of document.querySelectorAll('input[name="invertir-club"]')) {
+  caja.checked = 'invertirClub' in document.documentElement.dataset;
+  caja.addEventListener('change', () => {
+    if (caja.checked) document.documentElement.dataset.invertirClub = '';
+    else delete document.documentElement.dataset.invertirClub;
+    try {
+      localStorage.setItem('fm-invertir-club', caja.checked ? '1' : '0');
+    } catch {
+      // Sin almacenamiento (navegación privada): la elección vale para esta página.
+    }
+    anunciar(caja.checked ? 'Colores del club invertidos' : 'Colores del club en su orden');
+  });
+}
+
 // Botón "Dar mi opinión".
 const linkListo = /^https?:\/\//.test(LINK_OPINION);
 for (const enlace of document.querySelectorAll('[data-opinion]')) {
