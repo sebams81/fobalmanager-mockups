@@ -377,8 +377,10 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
         cabecera = '' if portada else encabezado_club() + navegacion(activa)
     otra = {'b': ('menu-c.html', 'Ver la opción C: La cancha'), 'c': ('menu-b.html', 'Ver la opción B: La oficina del técnico')}
     extra_pie = f'<a href="{otra[menu][0]}">{otra[menu][1]} →</a>' if menu in otra else ''
+    # Los colores del club van en <html>, donde se declaran los temas. La portada no tiene club: valor por defecto.
+    identidad = '' if portada else f' style="--club-1:{CLUB[MI_CLUB][2]};--club-2:{CLUB[MI_CLUB][3]}"'
     doc = f'''<!doctype html>
-<html lang="es-AR">
+<html lang="es-AR"{identidad}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -388,7 +390,7 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
 <link rel="stylesheet" href="css/temas.css">
 <link rel="stylesheet" href="css/base.css">
 </head>
-<body class="{clase_body}" style="--club-1:{CLUB[MI_CLUB][2]};--club-2:{CLUB[MI_CLUB][3]}">
+<body class="{clase_body}">
 {sprite()}
 {barra_maqueta(portada)}
 {cabecera}

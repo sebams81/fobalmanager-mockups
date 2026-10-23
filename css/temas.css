@@ -20,6 +20,11 @@
   --lh-titulo: 1.15;
   --lh-cuerpo: 1.5;
 
+  /* Colores de identidad: los del club del manager (--club-1 y --club-2, en <html>). Sin club, turquesa y naranja
+     de época. Cada tema puede derivar de acá su paleta; hoy lo hace Retro. */
+  --identidad-1: var(--club-1, #16a6a0);
+  --identidad-2: var(--club-2, #ff8a1f);
+
   /* Granos finos (SVG con ruido) para texturas: oscuro sobre fondos claros, claro sobre fondos oscuros. */
   --grano-oscuro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --grano-claro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -163,40 +168,62 @@
   --vol-bisel: 1px;
 }
 
-/* Retro: un manager de PC de 1996 a 2000. Azul rey y dorado propios, biselados, brillos y colores saturados.
-   Sin marco de ventana de sistema ni la combinación gris con azul marino (criterio de legal). */
+/* Retro: un manager de PC de 1996 a 2000. Biselados, brillos y colores saturados, con la paleta tomada de los
+   colores de identidad (RN-753): la base (--r-0 a --r-10) sale de --identidad-1 y el acento (--a-*), de
+   --identidad-2. Cada paso conserva la luminosidad de la escalera original, para que el contraste no dependa del
+   club. Sin marco de ventana de sistema ni la combinación gris con azul marino (criterio de legal). */
 [data-tema='retro'] {
+  /* Respaldo: valor por defecto ya calculado, para navegadores sin color relativo. */
+  --r-0: #001513;
+  --r-1: #001f1d;
+  --r-2: #002e2c;
+  --r-3: #004845;
+  --r-4: #005a56;
+  --r-5: #006c68;
+  --r-6: #007d77;
+  --r-7: #01a09a;
+  --r-8: #48bbb5;
+  --r-9: #b5dedb;
+  --r-10: #c6e6e4;
+  --a-luz: #f0c2a3;
+  --a-claro: #fdb481;
+  --a-alto: #ff9936;
+  --a: #ff8e26;
+  --a-medio: #f88411;
+  --a-bajo: #eb7800;
+  --a-sombra: #b04100;
+  --a-oscuro: #650000;
   color-scheme: dark;
-  --c-fondo: #0a1433;
-  --c-superficie: #1f3270;
-  --c-superficie-2: #2a4190;
+  --c-fondo: var(--r-1);
+  --c-superficie: var(--r-3);
+  --c-superficie-2: var(--r-4);
   --c-texto: #ffffff;
-  --c-texto-suave: #c9d4f2;
-  --c-acento: #ffd400;
-  --c-sobre-acento: #0a1433;
+  --c-texto-suave: var(--r-9);
+  --c-acento: var(--a);
+  --c-sobre-acento: var(--r-1);
   --c-acento-2: #7fdcff;
   --c-gol: #39e75f;
   --c-amarilla: #ffd400;
   --c-roja: #ff6b6b;
-  --c-etq-gol-tx: #0a1433;
+  --c-etq-gol-tx: var(--r-1);
   --c-etq-gol-bg: #39e75f;
-  --c-etq-amarilla-tx: #0a1433;
+  --c-etq-amarilla-tx: var(--r-1);
   --c-etq-amarilla-bg: #ffd400;
-  --c-etq-roja-tx: #0a1433;
+  --c-etq-roja-tx: var(--r-1);
   --c-etq-roja-bg: #ff6b6b;
-  --c-etq-otra-tx: #0a1433;
+  --c-etq-otra-tx: var(--r-1);
   --c-etq-otra-bg: #7fdcff;
-  --c-borde: #3a52a8;
-  --c-borde-control: #8fa3e8;
+  --c-borde: var(--r-5);
+  --c-borde-control: var(--r-8);
   --c-foco: #ffffff;
   --c-zona-ascenso: #39e75f;
   --c-zona-octogonal: #c79bff;
   --c-zona-descenso: #ff6b6b;
   --c-boton-principal-bg: var(--c-acento);
   --c-boton-principal-tx: var(--c-sobre-acento);
-  --c-fila-mia: #34509f;
+  --c-fila-mia: var(--r-5);
   --c-alerta-bg: #ff6b6b;
-  --c-alerta-tx: #0a1433;
+  --c-alerta-tx: var(--r-1);
 
   --f-titular: 'Russo One', 'Arial Black', sans-serif;
   --f-cuerpo: 'PT Sans', 'Trebuchet MS', sans-serif;
@@ -214,26 +241,26 @@
   --borde-ancho: 1px;
   --borde-estilo: solid;
   --regla-seccion: none;
-  --sombra-1: inset 1px 1px 0 #6f86d6, inset -1px -1px 0 #060c24, 3px 3px 0 rgb(0 0 0 / 0.45);
+  --sombra-1: inset 1px 1px 0 var(--r-7), inset -1px -1px 0 var(--r-0), 3px 3px 0 rgb(0 0 0 / 0.45);
   --titulo-sombra: 2px 2px 0 rgb(0 0 0 / 0.55);
   --sombra-2:
-    inset 1px 1px 0 #6f86d6, inset 2px 2px 0 #4a62b8, inset -1px -1px 0 #060c24, inset -2px -2px 0 #0f1c4d,
+    inset 1px 1px 0 var(--r-7), inset 2px 2px 0 var(--r-6), inset -1px -1px 0 var(--r-0), inset -2px -2px 0 var(--r-2),
     4px 4px 0 rgb(0 0 0 / 0.45);
   --sombra-3:
-    inset 1px 1px 0 #8aa0ea, inset 2px 2px 0 #5a72c8, inset -1px -1px 0 #060c24, inset -2px -2px 0 #0f1c4d,
+    inset 1px 1px 0 var(--r-8), inset 2px 2px 0 var(--r-6), inset -1px -1px 0 var(--r-0), inset -2px -2px 0 var(--r-2),
     6px 6px 0 rgb(0 0 0 / 0.5);
   --sombra-tarjeta: var(--sombra-2);
   --sombra-control: inset 1px 1px 0 rgb(255 255 255 / 0.45), inset -1px -1px 0 rgb(0 0 0 / 0.55);
   --textura-fondo:
-    linear-gradient(180deg, rgb(63 208 255 / 0.08), transparent 35%),
+    linear-gradient(180deg, color-mix(in srgb, var(--r-8) 12%, transparent), transparent 35%),
     repeating-linear-gradient(45deg, rgb(255 255 255 / 0.022) 0 2px, transparent 2px 7px);
   --textura-destacada: linear-gradient(180deg, rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.02) 45%, transparent 55%);
-  --borde-destacada: #ffd400;
+  --borde-destacada: var(--a);
 
   --boton-mayus: uppercase;
   --boton-adorno-antes: '';
   --boton-adorno-despues: '';
-  --volanta-color: #ffd400;
+  --volanta-color: var(--a);
   --volanta-mayus: uppercase;
   --volanta-prefijo: '';
   --volanta-espaciado: 0.06em;
@@ -242,28 +269,28 @@
   --ic-duotone: inline;
   --ic-light: none;
   --ic-regular: none;
-  --ic-color: #0a1433;
+  --ic-color: var(--r-1);
   --ic-relleno: #ffffff;
   --ic-relleno-opacidad: 0.85;
   --ic-placa-bg:
     linear-gradient(180deg, rgb(255 255 255 / 0.25), rgb(255 255 255 / 0.04) 48%, transparent 52%),
-    linear-gradient(180deg, #ffe45c, #ffc400);
-  --ic-placa-borde: 1px solid #5c4a00;
-  --ic-placa-sombra: inset 1px 1px 0 #fff6c2, inset -2px -2px 0 #a68a00, 2px 2px 0 rgb(0 0 0 / 0.45);
+    linear-gradient(180deg, var(--a-alto), var(--a-medio));
+  --ic-placa-borde: 1px solid var(--a-oscuro);
+  --ic-placa-sombra: inset 1px 1px 0 var(--a-luz), inset -2px -2px 0 var(--a-sombra), 2px 2px 0 rgb(0 0 0 / 0.45);
   --ic-placa-radio: 4px;
 
-  --rotulo-bg: linear-gradient(180deg, #2a4190, #1f3270);
+  --rotulo-bg: linear-gradient(180deg, var(--r-4), var(--r-3));
   --rotulo-tx: #ffffff;
-  --rotulo-estado: #d6def6;
-  --rotulo-borde: 1px solid #0a1433;
+  --rotulo-estado: var(--r-10);
+  --rotulo-borde: 1px solid var(--r-1);
   --rotulo-radio: 3px;
   --rotulo-fuente: var(--f-titular);
   --rotulo-mayus: none;
 
-  --esc-pared: linear-gradient(180deg, #2a4190, #1f3270);
+  --esc-pared: linear-gradient(180deg, var(--r-4), var(--r-3));
   --esc-pared-textura: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.04) 0 2px, transparent 2px 22px);
-  --esc-zocalo: #0f1c4d;
-  --esc-piso: linear-gradient(180deg, #14205a, #0d1640);
+  --esc-zocalo: var(--r-2);
+  --esc-piso: linear-gradient(180deg, var(--r-2), var(--r-1));
   --esc-escritorio: linear-gradient(180deg, #b8742f, #8a5520);
   --esc-escritorio-textura:
     linear-gradient(180deg, rgb(255 255 255 / 0.22), transparent 30%),
@@ -284,13 +311,13 @@
 
   --cartel-bg: var(--c-superficie);
   --cartel-tx: #ffffff;
-  --cartel-borde: 1px solid #0a1433;
+  --cartel-borde: 1px solid var(--r-1);
   --cartel-cinta: transparent;
-  --cartel-suave: #c9d4f2;
-  --cartel-volanta: #ffd400;
+  --cartel-suave: var(--r-9);
+  --cartel-volanta: var(--a);
 
-  --nivel-debil: #5d73c4;
-  --nivel-fuerte: #ffe45c;
+  --nivel-debil: var(--r-6);
+  --nivel-fuerte: var(--a-alto);
   --nivel-vacio: rgb(255 255 255 / 0.12);
 
   --marco-tabla-relleno: 0;
@@ -299,15 +326,39 @@
   --marco-tabla-interior: none;
   --marco-tabla-repisa: 0;
 
-  --vol-cara: linear-gradient(180deg, #fff09a 0%, #ffd400 48%, #f2b800 52%, #ffc400 100%);
-  --vol-tx: #0a1433;
-  --vol-luz: #fff6c2;
-  --vol-sombra: #a68a00;
-  --vol-base: #5c4a00;
+  --vol-cara: linear-gradient(180deg, var(--a-claro) 0%, var(--a) 48%, var(--a-bajo) 52%, var(--a-medio) 100%);
+  --vol-tx: var(--r-1);
+  --vol-luz: var(--a-luz);
+  --vol-sombra: var(--a-sombra);
+  --vol-base: var(--a-oscuro);
   --vol-dx: 0px;
   --vol-prof: 4px;
   --vol-radio: 4px;
   --vol-bisel: 2px;
+}
+
+@supports (color: oklch(from red l c h)) {
+  [data-tema='retro'] {
+    --r-0: oklch(from var(--identidad-1) 0.165 min(c, 0.051) h);
+    --r-1: oklch(from var(--identidad-1) 0.203 min(c, 0.063) h);
+    --r-2: oklch(from var(--identidad-1) 0.250 min(c, 0.092) h);
+    --r-3: oklch(from var(--identidad-1) 0.340 min(c, 0.110) h);
+    --r-4: oklch(from var(--identidad-1) 0.405 min(c, 0.134) h);
+    --r-5: oklch(from var(--identidad-1) 0.468 min(c, 0.141) h);
+    --r-6: oklch(from var(--identidad-1) 0.521 min(c, 0.138) h);
+    --r-7: oklch(from var(--identidad-1) 0.637 min(c, 0.123) h);
+    --r-8: oklch(from var(--identidad-1) 0.727 min(c, 0.103) h);
+    --r-9: oklch(from var(--identidad-1) 0.871 min(c, 0.043) h);
+    --r-10: oklch(from var(--identidad-1) 0.902 min(c, 0.034) h);
+    --a-luz: oklch(from var(--identidad-2) min(1, calc(clamp(0.76, l, 0.9) + 0.087)) min(c, 0.067) h);
+    --a-claro: oklch(from var(--identidad-2) min(1, calc(clamp(0.76, l, 0.9) + 0.067)) min(c, 0.108) h);
+    --a-alto: oklch(from var(--identidad-2) min(1, calc(clamp(0.76, l, 0.9) + 0.036)) c h);
+    --a: oklch(from var(--identidad-2) clamp(0.76, l, 0.9) c h);
+    --a-medio: oklch(from var(--identidad-2) min(1, calc(clamp(0.76, l, 0.9) - 0.031)) c h);
+    --a-bajo: oklch(from var(--identidad-2) min(1, calc(clamp(0.76, l, 0.9) - 0.068)) c h);
+    --a-sombra: oklch(from var(--identidad-2) min(1, calc(clamp(0.76, l, 0.9) - 0.240)) c h);
+    --a-oscuro: oklch(from var(--identidad-2) min(1, calc(clamp(0.76, l, 0.9) - 0.465)) c h);
+  }
 }
 
 [data-tema='diario'] {
