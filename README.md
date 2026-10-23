@@ -14,20 +14,19 @@ recuerda en el navegador. En la primera visita se elige uno al azar, para no ses
 
 Ninguna está elegida. Las dos ofrecen las mismas doce secciones: cambia solo la forma de llegar a ellas.
 
-- `menu-b.html`, "La oficina del técnico": cada sección es un objeto de la oficina (pizarrón, carpeta,
-  silbato, planilla, agenda, diario, teléfono, prismáticos, fichero, sobre, ventana y cuadro de la
-  comisión directiva). La puerta del centro es el próximo partido.
-- `menu-c.html`, "La pizarra": arriba, un cartel con el próximo partido; abajo, la cancha, con las
-  secciones como fichas paradas por líneas ("Los de casa", "El torneo", "Salir a buscar") y "El palco"
-  afuera de la línea de cal. El círculo central queda vacío.
+- `menu-b.html`, "La oficina del técnico": una oficina armada con superficies (pared, escritorio, ventana y
+  puerta), con cada sección como una placa con su ícono, en la pared o en el escritorio. Detrás de la
+  puerta, el próximo partido.
+- `menu-c.html`, "La cancha": arriba, un cartel con el próximo partido; en el centro, la cancha con la
+  formación propia (lleva a la táctica); alrededor, las demás secciones con su ícono, agrupadas por uso.
 - `menu-a.html`: la opción A se retiró de la evaluación. Queda un aviso de propuesta en rediseño, sin
   enlaces que lleven a ella.
 
 En el celular, el partido va arriba y las secciones en grilla o en franjas; desde 64rem (1024 px), la
-composición completa. Las ilustraciones y las canchas son SVG propios (`fuente/ilustraciones.py`). Usan
-clases de material (madera, papel, metal…) y de cancha que cada tema pinta con las variables `--il-*` y
-`--cancha-*` de `css/temas.css`: el dibujo es el mismo en los cuatro temas. Las secciones sin pantalla en la
-maqueta muestran un aviso.
+composición completa. Los íconos son de Phosphor Icons (licencia MIT; ver `LICENCIAS.md`), en
+`fuente/iconos.py`: cada ícono trae tres pesos y cada tema muestra uno (variables `--ic-*` de
+`css/temas.css`). Las canchas son SVG con las medidas reglamentarias (`fuente/ilustraciones.py`). Las
+secciones sin pantalla en la maqueta muestran un aviso.
 
 ## Link del formulario de opinión
 
@@ -61,7 +60,7 @@ el sitio es HTML, CSS y un JS chico.
 
 ## Fuentes
 
-Las fuentes (VT323, IBM Plex Mono, Oswald, Source Serif 4, Roboto Condensed, Space Grotesk, Inter,
+Las fuentes (Russo One, PT Sans, Oswald, Source Serif 4, Roboto Condensed, Space Grotesk, Inter,
 Cabin Sketch y Atkinson Hyperlegible) se bajaron de Google Fonts y están alojadas en `fuentes/`, sin pedidos
 a terceros y sin modificar los archivos. Todas tienen licencia SIL Open Font License 1.1; los textos de
 licencia están en `fuentes/LICENCIAS.md`. Cada tema carga solo su CSS de fuentes (`css/fuentes-<tema>.css`).

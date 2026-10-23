@@ -1,62 +1,88 @@
-/* Temas visuales. Cada tema define SOLO variables: la disposición vive en base.css y es la misma en los tres. */
+/* Temas visuales. Cada tema define SOLO variables: la disposición vive en base.css y es la misma en los cuatro
+   (RN-736, RN-742). Arriba, los tokens comunes: escala tipográfica y espaciado (base 4 px). */
+
+:root {
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 16px;
+  --e-5: 24px;
+  --e-6: 32px;
+  --e-7: 48px;
+  --e-8: 64px;
+  --t-12: 0.75rem;
+  --t-14: 0.875rem;
+  --t-16: 1rem;
+  --t-18: 1.125rem;
+  --t-20: 1.25rem;
+  --t-24: 1.5rem;
+  --t-32: 2rem;
+  --lh-titulo: 1.15;
+  --lh-cuerpo: 1.5;
+
+  /* Granos finos (SVG con ruido) para texturas: oscuro sobre fondos claros, claro sobre fondos oscuros. */
+  --grano-oscuro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grano-claro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 
 :root,
 [data-tema='moderno'] {
   color-scheme: dark;
-  --c-fondo: #0e1116;
-  --c-superficie: #181d25;
-  --c-superficie-2: #212836;
-  --c-texto: #e8ecf2;
-  --c-texto-suave: #9aa4b2;
+  --c-fondo: #0d1117;
+  --c-superficie: #161b22;
+  --c-superficie-2: #1f2630;
+  --c-texto: #e6edf3;
+  --c-texto-suave: #9aa7b4;
   --c-acento: #4ade80;
-  --c-sobre-acento: #0e1116;
-  --c-acento-2: #60a5fa;
+  --c-sobre-acento: #0d1117;
+  --c-acento-2: #7cb7ff;
   --c-gol: #a3e635;
   --c-amarilla: #facc15;
   --c-roja: #f87171;
-  --c-etq-gol-tx: #0e1116;
+  --c-etq-gol-tx: #0d1117;
   --c-etq-gol-bg: #a3e635;
-  --c-etq-amarilla-tx: #0e1116;
+  --c-etq-amarilla-tx: #0d1117;
   --c-etq-amarilla-bg: #facc15;
-  --c-etq-roja-tx: #0e1116;
+  --c-etq-roja-tx: #0d1117;
   --c-etq-roja-bg: #f87171;
-  --c-etq-otra-tx: #e8ecf2;
-  --c-etq-otra-bg: #2b3340;
-  --c-borde: #2b3340;
-  --c-borde-control: #6b7689;
-  --c-foco: #60a5fa;
+  --c-etq-otra-tx: #e6edf3;
+  --c-etq-otra-bg: #2a323d;
+  --c-borde: #2a323d;
+  --c-borde-control: #5d6878;
+  --c-foco: #7cb7ff;
   --c-zona-ascenso: #4ade80;
-  --c-zona-octogonal: #60a5fa;
+  --c-zona-octogonal: #7cb7ff;
   --c-zona-descenso: #f87171;
   --c-boton-principal-bg: var(--c-acento);
   --c-boton-principal-tx: var(--c-sobre-acento);
+  --c-fila-mia: #263040;
+  --c-alerta-bg: #facc15;
+  --c-alerta-tx: #0d1117;
 
   --f-titular: 'Space Grotesk', system-ui, sans-serif;
   --f-cuerpo: 'Inter', system-ui, sans-serif;
   --f-numeros: 'Inter', system-ui, sans-serif;
   --peso-titular: 700;
-  --tam-base: 1.0625rem;
+  --tam-base: 1rem;
   --esc-titular: 1;
   --titular-mayus: none;
   --titular-espaciado: -0.01em;
   --interlineado: 1.5;
 
-  --radio-tarjeta: 14px;
-  --radio-control: 10px;
+  --radio-tarjeta: 12px;
+  --radio-control: 8px;
   --radio-chip: 999px;
   --borde-ancho: 1px;
   --borde-estilo: solid;
   --regla-seccion: none;
-  --sombra-tarjeta: 0 8px 24px rgb(0 0 0 / 0.35);
-  --sombra-control: 0 1px 2px rgb(0 0 0 / 0.4);
-  --textura-fondo: radial-gradient(ellipse at top, rgb(74 222 128 / 0.06), transparent 60%);
-  --textura-destacada: linear-gradient(180deg, rgb(255 255 255 / 0.05), transparent);
-  --borde-destacada: var(--c-borde);
-
-  --icono-trazo: 2;
-  --icono-extremos: round;
-  --icono-uniones: round;
-  --icono-render: auto;
+  --sombra-1: 0 1px 2px rgb(0 0 0 / 0.35);
+  --sombra-2: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 2px 4px rgb(0 0 0 / 0.25), 0 8px 24px rgb(0 0 0 / 0.25);
+  --sombra-3: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 12px 32px rgb(0 0 0 / 0.4);
+  --sombra-tarjeta: var(--sombra-2);
+  --sombra-control: var(--sombra-1);
+  --textura-fondo: var(--grano-claro), radial-gradient(ellipse at top, rgb(74 222 128 / 0.05), transparent 60%);
+  --textura-destacada: linear-gradient(180deg, rgb(255 255 255 / 0.04), transparent 60%);
+  --borde-destacada: #34404f;
 
   --boton-mayus: none;
   --boton-adorno-antes: '';
@@ -67,233 +93,221 @@
   --volanta-espaciado: 0.08em;
   --transicion: 150ms ease;
 
-  /* Menú principal (hito M2): ilustraciones planas de noche, trazo grueso redondeado. */
-  --il-tinta: #0b0f16;
-  --il-trazo: 3px;
-  --il-uniones: round;
-  --il-extremos: round;
-  --il-render: geometricPrecision;
-  --il-sombra: rgb(0 0 0 / 0.35);
-  --il-luz: rgb(255 255 255 / 0.22);
-  --il-pared: #22304d;
-  --il-pared-lado: #1a2540;
-  --il-pared-a: #22304d;
-  --il-pared-b: #22304d;
-  --il-piso: url(#tablones) #3a2f2a;
-  --il-tablon-a: #3a2f2a;
-  --il-madera: #c98a52;
-  --il-madera-2: #8a5530;
-  --il-pizarra: #166534;
-  --il-tiza: #ecfdf5;
-  --il-papel: #f8fafc;
-  --il-papel-2: #cbd5e1;
-  --il-kraft: #d6a461;
-  --il-kraft-2: #b5853f;
-  --il-billete: #86efac;
-  --il-billete-2: #4ade80;
-  --il-metal: #a5b4c8;
-  --il-metal-2: #64748b;
-  --il-rojo: #ef4444;
-  --il-rojo-2: #b91c1c;
-  --il-azul: #3b82f6;
-  --il-cuero: #7c3aed;
-  --il-corcho: #c08a55;
-  --il-vidrio: #1e3a8a;
-  --il-cielo: #1e3a8a;
-  --il-cesped: #22c55e;
-  --il-oro: #fbbf24;
-  --il-oscuro: #1e293b;
-  --il-lampara: #fde68a;
-  --il-persiana: #e2e8f0;
-  --il-calabaza: #a16207;
-  --il-yerba: #65a30d;
+  /* Íconos (Phosphor): qué peso se ve en este tema, color y placa del ícono de cada sección. */
+  --ic-duotone: none;
+  --ic-light: none;
+  --ic-regular: inline;
+  --ic-color: #dfe7ef;
+  --ic-relleno: currentColor;
+  --ic-relleno-opacidad: 0.2;
+  --ic-placa-bg: linear-gradient(180deg, #252e3a, #1b222c);
+  --ic-placa-borde: 1px solid rgb(255 255 255 / 0.07);
+  --ic-placa-sombra: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 2px 6px rgb(0 0 0 / 0.35);
+  --ic-placa-radio: 12px;
 
-  --rotulo-bg: rgb(14 17 22 / 0.92);
-  --rotulo-tx: #e8ecf2;
-  --rotulo-estado: #b6c0cd;
-  --rotulo-borde: 1px solid #3b4556;
-  --rotulo-radio: 12px;
+  /* Rótulos de las secciones en las escenas (B y C). */
+  --rotulo-bg: rgb(13 17 23 / 0.88);
+  --rotulo-tx: #e6edf3;
+  --rotulo-estado: #a9b4c0;
+  --rotulo-borde: 1px solid rgb(255 255 255 / 0.08);
+  --rotulo-radio: 8px;
   --rotulo-fuente: var(--f-titular);
   --rotulo-mayus: none;
-  --oficina-escritorio: linear-gradient(180deg, #2a2320, #1f1a17);
-  --puerta-marco: #8a5530;
-  --puerta-hoja: #c98a52;
 
-  /* Cancha de la opción C, cartel del próximo partido y barras de nivel de los atributos (hito M3). */
-  --cancha-fondo: #10271b;
-  --cancha-franja: rgb(255 255 255 / 0.025);
-  --cancha-linea: rgb(232 236 242 / 0.6);
-  --cancha-deco: rgb(232 236 242 / 0.28);
+  /* Oficina de la opción B, armada con superficies. */
+  --esc-pared: linear-gradient(180deg, #1f2a3b, #182131);
+  --esc-pared-textura: var(--grano-claro);
+  --esc-zocalo: #10151d;
+  --esc-piso: linear-gradient(180deg, #151a22, #10141a);
+  --esc-escritorio: linear-gradient(180deg, #7a5539, #5f412b);
+  --esc-escritorio-textura: repeating-linear-gradient(90deg, rgb(0 0 0 / 0.06) 0 2px, transparent 2px 14px);
+  --esc-canto: #3e2a1b;
+  --esc-borde: 0;
+  --esc-puerta-marco: #3b4655;
+  --esc-puerta-hoja: linear-gradient(180deg, #2b3442, #232b37);
+  --esc-ventana-marco: #3b4655;
+  --esc-cielo: linear-gradient(180deg, #1b2f6b, #34529f);
+  --esc-sombra: 0 10px 24px rgb(0 0 0 / 0.35);
+
+  --cancha-fondo: #143323;
+  --cancha-franja: rgb(255 255 255 / 0.03);
+  --cancha-linea: rgb(226 240 230 / 0.7);
   --cancha-linea-ancho: 2px;
+  --ficha-sombra: 0 2px 6px rgb(0 0 0 / 0.45);
+
   --cartel-bg: var(--c-superficie);
   --cartel-tx: var(--c-texto);
   --cartel-borde: 1px solid var(--c-borde);
-  --cartel-cinta: rgb(232 236 242 / 0.25);
-  --cartel-suave: #9aa4b2;
-  --cartel-volanta: #9aa4b2;
+  --cartel-cinta: transparent;
+  --cartel-suave: #9aa7b4;
+  --cartel-volanta: #9aa7b4;
+
   --nivel-debil: #5b7aa3;
   --nivel-fuerte: #bfdbfe;
   --nivel-vacio: rgb(255 255 255 / 0.1);
-  --c-alerta-bg: #facc15;
-  --c-alerta-tx: #0e1116;
 
-  --vol-cara: linear-gradient(180deg, #5ee08f, #3cc56f);
-  --vol-tx: #0e1116;
-  --vol-luz: rgb(255 255 255 / 0.4);
+  --marco-tabla-relleno: 0;
+  --marco-tabla-bg: none;
+  --marco-tabla-sombra: none;
+  --marco-tabla-interior: none;
+  --marco-tabla-repisa: 0;
+
+  --vol-cara: linear-gradient(180deg, #6ee7a0, #3cc56f);
+  --vol-tx: #0d1117;
+  --vol-luz: rgb(255 255 255 / 0.45);
   --vol-sombra: rgb(0 0 0 / 0.12);
   --vol-base: #1e7a45;
   --vol-dx: 0px;
-  --vol-prof: 5px;
-  --vol-radio: 14px;
-  --vol-bisel: 2px;
+  --vol-prof: 4px;
+  --vol-radio: 10px;
+  --vol-bisel: 1px;
 }
 
+/* Retro: un manager de PC de 1996 a 2000. Azul rey y dorado propios, biselados, brillos y colores saturados.
+   Sin marco de ventana de sistema ni la combinación gris con azul marino (criterio de legal). */
 [data-tema='retro'] {
   color-scheme: dark;
-  --c-fondo: #0c110d;
-  --c-superficie: #141c16;
-  --c-superficie-2: #1d2a20;
-  --c-texto: #d8f7cf;
-  --c-texto-suave: #8fb88a;
-  --c-acento: #ffb33a;
-  --c-sobre-acento: #0c110d;
-  --c-acento-2: #7ad7f0;
-  --c-gol: #5cff7a;
-  --c-amarilla: #ffd84a;
-  --c-roja: #ff6b5e;
-  --c-etq-gol-tx: #0c110d;
-  --c-etq-gol-bg: #5cff7a;
-  --c-etq-amarilla-tx: #0c110d;
-  --c-etq-amarilla-bg: #ffd84a;
-  --c-etq-roja-tx: #0c110d;
-  --c-etq-roja-bg: #ff6b5e;
-  --c-etq-otra-tx: #0c110d;
-  --c-etq-otra-bg: #7ad7f0;
-  --c-borde: #2a3d2d;
-  --c-borde-control: #4f7a55;
-  --c-foco: #7ad7f0;
-  --c-zona-ascenso: #5cff7a;
+  --c-fondo: #0a1433;
+  --c-superficie: #1f3270;
+  --c-superficie-2: #2a4190;
+  --c-texto: #ffffff;
+  --c-texto-suave: #c9d4f2;
+  --c-acento: #ffd400;
+  --c-sobre-acento: #0a1433;
+  --c-acento-2: #7fdcff;
+  --c-gol: #39e75f;
+  --c-amarilla: #ffd400;
+  --c-roja: #ff6b6b;
+  --c-etq-gol-tx: #0a1433;
+  --c-etq-gol-bg: #39e75f;
+  --c-etq-amarilla-tx: #0a1433;
+  --c-etq-amarilla-bg: #ffd400;
+  --c-etq-roja-tx: #0a1433;
+  --c-etq-roja-bg: #ff6b6b;
+  --c-etq-otra-tx: #0a1433;
+  --c-etq-otra-bg: #7fdcff;
+  --c-borde: #3a52a8;
+  --c-borde-control: #8fa3e8;
+  --c-foco: #ffffff;
+  --c-zona-ascenso: #39e75f;
   --c-zona-octogonal: #c79bff;
-  --c-zona-descenso: #ff6b5e;
+  --c-zona-descenso: #ff6b6b;
   --c-boton-principal-bg: var(--c-acento);
   --c-boton-principal-tx: var(--c-sobre-acento);
+  --c-fila-mia: #34509f;
+  --c-alerta-bg: #ff6b6b;
+  --c-alerta-tx: #0a1433;
 
-  --f-titular: 'VT323', ui-monospace, monospace;
-  --f-cuerpo: 'IBM Plex Mono', ui-monospace, monospace;
-  --f-numeros: 'VT323', ui-monospace, monospace;
+  --f-titular: 'Russo One', 'Arial Black', sans-serif;
+  --f-cuerpo: 'PT Sans', 'Trebuchet MS', sans-serif;
+  --f-numeros: 'PT Sans', 'Trebuchet MS', sans-serif;
   --peso-titular: 400;
-  --tam-base: 1rem;
-  --esc-titular: 1.35;
+  --tam-base: 1.0625rem;
+  --esc-titular: 1;
   --titular-mayus: uppercase;
-  --titular-espaciado: 0.04em;
-  --interlineado: 1.55;
+  --titular-espaciado: 0.02em;
+  --interlineado: 1.45;
 
-  --radio-tarjeta: 0;
-  --radio-control: 0;
-  --radio-chip: 0;
-  --borde-ancho: 4px;
-  --borde-estilo: double;
-  --regla-seccion: 1px dashed var(--c-borde-control);
-  --sombra-tarjeta: inset 2px 2px 0 rgb(255 255 255 / 0.06), inset -2px -2px 0 rgb(0 0 0 / 0.5);
-  --sombra-control: 3px 3px 0 #000;
+  --radio-tarjeta: 3px;
+  --radio-control: 3px;
+  --radio-chip: 3px;
+  --borde-ancho: 1px;
+  --borde-estilo: solid;
+  --regla-seccion: none;
+  --sombra-1: inset 1px 1px 0 #6f86d6, inset -1px -1px 0 #060c24, 3px 3px 0 rgb(0 0 0 / 0.45);
+  --titulo-sombra: 2px 2px 0 rgb(0 0 0 / 0.55);
+  --sombra-2:
+    inset 1px 1px 0 #6f86d6, inset 2px 2px 0 #4a62b8, inset -1px -1px 0 #060c24, inset -2px -2px 0 #0f1c4d,
+    4px 4px 0 rgb(0 0 0 / 0.45);
+  --sombra-3:
+    inset 1px 1px 0 #8aa0ea, inset 2px 2px 0 #5a72c8, inset -1px -1px 0 #060c24, inset -2px -2px 0 #0f1c4d,
+    6px 6px 0 rgb(0 0 0 / 0.5);
+  --sombra-tarjeta: var(--sombra-2);
+  --sombra-control: inset 1px 1px 0 rgb(255 255 255 / 0.45), inset -1px -1px 0 rgb(0 0 0 / 0.55);
   --textura-fondo:
-    repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.22) 0 1px, transparent 1px 3px),
-    radial-gradient(ellipse at center, transparent 60%, rgb(0 0 0 / 0.35));
-  --textura-destacada: none;
-  --borde-destacada: var(--c-acento);
-
-  --icono-trazo: 2;
-  --icono-extremos: square;
-  --icono-uniones: miter;
-  --icono-render: crispEdges;
+    linear-gradient(180deg, rgb(63 208 255 / 0.08), transparent 35%),
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.022) 0 2px, transparent 2px 7px);
+  --textura-destacada: linear-gradient(180deg, rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.02) 45%, transparent 55%);
+  --borde-destacada: #ffd400;
 
   --boton-mayus: uppercase;
-  --boton-adorno-antes: '[ ';
-  --boton-adorno-despues: ' ]';
-  --volanta-color: var(--c-acento-2);
+  --boton-adorno-antes: '';
+  --boton-adorno-despues: '';
+  --volanta-color: #ffd400;
   --volanta-mayus: uppercase;
-  --volanta-prefijo: '› ';
-  --volanta-espaciado: 0.04em;
+  --volanta-prefijo: '';
+  --volanta-espaciado: 0.06em;
   --transicion: none;
 
-  /* Menú principal: paleta limitada y saturada, tinta negra gruesa, bordes pixelados y sombras en damero. */
-  --il-tinta: #000;
-  --il-trazo: 3.5px;
-  --il-uniones: miter;
-  --il-extremos: square;
-  --il-render: crispEdges;
-  --il-sombra: url(#damero) #000;
-  --il-luz: rgb(255 255 255 / 0.3);
-  --il-pared: url(#franjas) #2d5d7b;
-  --il-pared-lado: #1d3f57;
-  --il-pared-a: #2d5d7b;
-  --il-pared-b: #275370;
-  --il-piso: url(#tablones) #6b3e26;
-  --il-tablon-a: #6b3e26;
-  --il-madera: #b5651d;
-  --il-madera-2: #7a3f12;
-  --il-pizarra: #1f7a3a;
-  --il-tiza: #f4f4e8;
-  --il-papel: #f4ecd0;
-  --il-papel-2: #d4c69c;
-  --il-kraft: #d49a4a;
-  --il-kraft-2: #a8742c;
-  --il-billete: #6fdc6a;
-  --il-billete-2: #3fae3a;
-  --il-metal: #b4c0cc;
-  --il-metal-2: #6c7a88;
-  --il-rojo: #e8322b;
-  --il-rojo-2: #a8150f;
-  --il-azul: #2f6fd6;
-  --il-cuero: #b8323a;
-  --il-corcho: #d0924f;
-  --il-vidrio: #9fe3ff;
-  --il-cielo: #5aaeea;
-  --il-cesped: #2fbf4a;
-  --il-oro: #ffc23a;
-  --il-oscuro: #1a1a2e;
-  --il-lampara: #fff27a;
-  --il-persiana: #f4ecd0;
-  --il-calabaza: #8a5a1a;
-  --il-yerba: #6fbf2a;
+  --ic-duotone: inline;
+  --ic-light: none;
+  --ic-regular: none;
+  --ic-color: #0a1433;
+  --ic-relleno: #ffffff;
+  --ic-relleno-opacidad: 0.85;
+  --ic-placa-bg:
+    linear-gradient(180deg, rgb(255 255 255 / 0.25), rgb(255 255 255 / 0.04) 48%, transparent 52%),
+    linear-gradient(180deg, #ffe45c, #ffc400);
+  --ic-placa-borde: 1px solid #5c4a00;
+  --ic-placa-sombra: inset 1px 1px 0 #fff6c2, inset -2px -2px 0 #a68a00, 2px 2px 0 rgb(0 0 0 / 0.45);
+  --ic-placa-radio: 4px;
 
-  --rotulo-bg: #000;
-  --rotulo-tx: #ffb33a;
-  --rotulo-estado: #d8f7cf;
-  --rotulo-borde: 2px solid #ffb33a;
-  --rotulo-radio: 0;
+  --rotulo-bg: linear-gradient(180deg, #2a4190, #1f3270);
+  --rotulo-tx: #ffffff;
+  --rotulo-estado: #d6def6;
+  --rotulo-borde: 1px solid #0a1433;
+  --rotulo-radio: 3px;
   --rotulo-fuente: var(--f-titular);
-  --rotulo-mayus: uppercase;
-  --oficina-escritorio: repeating-linear-gradient(180deg, #7a3f12 0 22px, #6b3610 22px 24px);
-  --puerta-marco: #7a3f12;
-  --puerta-hoja: #b5651d;
+  --rotulo-mayus: none;
 
-  --cancha-fondo: #0f5b26;
-  --cancha-franja: #0c5121;
-  --cancha-linea: #e8ffe0;
-  --cancha-deco: #ffb33a;
-  --cancha-linea-ancho: 3px;
-  --cartel-bg: #000;
-  --cartel-tx: #d8f7cf;
-  --cartel-borde: 3px double #ffb33a;
-  --cartel-cinta: #ffb33a;
-  --cartel-suave: #8fb88a;
-  --cartel-volanta: #7ad7f0;
-  --nivel-debil: #3f7a45;
-  --nivel-fuerte: #b9ffb0;
-  --nivel-vacio: rgb(216 247 207 / 0.12);
-  --c-alerta-bg: #ff6b5e;
-  --c-alerta-tx: #0c110d;
+  --esc-pared: linear-gradient(180deg, #2a4190, #1f3270);
+  --esc-pared-textura: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.04) 0 2px, transparent 2px 22px);
+  --esc-zocalo: #0f1c4d;
+  --esc-piso: linear-gradient(180deg, #14205a, #0d1640);
+  --esc-escritorio: linear-gradient(180deg, #b8742f, #8a5520);
+  --esc-escritorio-textura:
+    linear-gradient(180deg, rgb(255 255 255 / 0.22), transparent 30%),
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 0.07) 0 2px, transparent 2px 16px);
+  --esc-canto: #5c3612;
+  --esc-borde: 0;
+  --esc-puerta-marco: #6b4420;
+  --esc-puerta-hoja: linear-gradient(180deg, #a06a32, #85531f);
+  --esc-ventana-marco: #e8ecf8;
+  --esc-cielo: linear-gradient(180deg, #2e8bff, #9fd8ff);
+  --esc-sombra: 4px 4px 0 rgb(0 0 0 / 0.45);
 
-  --vol-cara: #ffb33a;
-  --vol-tx: #0c110d;
-  --vol-luz: #ffe0a3;
-  --vol-sombra: #b06f0c;
-  --vol-base: #7a4a08;
-  --vol-dx: 4px;
+  --cancha-fondo: #1e8a3c;
+  --cancha-franja: rgb(0 0 0 / 0.07);
+  --cancha-linea: #ffffff;
+  --cancha-linea-ancho: 2px;
+  --ficha-sombra: 2px 2px 0 rgb(0 0 0 / 0.5);
+
+  --cartel-bg: var(--c-superficie);
+  --cartel-tx: #ffffff;
+  --cartel-borde: 1px solid #0a1433;
+  --cartel-cinta: transparent;
+  --cartel-suave: #c9d4f2;
+  --cartel-volanta: #ffd400;
+
+  --nivel-debil: #5d73c4;
+  --nivel-fuerte: #ffe45c;
+  --nivel-vacio: rgb(255 255 255 / 0.12);
+
+  --marco-tabla-relleno: 0;
+  --marco-tabla-bg: none;
+  --marco-tabla-sombra: none;
+  --marco-tabla-interior: none;
+  --marco-tabla-repisa: 0;
+
+  --vol-cara: linear-gradient(180deg, #fff09a 0%, #ffd400 48%, #f2b800 52%, #ffc400 100%);
+  --vol-tx: #0a1433;
+  --vol-luz: #fff6c2;
+  --vol-sombra: #a68a00;
+  --vol-base: #5c4a00;
+  --vol-dx: 0px;
   --vol-prof: 4px;
-  --vol-radio: 0;
-  --vol-bisel: 3px;
+  --vol-radio: 4px;
+  --vol-bisel: 2px;
 }
 
 [data-tema='diario'] {
@@ -317,7 +331,7 @@
   --c-etq-roja-bg: #a3161b;
   --c-etq-otra-tx: #fbf8f1;
   --c-etq-otra-bg: #1c1a17;
-  --c-borde: #c9bfa9;
+  --c-borde: #cfc5ae;
   --c-borde-control: #1c1a17;
   --c-foco: #1f4e79;
   --c-zona-ascenso: #0f5c2e;
@@ -325,13 +339,16 @@
   --c-zona-descenso: #a3161b;
   --c-boton-principal-bg: #1c1a17;
   --c-boton-principal-tx: #fbf8f1;
+  --c-fila-mia: #e6dcc4;
+  --c-alerta-bg: #a3161b;
+  --c-alerta-tx: #fbf8f1;
 
   --f-titular: 'Oswald', 'Arial Narrow', sans-serif;
   --f-cuerpo: 'Source Serif 4', Georgia, serif;
   --f-numeros: 'Roboto Condensed', 'Arial Narrow', sans-serif;
   --peso-titular: 600;
   --tam-base: 1.0625rem;
-  --esc-titular: 1.1;
+  --esc-titular: 1.05;
   --titular-mayus: uppercase;
   --titular-espaciado: 0.01em;
   --interlineado: 1.5;
@@ -342,16 +359,14 @@
   --borde-ancho: 1px;
   --borde-estilo: solid;
   --regla-seccion: 3px double var(--c-texto);
-  --sombra-tarjeta: none;
+  --sombra-1: 0 1px 0 rgb(28 26 23 / 0.12);
+  --sombra-2: 0 1px 0 rgb(28 26 23 / 0.12), 0 2px 8px rgb(60 40 10 / 0.08);
+  --sombra-3: 0 2px 0 rgb(28 26 23 / 0.2), 0 10px 24px rgb(60 40 10 / 0.12);
+  --sombra-tarjeta: var(--sombra-2);
   --sombra-control: none;
-  --textura-fondo: radial-gradient(rgb(0 0 0 / 0.035) 1px, transparent 1px) 0 0 / 3px 3px;
-  --textura-destacada: radial-gradient(rgb(0 0 0 / 0.08) 1px, transparent 1.5px) 0 0 / 4px 4px;
+  --textura-fondo: var(--grano-oscuro);
+  --textura-destacada: none;
   --borde-destacada: var(--c-texto);
-
-  --icono-trazo: 1.5;
-  --icono-extremos: butt;
-  --icono-uniones: miter;
-  --icono-render: auto;
 
   --boton-mayus: uppercase;
   --boton-adorno-antes: '';
@@ -362,46 +377,16 @@
   --volanta-espaciado: 0.06em;
   --transicion: none;
 
-  /* Menú principal: grabado de imprenta. Solo tinta, papel, grises en trama de puntos y un rojo. */
-  --il-tinta: #1c1a17;
-  --il-trazo: 2.5px;
-  --il-uniones: miter;
-  --il-extremos: butt;
-  --il-render: geometricPrecision;
-  --il-sombra: url(#trama-oscura) #1c1a17;
-  --il-luz: transparent;
-  --il-pared: url(#trama-clara) #e9e2d0;
-  --il-pared-lado: url(#trama-media) #c9bfa9;
-  --il-pared-a: #fbf8f1;
-  --il-pared-b: #fbf8f1;
-  --il-piso: url(#trama-oscura) #8a8378;
-  --il-tablon-a: #fbf8f1;
-  --il-madera: url(#trama-media) #c9bfa9;
-  --il-madera-2: url(#trama-oscura) #8a8378;
-  --il-pizarra: #1c1a17;
-  --il-tiza: #fbf8f1;
-  --il-papel: #fbf8f1;
-  --il-papel-2: url(#trama-clara) #e9e2d0;
-  --il-kraft: url(#trama-clara) #e9e2d0;
-  --il-kraft-2: url(#trama-media) #c9bfa9;
-  --il-billete: #fbf8f1;
-  --il-billete-2: url(#trama-clara) #e9e2d0;
-  --il-metal: url(#trama-clara) #e9e2d0;
-  --il-metal-2: url(#trama-media) #c9bfa9;
-  --il-rojo: #a3161b;
-  --il-rojo-2: #a3161b;
-  --il-azul: url(#trama-oscura) #8a8378;
-  --il-cuero: url(#trama-oscura) #8a8378;
-  --il-corcho: url(#trama-media) #c9bfa9;
-  --il-vidrio: #fbf8f1;
-  --il-cielo: #fbf8f1;
-  --il-cesped: url(#trama-media) #c9bfa9;
-  --il-oro: url(#trama-clara) #e9e2d0;
-  --il-oscuro: #1c1a17;
-  --il-lampara: #fbf8f1;
-  --il-persiana: #fbf8f1;
-  --il-calabaza: url(#trama-oscura) #8a8378;
-  --il-yerba: url(#trama-media) #c9bfa9;
+  --ic-duotone: none;
+  --ic-light: inline;
+  --ic-regular: none;
+  --ic-color: #1c1a17;
+  --ic-relleno: currentColor;
+  --ic-relleno-opacidad: 0.2;
+  --ic-placa-bg: #fbf8f1;
+  --ic-placa-borde: 1px solid #1c1a17;
+  --ic-placa-sombra: 3px 3px 0 rgb(28 26 23 / 0.85);
+  --ic-placa-radio: 0;
 
   --rotulo-bg: #fbf8f1;
   --rotulo-tx: #1c1a17;
@@ -410,26 +395,43 @@
   --rotulo-radio: 0;
   --rotulo-fuente: var(--f-titular);
   --rotulo-mayus: uppercase;
-  --oficina-escritorio: radial-gradient(rgb(0 0 0 / 0.16) 1.2px, transparent 1.6px) 0 0 / 5px 5px, #e3dbc7;
-  --puerta-marco: #1c1a17;
-  --puerta-hoja: #c9bfa9;
+
+  --esc-pared: #ebe4d3;
+  --esc-pared-textura: var(--grano-oscuro);
+  --esc-zocalo: #1c1a17;
+  --esc-piso: linear-gradient(180deg, #dcd2bb, #d2c7ad);
+  --esc-escritorio: linear-gradient(180deg, #d9c6a0, #c9b48f);
+  --esc-escritorio-textura: var(--grano-oscuro), repeating-linear-gradient(90deg, rgb(28 26 23 / 0.06) 0 1px, transparent 1px 12px);
+  --esc-canto: #8a7550;
+  --esc-borde: 1px solid #1c1a17;
+  --esc-puerta-marco: #1c1a17;
+  --esc-puerta-hoja: #e3dac6;
+  --esc-ventana-marco: #1c1a17;
+  --esc-cielo: #fbf8f1;
+  --esc-sombra: 0 2px 0 rgb(28 26 23 / 0.25), 0 10px 20px rgb(60 40 10 / 0.12);
 
   --cancha-fondo: #fbf8f1;
-  --cancha-franja: rgb(0 0 0 / 0.035);
+  --cancha-franja: rgb(28 26 23 / 0.035);
   --cancha-linea: #1c1a17;
-  --cancha-deco: #a3161b;
-  --cancha-linea-ancho: 2px;
+  --cancha-linea-ancho: 1.5px;
+  --ficha-sombra: 2px 2px 0 rgb(28 26 23 / 0.8);
+
   --cartel-bg: #fbf8f1;
   --cartel-tx: #1c1a17;
-  --cartel-borde: 2px solid #1c1a17;
-  --cartel-cinta: rgb(28 26 23 / 0.18);
+  --cartel-borde: 1px solid #1c1a17;
+  --cartel-cinta: rgb(28 26 23 / 0.16);
   --cartel-suave: #5a5248;
   --cartel-volanta: #a3161b;
+
   --nivel-debil: #a89f8c;
   --nivel-fuerte: #1c1a17;
   --nivel-vacio: rgb(28 26 23 / 0.1);
-  --c-alerta-bg: #a3161b;
-  --c-alerta-tx: #fbf8f1;
+
+  --marco-tabla-relleno: 0;
+  --marco-tabla-bg: none;
+  --marco-tabla-sombra: none;
+  --marco-tabla-interior: none;
+  --marco-tabla-repisa: 0;
 
   --vol-cara: #1c1a17;
   --vol-tx: #fbf8f1;
@@ -442,8 +444,8 @@
   --vol-bisel: 0px;
 }
 
-/* Pizarra (hito M3, RN-742): pizarrón verde y tiza. Letra de tiza solo en títulos y rótulos;
-   el cuerpo, las tablas y los números van en letra legible. */
+/* Pizarra (RN-742): pizarrón verde y tiza. Letra de tiza solo en títulos y rótulos de 20 px o más;
+   el cuerpo, las tablas, los números y los botones van en letra legible. */
 [data-tema='pizarra'] {
   color-scheme: dark;
   --c-fondo: #1d3b2f;
@@ -473,6 +475,9 @@
   --c-zona-descenso: #ffa596;
   --c-boton-principal-bg: var(--c-acento);
   --c-boton-principal-tx: var(--c-sobre-acento);
+  --c-fila-mia: #336352;
+  --c-alerta-bg: #ffa596;
+  --c-alerta-tx: #1d3b2f;
 
   --f-titular: 'Cabin Sketch', 'Comic Sans MS', cursive;
   --f-cuerpo: 'Atkinson Hyperlegible', system-ui, sans-serif;
@@ -490,19 +495,18 @@
   --borde-ancho: 2px;
   --borde-estilo: solid;
   --regla-seccion: 2px dashed rgb(241 244 236 / 0.4);
-  --sombra-tarjeta: none;
+  --sombra-1: 0 1px 0 rgb(0 0 0 / 0.18);
+  --sombra-2: 0 2px 0 rgb(0 0 0 / 0.18), 0 6px 16px rgb(0 0 0 / 0.22);
+  --sombra-3: 0 3px 0 rgb(0 0 0 / 0.2), 0 12px 28px rgb(0 0 0 / 0.3);
+  --sombra-tarjeta: var(--sombra-2);
   --sombra-control: none;
   --textura-fondo:
+    var(--grano-claro),
     radial-gradient(ellipse at 18% 12%, rgb(255 255 255 / 0.07), transparent 45%),
     radial-gradient(ellipse at 82% 68%, rgb(255 255 255 / 0.05), transparent 40%),
     radial-gradient(ellipse at 50% 100%, rgb(0 0 0 / 0.18), transparent 60%);
   --textura-destacada: none;
   --borde-destacada: rgb(241 244 236 / 0.7);
-
-  --icono-trazo: 2;
-  --icono-extremos: round;
-  --icono-uniones: round;
-  --icono-render: auto;
 
   --boton-mayus: none;
   --boton-adorno-antes: '';
@@ -513,74 +517,64 @@
   --volanta-espaciado: 0.06em;
   --transicion: none;
 
-  /* Ilustraciones: dibujadas a tiza sobre el pizarrón. Contorno de tiza y rellenos de tiza rebajada. */
-  --il-tinta: #eef2e8;
-  --il-trazo: 2.5px;
-  --il-uniones: round;
-  --il-extremos: round;
-  --il-render: geometricPrecision;
-  --il-sombra: transparent;
-  --il-luz: rgb(255 255 255 / 0.12);
-  --il-pared: #1f3e31;
-  --il-pared-lado: #1a362a;
-  --il-pared-a: #1f3e31;
-  --il-pared-b: #1f3e31;
-  --il-piso: #17301f;
-  --il-tablon-a: #17301f;
-  --il-madera: rgb(232 196 150 / 0.32);
-  --il-madera-2: rgb(232 196 150 / 0.18);
-  --il-pizarra: #163024;
-  --il-tiza: #f1f4ec;
-  --il-papel: rgb(241 244 236 / 0.22);
-  --il-papel-2: rgb(241 244 236 / 0.12);
-  --il-kraft: rgb(240 205 150 / 0.3);
-  --il-kraft-2: rgb(240 205 150 / 0.18);
-  --il-billete: rgb(200 245 154 / 0.4);
-  --il-billete-2: rgb(200 245 154 / 0.25);
-  --il-metal: rgb(220 232 238 / 0.28);
-  --il-metal-2: rgb(220 232 238 / 0.16);
-  --il-rojo: rgb(255 165 150 / 0.55);
-  --il-rojo-2: rgb(255 165 150 / 0.4);
-  --il-azul: rgb(180 226 244 / 0.4);
-  --il-cuero: rgb(244 188 216 / 0.38);
-  --il-corcho: rgb(232 196 150 / 0.22);
-  --il-vidrio: rgb(180 226 244 / 0.16);
-  --il-cielo: rgb(180 226 244 / 0.16);
-  --il-cesped: rgb(200 245 154 / 0.3);
-  --il-oro: rgb(247 224 138 / 0.5);
-  --il-oscuro: #eef2e8;
-  --il-lampara: #f7e08a;
-  --il-persiana: rgb(241 244 236 / 0.2);
-  --il-calabaza: rgb(232 196 150 / 0.4);
-  --il-yerba: rgb(200 245 154 / 0.5);
+  --ic-duotone: none;
+  --ic-light: inline;
+  --ic-regular: none;
+  --ic-color: #f1f4ec;
+  --ic-relleno: currentColor;
+  --ic-relleno-opacidad: 0.2;
+  --ic-placa-bg: rgb(255 255 255 / 0.05);
+  --ic-placa-borde: 2px solid rgb(241 244 236 / 0.6);
+  --ic-placa-sombra: none;
+  --ic-placa-radio: 10px;
 
   --rotulo-bg: #1a3428;
   --rotulo-tx: #f7e08a;
   --rotulo-estado: #e3ebe0;
-  --rotulo-borde: 2px solid rgb(241 244 236 / 0.65);
+  --rotulo-borde: 2px solid rgb(241 244 236 / 0.55);
   --rotulo-radio: 6px;
-  --rotulo-fuente: var(--f-titular);
+  --rotulo-fuente: var(--f-cuerpo);
   --rotulo-mayus: none;
-  --oficina-escritorio: #17301f;
-  --puerta-marco: rgb(232 196 150 / 0.5);
-  --puerta-hoja: rgb(232 196 150 / 0.3);
+
+  /* La oficina se dibuja a tiza: superficies del color del pizarrón con contorno de tiza. */
+  --esc-pared: #1f3e31;
+  --esc-pared-textura: var(--grano-claro);
+  --esc-zocalo: rgb(241 244 236 / 0.5);
+  --esc-piso: #1a372b;
+  --esc-escritorio: #1d3b2f;
+  --esc-escritorio-textura: var(--grano-claro);
+  --esc-canto: rgb(241 244 236 / 0.35);
+  --esc-borde: 2px solid rgb(241 244 236 / 0.7);
+  --esc-puerta-marco: rgb(241 244 236 / 0.55);
+  --esc-puerta-hoja: #1b382c;
+  --esc-ventana-marco: rgb(241 244 236 / 0.7);
+  --esc-cielo: #1b382c;
+  --esc-sombra: none;
 
   --cancha-fondo: transparent;
   --cancha-franja: rgb(255 255 255 / 0.03);
   --cancha-linea: rgb(241 244 236 / 0.85);
-  --cancha-deco: rgb(241 244 236 / 0.5);
   --cancha-linea-ancho: 2.5px;
+  --ficha-sombra: none;
+
   --cartel-bg: #f4efe0;
   --cartel-tx: #1c1a17;
   --cartel-borde: 0;
   --cartel-cinta: rgb(240 230 180 / 0.8);
   --cartel-suave: #4a443c;
   --cartel-volanta: #8a1c1c;
+
   --nivel-debil: #7fa596;
   --nivel-fuerte: #f1f4ec;
   --nivel-vacio: rgb(241 244 236 / 0.14);
-  --c-alerta-bg: #ffa596;
-  --c-alerta-tx: #1d3b2f;
+
+  /* La tabla de posiciones, enmarcada como un pizarrón (marco de madera y repisa para la tiza). */
+  --marco-tabla-relleno: 14px;
+  --marco-tabla-bg: repeating-linear-gradient(90deg, rgb(0 0 0 / 0.08) 0 2px, transparent 2px 9px), #7b4a26;
+  --marco-tabla-sombra: inset 0 1px 0 rgb(255 255 255 / 0.15), inset 0 0 0 1px #4a2b14, 0 8px 20px rgb(0 0 0 / 0.35);
+  --marco-tabla-interior: inset 0 3px 8px rgb(0 0 0 / 0.45);
+  --marco-tabla-repisa: 10px;
+  --marco-tabla-pizarron: var(--c-superficie);
 
   --vol-fuente: var(--f-cuerpo);
   --vol-cara: #f7e08a;
@@ -602,10 +596,9 @@
     --sombra-tarjeta: none;
     --sombra-control: none;
     --c-borde: var(--c-borde-control);
-    --il-sombra: transparent;
-    --il-luz: transparent;
-    --oficina-escritorio: var(--c-fondo);
-    --cancha-deco: transparent;
+    --esc-pared-textura: none;
+    --esc-escritorio-textura: none;
+    --ic-placa-sombra: none;
     --vol-luz: transparent;
     --vol-sombra: transparent;
   }

@@ -8,7 +8,8 @@ import math
 import random
 from pathlib import Path
 
-from ilustraciones import ESCENA, PATRONES, cancha_apaisada, cancha_vertical, objeto
+from iconos import ICONOS
+from ilustraciones import cancha_apaisada, cancha_vertical
 
 RAIZ = Path(__file__).resolve().parent.parent
 e = html.escape
@@ -236,26 +237,31 @@ def apellido(nombre):
 
 # --------------------------------------------------------------- Piezas comunes
 
-ICONOS = {
-    'club': '<path d="M5 4h14v8c0 5-3.5 8-7 9-3.5-1-7-4-7-9z"/><path d="M5 9h14"/>',
-    'plantel': '<path d="M8 3 3 6l2 4 2-1v12h10V9l2 1 2-4-5-3c-1 2-2.5 3-4 3S9 5 8 3z"/>',
-    'previa': '<path d="M3 4h18v13H3z"/><path d="m8 21 4-4 4 4"/><path d="m6 8 2 2m0-2-2 2"/><path d="M15 9.5a1.5 1.5 0 1 0 .01 0"/><path d="M9 13c2 1 4 0 5.5-2"/>',
-    'partido': '<path d="M4 9h16v11H4z"/><path d="m7 9 10-5"/><path d="M9 12a2.5 2.5 0 1 0 .01 0"/><path d="M14 13h3m-3 3h3"/>',
-    'tabla': '<path d="M4 5h16M4 10h16M4 15h16M4 20h16"/><path d="M9 5v15"/>',
-    'pausa': '<path d="M8 5v14M16 5v14"/>',
-    'ritmo': '<path d="M3 12h4l3-7 4 14 3-7h4"/>',
-    'cambio': '<path d="M4 8h13l-3-3m6 11H7l3 3"/>',
-    'opinion': '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8m-8 3h5"/>',
+# Íconos de la interfaz: nombre en la maqueta → ícono de Phosphor (ver fuente/iconos.py y LICENCIAS.md).
+ICONOS_UI = {
+    'club': 'shield', 'plantel': 't-shirt', 'previa': 'strategy', 'partido': 'radio', 'tabla': 'list-numbers',
+    'pausa': 'pause', 'ritmo': 'fast-forward', 'cambio': 'arrows-left-right', 'opinion': 'chat-text',
 }
+PESOS = ('duotone', 'light', 'regular')
+_usados = set()  # íconos usados en la página que se está armando: solo esos van al sprite
 
 
-def icono(nombre):
-    return f'<svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-{nombre}"/></svg>'
+def icono(nombre, clase='icono'):
+    """Ícono con sus tres pesos; cada tema muestra uno (temas.css: --ic-duotone, --ic-light, --ic-regular)."""
+    ph = ICONOS_UI.get(nombre, nombre)
+    _usados.add(ph)
+    usos = ''.join(f'<use class="ic-{peso}" href="#ph-{ph}-{peso}"/>' for peso in PESOS)
+    return f'<svg class="{clase}" viewBox="0 0 256 256" aria-hidden="true" focusable="false">{usos}</svg>'
 
 
 def sprite():
-    simbolos = ''.join(f'<symbol id="i-{k}" viewBox="0 0 24 24">{v}</symbol>' for k, v in ICONOS.items())
-    return f'<svg width="0" height="0" style="position:absolute" aria-hidden="true">{PATRONES}{simbolos}</svg>'
+    simbolos = ''.join(
+        f'<symbol id="ph-{ph}-{peso}" viewBox="0 0 256 256">{ICONOS[(ph, peso)]}</symbol>'
+        for ph in sorted(_usados) for peso in PESOS
+    )
+    _usados.clear()
+    aviso = '<!-- Íconos: Phosphor Icons (MIT), Copyright (c) 2023 Phosphor Icons. Ver LICENCIAS.md -->'
+    return f'{aviso}<svg width="0" height="0" style="position:absolute" aria-hidden="true">{simbolos}</svg>'
 
 
 _escudos = [0]
@@ -330,12 +336,15 @@ def barra_maqueta(portada):
     )
 
 
-def encabezado_club():
+def encabezado_club(con_etapa=True):
+    """En los menús va sin etapa ni fecha: ese dato está en el cartel del próximo partido (criterio de legal, RN-739)."""
     _, nombre, c1, c2, _ = CLUB[MI_CLUB]
+    tramos = [f'{LIGA}'] + ([ETAPA, f'Fecha {FECHA} de {FECHAS}'] if con_etapa else []) + [f'{POSICION[MI_CLUB]}°']
+    contexto = ' '.join(f'<span class="nw">{tr}{" ·" if i < len(tramos) - 1 else ""}</span>' for i, tr in enumerate(tramos))
     return (
         f'<header class="club" style="--club-1:{c1};--club-2:{c2}">{escudo(MI_CLUB)}'
         f'<div><p class="nombre">{e(nombre)}</p>'
-        f'<p class="contexto">{LIGA} · {ETAPA} · Fecha {FECHA} de {FECHAS} · {POSICION[MI_CLUB]}°</p></div>'
+        f'<p class="contexto">{contexto}</p></div>'
         '<a class="marca" href="index.html">Fobalmanager</a></header>'
     )
 
@@ -363,10 +372,10 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
     portada = activa is None and menu is None
     if menu:
         # El menú ya es la navegación: no lleva la barra de pantallas.
-        cabecera = encabezado_club()
+        cabecera = encabezado_club(con_etapa=False)
     else:
         cabecera = '' if portada else encabezado_club() + navegacion(activa)
-    otra = {'b': ('menu-c.html', 'Ver la opción C: La pizarra'), 'c': ('menu-b.html', 'Ver la opción B: La oficina del técnico')}
+    otra = {'b': ('menu-c.html', 'Ver la opción C: La cancha'), 'c': ('menu-b.html', 'Ver la opción B: La oficina del técnico')}
     extra_pie = f'<a href="{otra[menu][0]}">{otra[menu][1]} →</a>' if menu in otra else ''
     doc = f'''<!doctype html>
 <html lang="es-AR">
@@ -409,6 +418,10 @@ def club_con_escudo(sigla, corto=False):
 # --------------------------------------------------------------- Portada
 
 
+# Aviso mientras falta el link del formulario: va una sola vez en la portada.
+PENDIENTE = '<span class="pendiente" data-opinion-pendiente>[Link del formulario pendiente: se completa en js/maqueta.js]</span>'
+
+
 def portada():
     tarjetas = ''.join(
         f'<li class="seccion"><a href="{archivo}">{icono(clave)}<div><h3>{e(largo)}</h3><p>{e(DESCRIPCIONES[clave])}</p></div></a></li>'
@@ -418,10 +431,10 @@ def portada():
         f'<li class="seccion"><a href="{archivo}"><span class="muestra-menu">{dibujo}</span>'
         f'<div><span class="volanta">{volanta}</span><h3>{e(titulo)}</h3><p>{e(texto)}</p></div></a></li>'
         for archivo, dibujo, volanta, titulo, texto in (
-            ('menu-b.html', objeto('pizarron'), 'Opción B', 'La oficina del técnico',
-             'Cada sección es un objeto de tu oficina: el pizarrón, el teléfono, el diario, la agenda, la carpeta del plantel…'),
-            ('menu-c.html', cancha_apaisada(), 'Opción C', 'La pizarra',
-             'La cancha a tiza: el próximo partido arriba y cada sección es una ficha parada en su línea, como un equipo.'),
+            ('menu-b.html', f'<span class="placa-ic">{icono("door-open", "ic")}</span>', 'Opción B', 'La oficina del técnico',
+             'Cada sección es un objeto de tu oficina: en la pared, en el escritorio y por la ventana. El partido, detrás de la puerta.'),
+            ('menu-c.html', cancha_apaisada(), 'Opción C', 'La cancha',
+             'Tu formación en el centro de la pantalla y todas las secciones a los costados, agrupadas por uso.'),
         )
     )
     comparar = f'''<section class="comparar-menus" aria-labelledby="t-menus">
@@ -432,7 +445,7 @@ def portada():
         '<div class="opinion">'
         '<p>Probá los cuatro estilos y decinos cuál te gusta y qué le falta. En el fútbol todos opinan; acá te lo pedimos.</p>'
         f'<a class="boton principal" href="#" data-opinion>{icono("opinion")}Dar mi opinión</a>'
-        '<span class="pendiente" data-opinion-pendiente>[Link del formulario pendiente: se completa en js/maqueta.js]</span>'
+        f'{PENDIENTE}'
         '</div>'
     )
     cuerpo = f'''
@@ -443,7 +456,7 @@ def portada():
 {comparar}
 <h2 class="titulo-pantallas">Las pantallas</h2>
 <ul class="tarjetas-pantalla" role="list">{tarjetas}</ul>
-{opinion}
+{opinion.replace(PENDIENTE, '')}
 <p class="aclaracion">PC Fútbol y Hattrick son marcas de sus respectivos titulares. Fobalmanager es un proyecto independiente, sin relación, patrocinio ni aval de ellos; se nombran solo como referencia.</p>
 '''
     pagina('index.html', 'Portada', cuerpo, clase_body='portada')
@@ -558,9 +571,9 @@ def celda_jugador(j, con_ficha):
         nom = f'<button class="jugador-nombre" data-ficha aria-expanded="false" aria-controls="{ident}">{e(nombre)}</button>'
     else:
         nom = f'<span class="jugador-fijo">{e(nombre)}</span>'
-    return (f'<span class="fila-nombre"><span class="dorsal" title="dorsal">{DORSALES[nombre]}</span>{nom}</span>'
+    return (f'<span class="fila-nombre"><span class="dorsal" title="dorsal">{DORSALES[nombre]}</span>{nom}{chips}</span>'
             f'<span class="edad-mobile"><abbr title="{NOMBRE_PUESTO[puesto]}">{puesto}</abbr> · {edad} años</span>'
-            f'{"<br>" + chips if chips else ""}')
+            )
 
 
 def tabla_estado():
@@ -643,7 +656,7 @@ def pantalla_plantel():
         ('Palabra y barra (por defecto)', 'Solo palabra', 'Palabra y número', 'Solo número')))
     cuerpo = f'''<h1 class="titulo-pantalla">Plantel</h1>
 <section class="seccion">
-<p class="suave">{len(PLANTEL)} jugadores. Los estados van en palabras: malo, insuficiente, aceptable, bueno o excelente. Tocá el nombre de un jugador para ver su ficha.</p>
+<p class="suave">{len(PLANTEL)} jugadores. El estado va en palabras, de malo a excelente; los atributos, de nulo a crack, con una barra de nivel. Tocá el nombre de un jugador para ver su ficha.</p>
 <div class="fila-select modo-atributos"><label for="modo-atributos">Cómo ver los atributos</label><select id="modo-atributos">{modos}</select></div>
 <div class="pestanas-plantel" role="tablist" aria-label="Qué mirar del plantel" data-pestanas>{botones}</div>
 {paneles}
@@ -716,7 +729,7 @@ def pantalla_previa():
         f'''{formacion}<div class="cancha-formacion">{cancha_vertical()}
 <div class="pizarra" role="group" aria-label="Once titular por líneas, del ataque al arco, con la frescura de cada uno">{lineas}</div></div>
 <p class="suave nota-cancha">Para cambiar a alguien, tocá al titular y después al suplente.</p>''',
-        volanta='Pizarra', clase='seccion-formacion',
+        volanta='Pizarra', clase='seccion-formacion', ident='formacion',
     )
     banco_items = ''.join(
         f'<li><span class="sigla">{JUGADOR[n][0]}</span><span>{e(n)}</span><span class="suave">{ESTADOS[JUGADOR[n][4]]}</span></li>'
@@ -854,10 +867,10 @@ def tabla_posiciones():
         for a, t in (('Pts', 'Puntos'), ('PJ', 'Partidos jugados'), ('G', 'Ganados'), ('E', 'Empatados'), ('P', 'Perdidos'),
                      ('GF', 'Goles a favor'), ('GC', 'Goles en contra'), ('DG', 'Diferencia de gol'))
     )
-    return f'''<div class="region-tabla" role="region" aria-label="Tabla de posiciones, se desplaza hacia el costado" tabindex="0">
+    return f'''<div class="tabla-marco"><div class="region-tabla" role="region" aria-label="Tabla de posiciones, se desplaza hacia el costado" tabindex="0">
 <table class="posiciones"><caption class="sr">{LIGA}, después de la fecha {FECHA - 1}, por zonas</caption>
 <thead><tr><th class="pos n" scope="col"><abbr title="Posición">#</abbr></th><th class="club-col" scope="col">Club</th>{cabeza}<th class="col-ultimos" scope="col">Últimos 5 <span class="reciente-nota">(→ el más reciente)</span></th></tr></thead>
-{cuerpos}</table></div>'''
+{cuerpos}</table></div></div>'''
 
 
 def fila_fixture(local, visitante, hora=None, goles=None):
@@ -926,15 +939,29 @@ def secciones():
     }
 
 
-def enlace_menu(rotulo, destino, estado, alerta=False, dibujo=''):
+def enlace_menu(rotulo, destino, estado, alerta=False, icono_seccion=''):
     """Destino con pantalla en la maqueta: href. Sin pantalla: aviso de maqueta con el nombre de la sección.
-    Con dibujo, el rótulo y el estado van en una placa debajo del dibujo, dentro del mismo enlace."""
+    Con ícono, la placa del ícono va antes del rótulo y el estado, dentro del mismo enlace."""
     atributos = f'href="{destino}"' if destino else f'href="#" data-maqueta="{e(rotulo)}"'
     marca = '<span class="alerta" aria-hidden="true">!</span>' if alerta else ''
-    texto = f'<span class="rotulo">{e(rotulo)}</span><span class="sr">: </span><span class="estado">{e(estado)}</span>'
-    if dibujo:
-        return f'<a {atributos}><span class="dibujo">{dibujo}</span><span class="placa">{texto}{marca}</span></a>'
-    return f'<a {atributos}>{texto}{marca}</a>'
+    novedad = '<span class="sr">, con novedades</span>' if alerta else ''
+    texto = (f'<span class="texto-seccion"><span class="rotulo">{e(rotulo)}</span><span class="sr">: </span>'
+             f'<span class="estado">{e(estado)}</span>{novedad}</span>')
+    placa = f'<span class="placa-ic">{icono(icono_seccion, "ic")}{marca}</span>' if icono_seccion else marca
+    return f'<a class="enlace-seccion" {atributos}>{placa}{texto}</a>'
+
+
+# Ícono de Phosphor de cada sección (el mismo en todas las propuestas).
+ICONO_SECCION = {
+    'formacion': 'strategy', 'plantel': 't-shirt', 'entrenamiento': 'traffic-cone', 'tabla': 'list-numbers',
+    'calendario': 'calendar-check', 'noticias': 'newspaper', 'fichajes': 'handshake', 'ojeadores': 'binoculars',
+    'contratos': 'signature', 'caja': 'coins', 'estadio': 'ticket', 'dirigencia': 'users-three',
+}
+
+
+def enlace_seccion(clave, s):
+    rotulo, destino, estado, alerta = s[clave]
+    return enlace_menu(rotulo, destino, estado, alerta, ICONO_SECCION[clave])
 
 
 def panel_partido(clase=''):
@@ -957,78 +984,85 @@ def menu_a():
     pagina('menu-a.html', 'Propuesta en rediseño', cuerpo, clase_body='portada')
 
 
-# Opción B: un objeto de la oficina por sección, en orden de importancia (es el orden del foco).
-# Lugar en la escena de la PC y posición en % (x, y, ancho, alto).
+# Opción B: la oficina, con pared, escritorio, puerta y ventana hechos con superficies (sin dibujos a mano).
+# Cada sección, en orden de importancia (es el orden del foco): lugar y posición en la PC, en % (x, y, ancho).
 OBJETOS_B = [
-    ('formacion', 'pizarron', 'pared', (20, 7, 13.75, 35)),
-    ('plantel', 'carpeta', 'escritorio', (53.1, 63, 12.3, 32)),
-    ('entrenamiento', 'silbato', 'escritorio', (66, 63, 12.3, 32)),
-    ('tabla', 'planilla', 'pared', (66.25, 7, 13.75, 35)),
-    ('calendario', 'agenda', 'escritorio', (40.2, 63, 12.3, 32)),
-    ('noticias', 'diario', 'escritorio', (14.4, 63, 12.3, 32)),
-    ('fichajes', 'telefono', 'escritorio', (1.5, 63, 12.3, 32)),
-    ('ojeadores', 'prismaticos', 'escritorio', (78.9, 63, 12.3, 32)),
-    ('contratos', 'fichero', 'lateral-der', (83, 31, 14.5, 30)),
-    ('caja', 'sobre', 'escritorio', (27.3, 63, 12.3, 32)),
-    ('estadio', 'ventana', 'lateral', (1.5, 9, 15.5, 44)),
-    ('dirigencia', 'cuadro', 'lateral-der', (82.5, 3, 15.5, 27)),
+    ('formacion', 'pared', (19, 7, 14)),
+    ('plantel', 'escritorio', (59, 65, 12.6)),
+    ('entrenamiento', 'escritorio', (71.8, 65, 12.6)),
+    ('tabla', 'pared', (67, 7, 14)),
+    ('calendario', 'pared', (19, 33, 14)),
+    ('noticias', 'escritorio', (33.4, 65, 12.6)),
+    ('fichajes', 'escritorio', (20.6, 65, 12.6)),
+    ('ojeadores', 'escritorio', (84.6, 65, 12.6)),
+    ('contratos', 'pared', (84, 20, 13)),
+    ('caja', 'escritorio', (46.2, 65, 12.6)),
+    ('estadio', 'pared', (2.5, 40, 14)),
+    ('dirigencia', 'pared', (67, 33, 14)),
 ]
 
 
 def menu_b():
     s = secciones()
-    items = ''
-    for clave, dibujo, lugar, (x, y, w, h) in OBJETOS_B:
-        rotulo, destino, estado, alerta = s[clave]
-        items += (f'<li class="objeto objeto-{dibujo} en-{lugar}" style="--x:{x}%;--y:{y}%;--w:{w}%;--h:{h}%">'
-                  f'{enlace_menu(rotulo, destino, estado, alerta, objeto(dibujo))}</li>')
+    items = ''.join(
+        f'<li class="objeto en-{lugar}" style="--x:{x}%;--y:{y}%;--w:{w}%">{enlace_seccion(clave, s)}</li>'
+        for clave, lugar, (x, y, w) in OBJETOS_B
+    )
+    decorado = ''.join(f'<div class="decorado {d}" aria-hidden="true"></div>' for d in ('pared', 'escritorio', 'ventana'))
     cuerpo = f'''<h1 class="sr">Menú principal, opción B: La oficina del técnico</h1>
 <div class="oficina">
-{ESCENA}
+{decorado}
 {panel_partido('puerta')}
 <nav class="objetos-nav" aria-label="Secciones del club"><ul class="objetos" role="list">{items}</ul></nav>
 </div>'''
     pagina('menu-b.html', 'Menú principal (opción B)', cuerpo, clase_body='menu-pantalla menu-b', menu='b')
 
 
-# Opción C (RN-747): las secciones como fichas paradas por líneas en la cancha; el palco, afuera.
-# Posición del título y de cada ficha en la cancha de la PC, en % (x, y). Arco propio a la izquierda.
-LINEAS_C = [
-    ('casa', 'Los de casa', (2.5, 1.5), [('formacion', 14.5, 30), ('plantel', 4, 9), ('entrenamiento', 4, 52), ('contratos', 14.5, 73)]),
-    ('torneo', 'El torneo', (34, 1.5), [('tabla', 32, 9), ('calendario', 51.5, 13), ('estadio', 41, 73)]),
-    ('ataque', 'Salir a buscar', (71, 1.5), [('fichajes', 69.5, 22), ('ojeadores', 80.5, 57)]),
-]
-PALCO_C = ('palco', 'El palco', ['dirigencia', 'caja', 'noticias'])
-MARCA_O = '<span class="marca-o"></span>'
+# Opción C, "La cancha": la cancha al centro con mi formación (lleva a la táctica) y las secciones a los costados,
+# agrupadas por uso. Sin metáfora de estadio (RN-739). Grupos de distinto tamaño, en los dos costados.
+GRUPOS_C = {
+    'izq': [('casa', 'Los de casa', ['plantel', 'entrenamiento', 'contratos']),
+            ('buscar', 'Salir a buscar', ['fichajes', 'ojeadores'])],
+    'der': [('torneo', 'El torneo', ['tabla', 'calendario', 'estadio']),
+            ('club', 'El club', ['dirigencia', 'caja', 'noticias'])],
+}
+# Posición de cada titular en la cancha (centro de la ficha, en %), en 4-3-3 atacando hacia la derecha.
+POSICIONES_433 = {
+    'ARQ': (7, 50), 'LD': (24, 84), 'CDD': (21, 62), 'CDI': (21, 38), 'LI': (24, 16), 'VC': (41, 50),
+    'INTD': (50, 71), 'INTI': (50, 29), 'ED': (72, 80), 'DC': (79, 50), 'EI': (72, 20),
+}
 
 
-def ficha_c(clave, s, x=None, y=None):
-    rotulo, destino, estado, alerta = s[clave]
-    pos = f' style="--x:{x}%;--y:{y}%"' if x is not None else ''
-    return f'<li class="ficha-c"{pos}>{enlace_menu(rotulo, destino, estado, alerta, MARCA_O)}</li>'
-
-
-def linea_c(clave, titulo, fichas, s, pos_titulo=None):
-    estilo = f' style="--x:{pos_titulo[0]}%;--y:{pos_titulo[1]}%"' if pos_titulo else ''
-    items = ''.join(ficha_c(c, s, *xy) for c, *xy in fichas)
-    return (f'<section class="linea-c linea-{clave}" aria-labelledby="g-{clave}">'
-            f'<h2 id="g-{clave}" class="linea-titulo"{estilo}>{e(titulo)}</h2>'
-            f'<ul class="fichas-c" role="list">{items}</ul></section>')
+def cancha_formacion_menu(s):
+    rotulo, destino, estado, _ = s['formacion']
+    fichas = ''
+    for nombre in ONCE:
+        puesto = JUGADOR[nombre][0]
+        x, y = POSICIONES_433[puesto]
+        fichas += (f'<li class="ficha-once" style="--x:{x}%;--y:{y}%"><span class="disco">{DORSALES[nombre]}</span>'
+                   f'<span class="apellido">{e(apellido(nombre))}</span></li>')
+    return (f'<a class="cancha-enlace" href="{destino}#formacion"><span class="cancha-campo">{cancha_apaisada()}'
+            f'<ul class="fichas-cancha" aria-hidden="true">{fichas}</ul></span>'
+            f'<span class="chip-formacion"><span class="rotulo">{e(rotulo)}</span><span class="sr">: </span>'
+            f'<span class="estado">{e(estado)}</span></span></a>')
 
 
 def menu_c():
     s = secciones()
-    lineas = ''.join(linea_c(clave, titulo, fichas, s, pos) for clave, titulo, pos, fichas in LINEAS_C)
-    clave, titulo, fichas = PALCO_C
-    palco = linea_c(clave, titulo, [(c,) for c in fichas], s)
-    cuerpo = f'''<h1 class="sr">Menú principal, opción C: La pizarra</h1>
-<div class="pizarra-c">
+    columnas = ''
+    for lado, grupos in GRUPOS_C.items():
+        bloques = ''
+        for clave, titulo, claves in grupos:
+            items = ''.join(f'<li>{enlace_seccion(c, s)}</li>' for c in claves)
+            bloques += (f'<section class="grupo-c" aria-labelledby="g-{clave}"><h2 id="g-{clave}">{e(titulo)}</h2>'
+                        f'<ul role="list">{items}</ul></section>')
+        columnas += f'<div class="grupos-{lado}">{bloques}</div>'
+    cuerpo = f'''<h1 class="sr">Menú principal, opción C: La cancha</h1>
 {panel_partido('cartel')}
-<nav class="pizarra-nav" aria-label="Secciones del club">
-<div class="cancha-c">{cancha_apaisada()}{lineas}</div>
-{palco}
-</nav>
-</div>'''
+<nav class="cancha-c" aria-label="Secciones del club">
+{cancha_formacion_menu(s)}
+<div class="grupos-c">{columnas}</div>
+</nav>'''
     pagina('menu-c.html', 'Menú principal (opción C)', cuerpo, clase_body='menu-pantalla menu-c', menu='c')
 
 
