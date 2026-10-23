@@ -8,7 +8,7 @@ import math
 import random
 from pathlib import Path
 
-from ilustraciones import ESCENA, PATRONES, objeto, pictograma
+from ilustraciones import ESCENA, PATRONES, cancha_apaisada, cancha_vertical, objeto
 
 RAIZ = Path(__file__).resolve().parent.parent
 e = html.escape
@@ -19,6 +19,9 @@ LIGA = '2ª División'
 ETAPA = 'Primera rueda'
 FECHA = 12
 FECHAS = 38  # ida y vuelta entre 20 clubes
+# El próximo rival lo dirige otro manager: el local (nosotros) eligió el horario (RN-170, RN-745).
+MANAGER_RIVAL = 'el_flaco_ojeda'
+HORARIO = 'sábado 21 h'
 MI_CLUB = 'TAM'
 RIVAL = 'CAL'
 
@@ -165,7 +168,9 @@ def simular_tabla():
     nombre = {i: orden[i] for i in range(n)}
     fila = {s: dict(pj=0, g=0, e=0, p=0, gf=0, gc=0, ult=[]) for s in siglas}
     partidos_mios = []
+    resultados = []  # por fecha jugada: (local, goles, visitante, goles)
     for f in range(FECHA - 1):
+        resultados.append([])
         for a, b in fechas[f]:
             ga = goles(0.95 * fuerza[a] + 0.25)
             gb = goles(0.85 * fuerza[b])
@@ -177,13 +182,16 @@ def simular_tabla():
                 res = 'G' if gy > go_ else 'E' if gy == go_ else 'P'
                 r[{'G': 'g', 'E': 'e', 'P': 'p'}[res]] += 1
                 r['ult'].append(res)
+            resultados[-1].append((nombre[a], ga, nombre[b], gb))
             if 0 in (a, b):
                 partidos_mios.append((nombre[a], ga, nombre[b], gb))
+    # En la maqueta, el partido de la fecha 12 lo jugamos de local (elegimos el horario, RN-170).
+    proxima = [(MI_CLUB, RIVAL) if MI_CLUB in (nombre[a], nombre[b]) else (nombre[a], nombre[b]) for a, b in fechas[FECHA - 1]]
     tabla = sorted(fila.items(), key=lambda kv: (-(3 * kv[1]['g'] + kv[1]['e']), -(kv[1]['gf'] - kv[1]['gc']), -kv[1]['gf'], kv[0]))
-    return tabla, partidos_mios
+    return tabla, partidos_mios, resultados, proxima
 
 
-TABLA, PARTIDOS_MIOS = simular_tabla()
+TABLA, PARTIDOS_MIOS, RESULTADOS, PROXIMA = simular_tabla()
 POSICION = {s: i + 1 for i, (s, _) in enumerate(TABLA)}
 
 
@@ -275,13 +283,14 @@ def escudo(sigla, clase='escudo'):
 
 
 # Fuentes alojadas en el sitio (licencia OFL, ver fuentes/LICENCIAS.md): se carga solo la del tema activo.
-FUENTES = {tema: f'css/fuentes-{tema}.css' for tema in ('retro', 'diario', 'moderno')}
+TEMAS = ('retro', 'diario', 'moderno', 'pizarra')
+FUENTES = {tema: f'css/fuentes-{tema}.css' for tema in TEMAS}
 
 SCRIPT_TEMA = (
-    '(function(){var T=["retro","diario","moderno"],F=' + json.dumps(FUENTES) + ',t=null;'
+    '(function(){var T=' + json.dumps(list(TEMAS)) + ',F=' + json.dumps(FUENTES) + ',t=null;'
     'try{var q=new URLSearchParams(location.search).get("tema");if(T.indexOf(q)>=0){t=q;localStorage.setItem("fm-tema",q)}'
     'else{t=localStorage.getItem("fm-tema")}}catch(x){}'
-    'if(T.indexOf(t)<0){t=T[Math.floor(Math.random()*3)];try{localStorage.setItem("fm-tema",t)}catch(x){}}'
+    'if(T.indexOf(t)<0){t=T[Math.floor(Math.random()*T.length)];try{localStorage.setItem("fm-tema",t)}catch(x){}}'
     'document.documentElement.dataset.tema=t;var c={};'
     'window.fmFuentes=function(k){if(c[k])return;c[k]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=F[k];document.head.appendChild(l)};'
     'window.fmFuentes(t)})();'
@@ -307,7 +316,7 @@ DESCRIPCIONES = {
 def selector_tema():
     opciones = ''.join(
         f'<label><input type="radio" name="tema" value="{v}">{t}</label>'
-        for v, t in (('retro', 'Retro'), ('diario', 'Diario'), ('moderno', 'Moderno'))
+        for v, t in (('retro', 'Retro'), ('diario', 'Diario'), ('moderno', 'Moderno'), ('pizarra', 'Pizarra'))
     )
     return f'<fieldset class="selector-tema"><legend>Estilo visual</legend>{opciones}</fieldset>'
 
@@ -357,7 +366,7 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
         cabecera = encabezado_club()
     else:
         cabecera = '' if portada else encabezado_club() + navegacion(activa)
-    otra = {}
+    otra = {'b': ('menu-c.html', 'Ver la opción C: La pizarra'), 'c': ('menu-b.html', 'Ver la opción B: La oficina del técnico')}
     extra_pie = f'<a href="{otra[menu][0]}">{otra[menu][1]} →</a>' if menu in otra else ''
     doc = f'''<!doctype html>
 <html lang="es-AR">
@@ -411,6 +420,8 @@ def portada():
         for archivo, dibujo, volanta, titulo, texto in (
             ('menu-b.html', objeto('pizarron'), 'Opción B', 'La oficina del técnico',
              'Cada sección es un objeto de tu oficina: el pizarrón, el teléfono, el diario, la agenda, la carpeta del plantel…'),
+            ('menu-c.html', cancha_apaisada(), 'Opción C', 'La pizarra',
+             'La cancha a tiza: el próximo partido arriba y cada sección es una ficha parada en su línea, como un equipo.'),
         )
     )
     comparar = f'''<section class="comparar-menus" aria-labelledby="t-menus">
@@ -419,7 +430,7 @@ def portada():
 <ul class="tarjetas-menu" role="list">{menus}</ul></section>'''
     opinion = (
         '<div class="opinion">'
-        '<p>Probá los tres estilos y decinos cuál te gusta y qué le falta. En el fútbol todos opinan; acá te lo pedimos.</p>'
+        '<p>Probá los cuatro estilos y decinos cuál te gusta y qué le falta. En el fútbol todos opinan; acá te lo pedimos.</p>'
         f'<a class="boton principal" href="#" data-opinion>{icono("opinion")}Dar mi opinión</a>'
         '<span class="pendiente" data-opinion-pendiente>[Link del formulario pendiente: se completa en js/maqueta.js]</span>'
         '</div>'
@@ -468,9 +479,9 @@ def pantalla_club():
         'Próximo partido',
         f'''<div class="duelo"><span class="equipo">{escudo(MI_CLUB)}{e(CLUB[MI_CLUB][1])}</span><span class="vs">vs</span>
 <span class="equipo">{escudo(RIVAL)}{e(CLUB[RIVAL][1])}</span></div>
-<ul class="datos"><li><b>De local</b>, en el Estadio del Bajo</li><li>Sábado, 15:30 · {LIGA}, fecha {FECHA}</li>
+<ul class="datos"><li><b>Se juega el {HORARIO}</b>, de local en el Estadio del Bajo</li><li>Manager rival: {e(MANAGER_RIVAL)} · {LIGA}, fecha {FECHA}</li>
 <li class="suave">Último partido: {e(ultimo)}</li></ul>
-<a class="boton principal ancho" href="previa.html">Armar la previa</a>''',
+<a class="boton principal ancho" href="previa.html">Preparar el partido</a>''',
         volanta=f'Fecha {FECHA}', clase='destacada proximo',
     )
     novedades = seccion(
@@ -501,6 +512,18 @@ def pantalla_club():
 
 # --------------------------------------------------------------- Plantel
 
+# Dorsales con la numeración clásica (1 arquero, 5 volante central, 9 centrodelantero, 10 enganche).
+DORSALES = {
+    'Gervasio Toledo': 1, 'Mateo Grigera': 12, 'Lucio Benavídez': 25, 'Martín Echagüe': 4, 'Lucas Peralta Ruiz': 14,
+    'Lisandro Bermúdez': 2, 'Thiago Olmedo': 13, 'Facundo Arrieta': 6, 'Nehuén Saravia': 22, 'Bruno Escalada': 3,
+    'Valentín Cejas': 15, 'Hernán Aráoz': 5, 'Gonzalo Quevedo': 16, 'Ezequiel Iriondo': 8, 'Ramón Aldao': 18,
+    'Santino Ferrando': 20, 'Franco Valdivieso': 10, 'Lautaro Ortúzar': 7, 'Dylan Pereyra Sosa': 27,
+    'Joaquín Medrano': 11, 'Emiliano Sosa Rivero': 17, 'Tomás Ibarguren': 19, 'Ignacio Ugarteche': 9,
+    'Benicio Albarracín': 21,
+}
+EXTRANJEROS = {'Joaquín Medrano', 'Franco Valdivieso', 'Gonzalo Quevedo'}  # cuentan para el cupo (RN-370)
+LESIONADOS = {'Nehuén Saravia': 'lesionado, 2 fechas'}
+
 
 def estado_celda(n, clase=''):
     palabra = ESTADOS[n]
@@ -508,27 +531,56 @@ def estado_celda(n, clase=''):
     return f'<td class="{clase}{b}">{palabra}</td>'
 
 
-def pantalla_plantel():
-    filas = ''
+def sin_tildes(texto):
+    return texto.translate(str.maketrans('áéíóú', 'aeiou'))
+
+
+def nivel(palabra):
+    """Modo por defecto de los atributos (RN-744): la palabra con una barra de nivel, que dice lo mismo."""
+    return (f'<span class="nivel" style="--n:{ESCALA.index(palabra)}"><span>{palabra}</span>'
+            f'<span class="barra" aria-hidden="true"></span></span>')
+
+
+def jugadores_por_linea():
     for titulo, puestos in LINEAS:
-        jugadores = [j for j in PLANTEL if j[0] in puestos or (titulo == 'Arqueros' and j[0] == 'ARQ')]
+        yield titulo, [j for j in PLANTEL if j[0] in puestos]
+
+
+def celda_jugador(j, con_ficha):
+    puesto, nombre, edad = j[0], j[1], j[2]
+    chips = ''.join(f'<span class="chip habilidad">{e(h)}</span> ' for h in j[8])
+    if nombre in EXTRANJEROS:
+        chips += '<span class="chip"><abbr title="extranjero: cuenta para el cupo">EXT</abbr></span> '
+    if nombre in LESIONADOS:
+        chips += f'<span class="chip lesion">{e(LESIONADOS[nombre])}</span> '
+    if con_ficha:
+        ident = 'f-' + ''.join(c for c in nombre.lower() if c.isalnum())
+        nom = f'<button class="jugador-nombre" data-ficha aria-expanded="false" aria-controls="{ident}">{e(nombre)}</button>'
+    else:
+        nom = f'<span class="jugador-fijo">{e(nombre)}</span>'
+    return (f'<span class="fila-nombre"><span class="dorsal" title="dorsal">{DORSALES[nombre]}</span>{nom}</span>'
+            f'<span class="edad-mobile"><abbr title="{NOMBRE_PUESTO[puesto]}">{puesto}</abbr> · {edad} años</span>'
+            f'{"<br>" + chips if chips else ""}')
+
+
+def tabla_estado():
+    filas = ''
+    for titulo, jugadores in jugadores_por_linea():
         filas += f'<tbody><tr class="grupo"><th colspan="8" scope="colgroup">{titulo}</th></tr>'
         for j in jugadores:
             puesto, nombre, edad, cond, fres, ritmo, moral, contrato, habs = j
             ident = 'f-' + ''.join(c for c in nombre.lower() if c.isalnum())
             atributos, aptitudes, altura, contextura, pierna = ficha_de(j)
-            chips = ''.join(f'<span class="chip habilidad">{e(h)}</span> ' for h in habs)
             filas += (
                 f'<tr><td class="col-pc"><abbr class="sigla" title="{NOMBRE_PUESTO[puesto]}">{puesto}</abbr></td>'
-                f'<td><button class="jugador-nombre" data-ficha aria-expanded="false" aria-controls="{ident}">{e(nombre)}</button><span class="edad-mobile"><abbr title="{NOMBRE_PUESTO[puesto]}">{puesto}</abbr> · {edad} años</span>'
-                f'{"<br>" + chips if chips else ""}</td>'
+                f'<td>{celda_jugador(j, True)}</td>'
                 f'<td class="n col-pc">{edad}</td>'
                 f'{estado_celda(cond, "col-pc")}{estado_celda(fres)}{estado_celda(ritmo, "col-pc")}{estado_celda(moral)}'
                 f'<td class="col-pc">{contrato}</td></tr>'
             )
             bloques = ''
             for categoria, lista in ATRIBUTOS.items():
-                filas_attr = ''.join(f'<dt>{a}</dt><dd>{atributos[a]}</dd>' for a in lista)
+                filas_attr = ''.join(f'<dt>{a}</dt><dd>{nivel(atributos[a])}</dd>' for a in lista)
                 bloques += f'<div><h3>{categoria}</h3><dl>{filas_attr}</dl></div>'
             aptitud = ''.join(f'<dt>{NOMBRE_PUESTO[p].capitalize()}</dt><dd>{b}</dd>' for p, b in aptitudes)
             estados = ''.join(
@@ -546,18 +598,58 @@ def pantalla_plantel():
                 '</div></td></tr>'
             )
         filas += '</tbody>'
-    cuerpo = f'''<h1 class="titulo-pantalla">Plantel</h1>
-<section class="seccion">
-<p class="suave">{len(PLANTEL)} jugadores. Los estados van en palabras: malo, insuficiente, aceptable, bueno o excelente. Tocá el nombre de un jugador para ver su ficha.</p>
-<table class="plantel">
-<caption class="sr">Plantel de {e(CLUB[MI_CLUB][1])}</caption>
+    return f'''<table class="plantel">
+<caption class="sr">Plantel de {e(CLUB[MI_CLUB][1])}: cómo está cada jugador</caption>
 <thead><tr><th class="col-pc" scope="col"><abbr title="Puesto">Pto</abbr></th><th scope="col">Jugador</th>
 <th class="n col-pc" scope="col">Edad</th><th class="col-pc" scope="col">Condición</th><th scope="col">Frescura</th>
 <th class="col-pc" scope="col">Ritmo</th><th scope="col">Moral</th><th class="col-pc" scope="col">Contrato</th></tr></thead>
 {filas}
-</table>
+</table>'''
+
+
+def tabla_atributos(categoria, lista):
+    cols = len(lista) + 2
+    filas = ''
+    for titulo, jugadores in jugadores_por_linea():
+        filas += f'<tbody><tr class="grupo"><th colspan="{cols}" scope="colgroup">{titulo}</th></tr>'
+        for j in jugadores:
+            atributos = ficha_de(j)[0]
+            celdas = ''.join(f'<td>{nivel(atributos[a])}</td>' for a in lista)
+            filas += (f'<tr><td class="col-pc"><abbr class="sigla" title="{NOMBRE_PUESTO[j[0]]}">{j[0]}</abbr></td>'
+                      f'<th class="jugador-col" scope="row">{celda_jugador(j, False)}</th>{celdas}</tr>')
+        filas += '</tbody>'
+    cabeza = ''.join(f'<th scope="col">{a}</th>' for a in lista)
+    return f'''<div class="region-tabla" role="region" aria-label="Atributos {categoria.lower()}, se desplaza hacia el costado" tabindex="0">
+<table class="plantel atributos-tabla"><caption class="sr">Atributos {categoria.lower()} del plantel</caption>
+<thead><tr><th class="col-pc" scope="col"><abbr title="Puesto">Pto</abbr></th><th class="jugador-col" scope="col">Jugador</th>{cabeza}</tr></thead>
+{filas}</table></div>'''
+
+
+def pantalla_plantel():
+    pestanas = [('estado', 'Estado', tabla_estado())] + [
+        (sin_tildes(c.lower()), c, tabla_atributos(c, lista)) for c, lista in ATRIBUTOS.items()
+    ]
+    sin_foco = ' tabindex="-1"'
+    botones = ''.join(
+        f'<button role="tab" id="tp-{k}" aria-controls="pp-{k}" aria-selected="{"true" if i == 0 else "false"}"'
+        f'{"" if i == 0 else sin_foco}>{t}</button>'
+        for i, (k, t, _) in enumerate(pestanas)
+    )
+    paneles = ''.join(
+        f'<div class="panel-plantel" role="tabpanel" id="pp-{k}" aria-labelledby="tp-{k}"{"" if i == 0 else " hidden"}>{contenido}</div>'
+        for i, (k, _, contenido) in enumerate(pestanas)
+    )
+    modos = ''.join(f'<option{" selected" if i == 0 else ""}>{m}</option>' for i, m in enumerate(
+        ('Palabra y barra (por defecto)', 'Solo palabra', 'Palabra y número', 'Solo número')))
+    cuerpo = f'''<h1 class="titulo-pantalla">Plantel</h1>
+<section class="seccion">
+<p class="suave">{len(PLANTEL)} jugadores. Los estados van en palabras: malo, insuficiente, aceptable, bueno o excelente. Tocá el nombre de un jugador para ver su ficha.</p>
+<div class="fila-select modo-atributos"><label for="modo-atributos">Cómo ver los atributos</label><select id="modo-atributos">{modos}</select></div>
+<div class="pestanas-plantel" role="tablist" aria-label="Qué mirar del plantel" data-pestanas>{botones}</div>
+{paneles}
 </section>'''
     pagina('plantel.html', 'Plantel', cuerpo, 'plantel')
+
 
 # --------------------------------------------------------------- Previa
 
@@ -592,14 +684,23 @@ def plan(prefijo=''):
 </div></details>'''
 
 
+# Pelota parada (RN-743): el manager designa penales, tiros libres, córners y capitán.
+PELOTA_PARADA = [
+    ('penales', 'Penales', 'Hernán Aráoz'),
+    ('tiros-libres', 'Tiros libres', 'Santino Ferrando'),
+    ('corners', 'Córners', 'Santino Ferrando'),
+    ('capitan', 'Capitán', 'Gervasio Toledo'),
+]
+
+
 def pantalla_previa():
     r = dict(TABLA)[RIVAL]
     contra = seccion(
         'Contra quién',
-        f'''<div class="mini-tabla club-celda" style="display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem">{escudo(RIVAL)}
-<div><b>{e(CLUB[RIVAL][1])}</b><br><span class="suave">Viene de visitante · {POSICION[RIVAL]}° en la tabla · {3 * r["g"] + r["e"]} puntos</span></div></div>
+        f'''<div class="rival-previa">{escudo(RIVAL)}
+<div><b>{e(CLUB[RIVAL][1])}</b><br><span class="suave">Manager: {e(MANAGER_RIVAL)} · {POSICION[RIVAL]}° en la tabla · {3 * r["g"] + r["e"]} puntos</span></div></div>
 <p class="suave" style="margin:0 0 .35rem">Sus últimos cinco:</p>{racha(r["ult"][-5:])}''',
-        volanta=f'Fecha {FECHA}',
+        volanta=f'Fecha {FECHA} · se juega el {HORARIO}',
     )
     formacion = grupo_opciones('formacion', 'Formación', [('442', '4-4-2 (doble 5)'), ('433', '4-3-3'), ('352', '3-5-2')], '433')
     once_por_puesto = {JUGADOR[n][0]: n for n in ONCE}
@@ -608,26 +709,35 @@ def pantalla_previa():
         fichas = ''
         for p in puestos:
             n = once_por_puesto[p]
-            fichas += f'<li class="ficha-pizarra"><span class="sigla">{p}</span><b>{e(apellido(n))}</b><span class="suave">{ESTADOS[JUGADOR[n][4]]}</span></li>'
-        lineas += f'<div class="linea-pizarra"><span>{nombre_linea}</span><ul>{fichas}</ul></div>'
-    once = seccion('El once', f'{formacion}<div class="pizarra" aria-label="Once titular por líneas, con la frescura de cada uno">{lineas}</div>', volanta='Pizarra')
+            fichas += f'<li class="ficha-pizarra"><span class="sigla">{p}</span><b>{e(apellido(n))}</b><span class="frescura">{ESTADOS[JUGADOR[n][4]]}</span></li>'
+        lineas += f'<div class="linea-pizarra"><span class="sr">{nombre_linea}</span><ul>{fichas}</ul></div>'
+    once = seccion(
+        'La formación',
+        f'''{formacion}<div class="cancha-formacion">{cancha_vertical()}
+<div class="pizarra" role="group" aria-label="Once titular por líneas, del ataque al arco, con la frescura de cada uno">{lineas}</div></div>
+<p class="suave nota-cancha">Para cambiar a alguien, tocá al titular y después al suplente.</p>''',
+        volanta='Pizarra', clase='seccion-formacion',
+    )
     banco_items = ''.join(
         f'<li><span class="sigla">{JUGADOR[n][0]}</span><span>{e(n)}</span><span class="suave">{ESTADOS[JUGADOR[n][4]]}</span></li>'
         for n in BANCO
     )
-    banco = seccion('El banco', f'<ul class="banco">{banco_items}</ul>', volanta='Suplentes')
+    banco = seccion('El banco', f'<ul class="banco">{banco_items}</ul>', volanta='Suplentes', clase='seccion-banco')
     indicaciones = seccion('Lo que les decís antes de salir', instrucciones(), volanta='Indicaciones')
-    penales = seccion(
-        'Pateador de penales',
-        '<div class="fila-select"><label for="pateador">Patea los penales</label><select id="pateador">'
-        + ''.join(f'<option{" selected" if n == "Hernán Aráoz" else ""}>{e(n)}</option>' for n in ONCE[1:])
-        + '</select></div>',
-        volanta='Pelota parada',
-    )
+    selects = ''
+    for clave, etiqueta, elegido in PELOTA_PARADA:
+        opciones = ['que lo decida el asistente'] + ONCE
+        ops = ''.join(f'<option{" selected" if n == elegido else ""}>{e(n)}</option>' for n in opciones)
+        selects += f'<div class="fila-select"><label for="pp-{clave}">{etiqueta}</label><select id="pp-{clave}">{ops}</select></div>'
+    pelota = seccion('Pelota parada', f'<div class="pelota-parada">{selects}</div>', volanta='Los que patean', clase='seccion-pelota')
     cuerpo = f'''<h1 class="titulo-pantalla">Previa y táctica</h1>
-<div class="grilla"><div>{contra}{once}{banco}</div>
-<div>{indicaciones}{penales}{plan()}
-<div class="a-la-cancha"><a class="boton principal ancho" href="partido.html">¡A la cancha!</a></div></div></div>'''
+{contra}
+<div class="previa-cancha">{once}{banco}</div>
+{pelota}
+<div class="grilla"><div>{indicaciones}</div>
+<div>{plan()}
+<div class="a-la-cancha"><a class="boton principal ancho" href="#" data-maqueta>Listo, nos vemos el {HORARIO}</a>
+<p class="suave"><a href="partido.html">Ver cómo se sigue un partido en vivo →</a></p></div></div></div>'''
     pagina('previa.html', 'Previa y táctica', cuerpo, 'previa', 'previa-pantalla')
 
 # --------------------------------------------------------------- Partido en vivo
@@ -702,79 +812,124 @@ def pantalla_partido():
 # --------------------------------------------------------------- Tabla
 
 
-def pantalla_tabla():
-    filas = ''
-    for i, (s, r) in enumerate(TABLA, start=1):
-        z, simbolo, texto = zona(i)
-        clases = ' '.join(c for c in (f'zona-{z}' if z else '', 'mio' if s == MI_CLUB else '') if c)
-        marca = f' <span class="marca-zona" aria-hidden="true">{simbolo}</span><span class="sr">, {texto}</span>' if z else ''
-        tuyo = '<span class="sr"> (tu club)</span>' if s == MI_CLUB else ''
-        ult = ''.join(f'<span class="{x}">{x}</span>' for x in r['ult'][-5:])
-        filas += (
-            f'<tr class="{clases}"><td class="pos n">{i}{marca}</td>'
-            f'<th class="club-col" scope="row">{club_con_escudo(s)}{tuyo}</th>'
-            f'<td class="n pts-col">{3 * r["g"] + r["e"]}</td><td class="n">{r["pj"]}</td><td class="n">{r["g"]}</td>'
-            f'<td class="n">{r["e"]}</td><td class="n">{r["p"]}</td><td class="n">{r["gf"]}</td><td class="n">{r["gc"]}</td>'
-            f'<td class="n">{r["gf"] - r["gc"]:+d}</td><td class="col-ultimos"><span class="ultimos">{ult}</span></td></tr>'
-        )
+ZONAS = [  # franjas de la tabla: desde, hasta, clave, símbolo, texto
+    (1, 3, 'ascenso', '▲', 'Ascenso directo'),
+    (4, 11, 'octogonal', '◆', 'Octogonal por el cuarto ascenso'),
+    (12, 16, 'media', '', 'Mitad de tabla'),
+    (17, 20, 'descenso', '▼', 'Descenso'),
+]
+COLUMNAS_TABLA = 11
+
+
+def fichas_racha(ultimos):
+    """Racha en fichas circulares G/E/P; la última, la más reciente, va marcada."""
+    texto = {'G': 'ganado', 'E': 'empatado', 'P': 'perdido'}
+    fichas = ''.join(
+        f'<span class="{x}{" reciente" if i == len(ultimos) - 1 else ""}" title="{texto[x]}">{x}</span>'
+        for i, x in enumerate(ultimos)
+    )
+    return f'<span class="ultimos">{fichas}</span>'
+
+
+def tabla_posiciones():
+    cuerpos = ''
+    for desde, hasta, clave, simbolo, texto in ZONAS:
+        marca = f'<span class="marca-zona" aria-hidden="true">{simbolo}</span> ' if simbolo else ''
+        filas = (f'<tr class="franja-titulo"><th colspan="{COLUMNAS_TABLA}" scope="rowgroup">'
+                 f'{marca}{texto} · {desde}° a {hasta}°</th></tr>')
+        for i in range(desde, hasta + 1):
+            s, r = TABLA[i - 1]
+            tuyo = '<span class="sr"> (tu club)</span>' if s == MI_CLUB else ''
+            clase = ' class="mio"' if s == MI_CLUB else ''
+            filas += (
+                f'<tr{clase}><td class="pos n">{i}</td>'
+                f'<th class="club-col" scope="row">{club_con_escudo(s)}{tuyo}</th>'
+                f'<td class="n pts-col">{3 * r["g"] + r["e"]}</td><td class="n">{r["pj"]}</td><td class="n">{r["g"]}</td>'
+                f'<td class="n">{r["e"]}</td><td class="n">{r["p"]}</td><td class="n">{r["gf"]}</td><td class="n">{r["gc"]}</td>'
+                f'<td class="n">{r["gf"] - r["gc"]:+d}</td><td class="col-ultimos">{fichas_racha(r["ult"][-5:])}</td></tr>'
+            )
+        cuerpos += f'<tbody class="zona-{clave}">{filas}</tbody>'
     cabeza = ''.join(
         f'<th class="n{" pts-col" if a == "Pts" else ""}" scope="col"><abbr title="{t}">{a}</abbr></th>'
         for a, t in (('Pts', 'Puntos'), ('PJ', 'Partidos jugados'), ('G', 'Ganados'), ('E', 'Empatados'), ('P', 'Perdidos'),
                      ('GF', 'Goles a favor'), ('GC', 'Goles en contra'), ('DG', 'Diferencia de gol'))
     )
+    return f'''<div class="region-tabla" role="region" aria-label="Tabla de posiciones, se desplaza hacia el costado" tabindex="0">
+<table class="posiciones"><caption class="sr">{LIGA}, después de la fecha {FECHA - 1}, por zonas</caption>
+<thead><tr><th class="pos n" scope="col"><abbr title="Posición">#</abbr></th><th class="club-col" scope="col">Club</th>{cabeza}<th class="col-ultimos" scope="col">Últimos 5 <span class="reciente-nota">(→ el más reciente)</span></th></tr></thead>
+{cuerpos}</table></div>'''
+
+
+def fila_fixture(local, visitante, hora=None, goles=None):
+    mio = MI_CLUB in (local, visitante)
+    if goles is not None:
+        centro = f'<span class="resultado-fx"><b>{goles[0]}</b> - <b>{goles[1]}</b></span>'
+        cuando = 'Final'
+    else:
+        centro = '<span class="resultado-fx">vs</span>'
+        cuando = hora or 'en el día'
+    tuyo = '<span class="sr"> (tu partido)</span>' if mio else ''
+    return (f'<li class="partido-fx{" mio" if mio else ""}"><span class="hora-fx">{e(cuando)}</span>'
+            f'<span class="local-fx">{e(nombre_corto(local))}{escudo(local, "escudo-chico")}</span>{centro}'
+            f'<span class="visitante-fx">{escudo(visitante, "escudo-chico")}{e(nombre_corto(visitante))}</span>{tuyo}</li>')
+
+
+def fixture():
+    """Agrupado por fecha y, dentro, por día. La hora solo en partidos entre managers (RN-745)."""
+    # Partidos entre managers en la fecha 12: el nuestro (21 h), uno a las 18 h y uno sin horario elegido todavía.
+    horarios = {PROXIMA[0]: HORARIO.split(' ', 1)[1], PROXIMA[1]: '18 h', PROXIMA[2]: 'Horario a definir por el local'}
+    proxima = ''.join(fila_fixture(l, v, horarios.get((l, v))) for l, v in PROXIMA)
+    jugada = ''.join(fila_fixture(l, v, goles=(gl, gv)) for l, gl, v, gv in RESULTADOS[-1])
+    return f'''<section class="fecha-fx" aria-labelledby="fx-{FECHA}"><h3 id="fx-{FECHA}">Fecha {FECHA} · la próxima</h3>
+<h4 class="dia-fx">Sábado</h4><ul class="partidos-fx" role="list">{proxima}</ul></section>
+<section class="fecha-fx" aria-labelledby="fx-{FECHA - 1}"><h3 id="fx-{FECHA - 1}">Fecha {FECHA - 1} · resultados</h3>
+<h4 class="dia-fx">Sábado pasado</h4><ul class="partidos-fx" role="list">{jugada}</ul></section>'''
+
+
+def pantalla_tabla():
     cuerpo = f'''<h1 class="titulo-pantalla">Tabla de posiciones</h1>
 <section class="seccion"><header><span class="volanta">{LIGA}</span><h2>Después de la fecha {FECHA - 1}</h2></header>
-<div class="region-tabla" role="region" aria-label="Tabla de posiciones, se desplaza hacia el costado" tabindex="0">
-<table class="posiciones"><caption class="sr">{LIGA}, después de la fecha {FECHA - 1}</caption>
-<thead><tr><th class="pos n" scope="col"><abbr title="Posición">#</abbr></th><th class="club-col" scope="col">Club</th>{cabeza}<th class="col-ultimos" scope="col">Últimos 5</th></tr></thead>
-<tbody>{filas}</tbody></table></div>
-<ul class="leyenda">
-<li class="zona-ascenso"><span class="muestra" aria-hidden="true"></span>▲ 1° a 3°: ascenso directo</li>
-<li class="zona-octogonal"><span class="muestra" aria-hidden="true"></span>◆ 4° a 11°: octogonal por el cuarto ascenso</li>
-<li class="zona-descenso"><span class="muestra" aria-hidden="true"></span>▼ 17° a 20°: descenso</li>
-</ul></section>'''
+{tabla_posiciones()}</section>
+<section class="seccion" id="fixture"><header><span class="volanta">Calendario y resultados</span><h2>Fixture</h2></header>
+<p class="suave">Solo los partidos entre managers tienen horario: los demás se juegan en el día.</p>
+{fixture()}</section>'''
     pagina('tabla.html', 'Tabla de posiciones', cuerpo, 'tabla')
 
 
-# --------------------------------------------------------------- Menú principal: dos propuestas (hito M2)
+# --------------------------------------------------------------- Menú principal: propuestas B y C (hitos M2 y M3)
+# La opción A se retiró (RN-740). Todas las propuestas ofrecen las mismas doce secciones (RN-741).
 
 def nombre_corto(sigla):
-    return CLUB[sigla][1].split(' ', 1)[1]
+    """Sin la primera palabra del nombre (Atlético, Unión...) ni un "de" suelto: Defensores de Loma Chata → Loma Chata."""
+    resto = CLUB[sigla][1].split(' ', 1)[1]
+    return resto[3:] if resto.startswith('de ') else resto
 
 
-def estados_menu():
-    """Textos de estado ficticios, coherentes con los datos de la maqueta."""
+def secciones():
+    """Las doce secciones del menú, en orden de importancia: rótulo, destino ('' = sin pantalla), estado, alerta."""
     r = dict(TABLA)[MI_CLUB]
     l, gl, v, gv = PARTIDOS_MIOS[-1]
-    moral_baja = sum(1 for j in PLANTEL if j[6] <= 1)
     por_vencer = sum(1 for j in PLANTEL if j[7] == 'medio año')
     return {
-        'plantel': f'{len(PLANTEL)} jugadores · {moral_baja} con la moral baja',
-        'alineacion': '4-3-3, el once de la fecha pasada',
-        'tactica': 'Jugarlo parejo, esperar en mitad de cancha',
-        'tabla': f'{POSICION[MI_CLUB]}° con {3 * r["g"] + r["e"]} puntos, zona de octogonal',
-        'calendario': f'{ETAPA}: fecha {FECHA} de {FECHAS}',
-        'resultados': f'Última: {nombre_corto(l)} {gl}, {nombre_corto(v)} {gv}',
-        'fichajes': '2 negociaciones abiertas',
-        'ojeadores': '1 informe nuevo',
-        'contratos': f'{por_vencer} vencen en medio año',
-        'caja': 'Margen justo para sueldos',
-        'estadio': 'Estadio del Bajo: el sábado, de local',
-        'dirigencia': 'Pide entrar al octogonal',
-        'noticias': '3 novedades esta semana',
-        'mercado': '2 negociaciones · 1 informe nuevo',
-        'plantel_b': f'{len(PLANTEL)} jugadores · {por_vencer} contratos por vencer',
-        'tactica_b': '4-3-3 · Jugarlo parejo',
+        'formacion': ('Formación y táctica', 'previa.html', '4-3-3 · Jugarlo parejo', False),
+        'plantel': ('Plantel', 'plantel.html', f'{len(PLANTEL)} jugadores · 1 lesionado', False),
+        'entrenamiento': ('Entrenamiento', '', 'Semana liviana: se juega el sábado', False),
+        'tabla': ('Tabla', 'tabla.html', f'{POSICION[MI_CLUB]}° con {3 * r["g"] + r["e"]} puntos, zona de octogonal', False),
+        'calendario': ('Calendario y resultados', 'tabla.html#fixture', f'Última: {nombre_corto(l)} {gl}, {nombre_corto(v)} {gv}', False),
+        'noticias': ('Noticias', 'club.html#novedades', '3 novedades esta semana', True),
+        'fichajes': ('Fichajes', '', '2 negociaciones abiertas', False),
+        'ojeadores': ('Ojeadores', '', '1 informe nuevo', True),
+        'contratos': ('Contratos', '', f'{por_vencer} vencen en medio año', True),
+        'caja': ('Caja', '', 'Margen justo para sueldos', False),
+        'estadio': ('Estadio', '', 'Estadio del Bajo: el sábado, de local', False),
+        'dirigencia': ('Dirigencia', 'club.html#dirigencia', 'Pide entrar al octogonal', False),
     }
 
 
 def enlace_menu(rotulo, destino, estado, alerta=False, dibujo=''):
     """Destino con pantalla en la maqueta: href. Sin pantalla: aviso de maqueta con el nombre de la sección.
-    Con dibujo (opción B), el rótulo y el estado van en una placa debajo del objeto, dentro del mismo enlace."""
-    if '.html' in destino:
-        atributos = f'href="{destino}"'
-    else:
-        atributos = f'href="#" data-maqueta="{e(rotulo)}"'
+    Con dibujo, el rótulo y el estado van en una placa debajo del dibujo, dentro del mismo enlace."""
+    atributos = f'href="{destino}"' if destino else f'href="#" data-maqueta="{e(rotulo)}"'
     marca = '<span class="alerta" aria-hidden="true">!</span>' if alerta else ''
     texto = f'<span class="rotulo">{e(rotulo)}</span><span class="sr">: </span><span class="estado">{e(estado)}</span>'
     if dibujo:
@@ -783,44 +938,50 @@ def enlace_menu(rotulo, destino, estado, alerta=False, dibujo=''):
 
 
 def panel_partido(clase=''):
+    """Próximo partido contra otro manager (RN-745): horario elegido por el local y nombre del manager rival."""
     return f'''<section class="menu-partido proximo seccion destacada {clase}" aria-labelledby="t-prox">
-<header><span class="volanta">Fecha {FECHA} · Sábado 15:30</span><h2 id="t-prox">Próximo partido</h2></header>
+<header><span class="volanta">{ETAPA} · Fecha {FECHA} de {FECHAS}</span><h2 id="t-prox">Próximo partido</h2></header>
 <div class="duelo"><span class="equipo">{escudo(MI_CLUB)}{e(CLUB[MI_CLUB][1])}</span><span class="vs">vs</span>
-<span class="equipo">{escudo(RIVAL)}{e(CLUB[RIVAL][1])}</span></div>
-<p class="datos-partido">De local, en el Estadio del Bajo · el rival viene {POSICION[RIVAL]}°</p>
-<a class="boton volumen jugar" href="previa.html" aria-describedby="jugar-d">Jugar</a>
-<p id="jugar-d" class="nota-jugar">Antes, la previa: formación e indicaciones.</p>
+<span class="equipo">{escudo(RIVAL)}{e(CLUB[RIVAL][1])}<span class="manager">Manager: {e(MANAGER_RIVAL)}</span></span></div>
+<p class="datos-partido"><b>Se juega el {HORARIO}</b>. Lo elegiste vos: jugamos de local, en el Estadio del Bajo.</p>
+<a class="boton volumen jugar" href="previa.html" aria-describedby="jugar-d">Preparar el partido</a>
+<p id="jugar-d" class="nota-jugar">Si a esa hora no estás, lo dirige tu asistente.</p>
 </section>'''
 
 
 def menu_a():
-    """La opción A se retiró (RN-739): queda solo un aviso, sin enlaces que lleven a ella."""
+    """La opción A se retiró (RN-740): queda solo un aviso, sin enlaces que lleven a ella."""
     cuerpo = '''<h1 class="titulo-pantalla">Propuesta en rediseño</h1>
 <section class="seccion"><p>La opción A del menú principal se está rediseñando y por ahora no está disponible.</p>
 <p>Mientras tanto, mirá las otras propuestas del menú desde la <a href="index.html">portada</a>.</p></section>'''
     pagina('menu-a.html', 'Propuesta en rediseño', cuerpo, clase_body='portada')
 
 
-# Objetos de la oficina, en orden de importancia (es el orden del foco). Posición en la escena de la PC, en %.
+# Opción B: un objeto de la oficina por sección, en orden de importancia (es el orden del foco).
+# Lugar en la escena de la PC y posición en % (x, y, ancho, alto).
 OBJETOS_B = [
-    ('pizarron', 'Táctica y alineación', 'previa.html', 'tactica_b', False, 'pared', (20, 7, 13.75, 35)),
-    ('carpeta', 'Plantel', 'plantel.html', 'plantel_b', True, 'escritorio', (63, 63, 14.5, 32)),
-    ('planilla', 'Tabla', 'tabla.html', 'tabla', False, 'pared', (66.25, 7, 13.75, 35)),
-    ('telefono', 'Mercado', 'mercado', 'mercado', True, 'escritorio', (2, 63, 13, 32)),
-    ('diario', 'Noticias', 'club.html#novedades', 'noticias', True, 'escritorio', (16.5, 63, 14.5, 32)),
-    ('agenda', 'Calendario', 'calendario', 'calendario', False, 'escritorio', (47, 63, 14.5, 32)),
-    ('sobre', 'Caja', 'caja', 'caja', False, 'escritorio', (32.5, 63, 13, 32)),
-    ('ventana', 'Estadio', 'estadio', 'estadio', False, 'lateral', (1.5, 9, 15.5, 44)),
+    ('formacion', 'pizarron', 'pared', (20, 7, 13.75, 35)),
+    ('plantel', 'carpeta', 'escritorio', (53.1, 63, 12.3, 32)),
+    ('entrenamiento', 'silbato', 'escritorio', (66, 63, 12.3, 32)),
+    ('tabla', 'planilla', 'pared', (66.25, 7, 13.75, 35)),
+    ('calendario', 'agenda', 'escritorio', (40.2, 63, 12.3, 32)),
+    ('noticias', 'diario', 'escritorio', (14.4, 63, 12.3, 32)),
+    ('fichajes', 'telefono', 'escritorio', (1.5, 63, 12.3, 32)),
+    ('ojeadores', 'prismaticos', 'escritorio', (78.9, 63, 12.3, 32)),
+    ('contratos', 'fichero', 'lateral-der', (83, 31, 14.5, 30)),
+    ('caja', 'sobre', 'escritorio', (27.3, 63, 12.3, 32)),
+    ('estadio', 'ventana', 'lateral', (1.5, 9, 15.5, 44)),
+    ('dirigencia', 'cuadro', 'lateral-der', (82.5, 3, 15.5, 27)),
 ]
 
 
 def menu_b():
-    s = estados_menu()
+    s = secciones()
     items = ''
-    for nombre, rotulo, destino, estado, alerta, lugar, (x, y, w, h) in OBJETOS_B:
-        enlace = enlace_menu(rotulo, destino, s[estado], alerta, objeto(nombre))
-        items += (f'<li class="objeto objeto-{nombre} en-{lugar}" '
-                  f'style="--x:{x}%;--y:{y}%;--w:{w}%;--h:{h}%">{enlace}</li>')
+    for clave, dibujo, lugar, (x, y, w, h) in OBJETOS_B:
+        rotulo, destino, estado, alerta = s[clave]
+        items += (f'<li class="objeto objeto-{dibujo} en-{lugar}" style="--x:{x}%;--y:{y}%;--w:{w}%;--h:{h}%">'
+                  f'{enlace_menu(rotulo, destino, estado, alerta, objeto(dibujo))}</li>')
     cuerpo = f'''<h1 class="sr">Menú principal, opción B: La oficina del técnico</h1>
 <div class="oficina">
 {ESCENA}
@@ -830,10 +991,52 @@ def menu_b():
     pagina('menu-b.html', 'Menú principal (opción B)', cuerpo, clase_body='menu-pantalla menu-b', menu='b')
 
 
+# Opción C (RN-747): las secciones como fichas paradas por líneas en la cancha; el palco, afuera.
+# Posición del título y de cada ficha en la cancha de la PC, en % (x, y). Arco propio a la izquierda.
+LINEAS_C = [
+    ('casa', 'Los de casa', (2.5, 1.5), [('formacion', 14.5, 30), ('plantel', 4, 9), ('entrenamiento', 4, 52), ('contratos', 14.5, 73)]),
+    ('torneo', 'El torneo', (34, 1.5), [('tabla', 32, 9), ('calendario', 51.5, 13), ('estadio', 41, 73)]),
+    ('ataque', 'Salir a buscar', (71, 1.5), [('fichajes', 69.5, 22), ('ojeadores', 80.5, 57)]),
+]
+PALCO_C = ('palco', 'El palco', ['dirigencia', 'caja', 'noticias'])
+MARCA_O = '<span class="marca-o"></span>'
+
+
+def ficha_c(clave, s, x=None, y=None):
+    rotulo, destino, estado, alerta = s[clave]
+    pos = f' style="--x:{x}%;--y:{y}%"' if x is not None else ''
+    return f'<li class="ficha-c"{pos}>{enlace_menu(rotulo, destino, estado, alerta, MARCA_O)}</li>'
+
+
+def linea_c(clave, titulo, fichas, s, pos_titulo=None):
+    estilo = f' style="--x:{pos_titulo[0]}%;--y:{pos_titulo[1]}%"' if pos_titulo else ''
+    items = ''.join(ficha_c(c, s, *xy) for c, *xy in fichas)
+    return (f'<section class="linea-c linea-{clave}" aria-labelledby="g-{clave}">'
+            f'<h2 id="g-{clave}" class="linea-titulo"{estilo}>{e(titulo)}</h2>'
+            f'<ul class="fichas-c" role="list">{items}</ul></section>')
+
+
+def menu_c():
+    s = secciones()
+    lineas = ''.join(linea_c(clave, titulo, fichas, s, pos) for clave, titulo, pos, fichas in LINEAS_C)
+    clave, titulo, fichas = PALCO_C
+    palco = linea_c(clave, titulo, [(c,) for c in fichas], s)
+    cuerpo = f'''<h1 class="sr">Menú principal, opción C: La pizarra</h1>
+<div class="pizarra-c">
+{panel_partido('cartel')}
+<nav class="pizarra-nav" aria-label="Secciones del club">
+<div class="cancha-c">{cancha_apaisada()}{lineas}</div>
+{palco}
+</nav>
+</div>'''
+    pagina('menu-c.html', 'Menú principal (opción C)', cuerpo, clase_body='menu-pantalla menu-c', menu='c')
+
+
 if __name__ == '__main__':
     portada()
     menu_a()
     menu_b()
+    menu_c()
     pantalla_club()
     pantalla_plantel()
     pantalla_previa()

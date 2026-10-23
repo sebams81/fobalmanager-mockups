@@ -129,16 +129,18 @@ svg.icono {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: auto 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.25rem;
   align-items: center;
 }
 
+/* En el celular la leyenda ocupa su propia fila: los cuatro temas entran a lo ancho. */
 .selector-tema legend {
   float: left;
+  grid-column: 1 / -1;
   font-size: 0.875rem;
   color: var(--c-texto-suave);
-  padding-right: 0.5rem;
+  padding: 0 0 0.25rem;
 }
 
 .selector-tema label {
@@ -510,7 +512,7 @@ main {
   place-items: center;
   font-family: var(--f-numeros);
   font-weight: 700;
-  border-radius: var(--radio-chip);
+  border-radius: 50%;
   border: 2px solid var(--c-borde-control);
 }
 
@@ -847,7 +849,7 @@ tr.mio {
   place-items: center;
   font-size: 0.75rem;
   font-weight: 700;
-  border-radius: var(--radio-chip);
+  border-radius: 50%;
   border: 1px solid var(--c-borde-control);
 }
 
@@ -867,36 +869,39 @@ tr.mio {
   display: none;
 }
 
-.leyenda {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0;
-  display: grid;
-  gap: 0.35rem;
-  font-size: 0.9375rem;
+/* Cada zona de la tabla es una franja con su propio encabezado (la leyenda va ahí, no al pie). */
+.posiciones .franja-titulo th {
+  position: sticky;
+  left: 0;
+  background: var(--c-superficie-2);
+  border-left: 4px solid var(--c-borde-control);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
 }
 
-.leyenda li {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.posiciones .zona-ascenso .franja-titulo th {
+  border-left-color: var(--c-zona-ascenso);
 }
 
-.leyenda .muestra {
-  width: 4px;
-  height: 1.25rem;
+.posiciones .zona-octogonal .franja-titulo th {
+  border-left-color: var(--c-zona-octogonal);
 }
 
-.leyenda .zona-ascenso .muestra {
-  background: var(--c-zona-ascenso);
+.posiciones .zona-descenso .franja-titulo th {
+  border-left-color: var(--c-zona-descenso);
 }
 
-.leyenda .zona-octogonal .muestra {
-  background: var(--c-zona-octogonal);
+.ultimos span.reciente {
+  outline: 2px solid var(--c-texto);
+  outline-offset: 1px;
 }
 
-.leyenda .zona-descenso .muestra {
-  background: var(--c-zona-descenso);
+.reciente-nota {
+  font-weight: 400;
 }
 
 /* ---------- Previa y táctica ---------- */
@@ -1042,6 +1047,12 @@ tr.mio {
 .fila-select {
   display: grid;
   gap: 0.35rem;
+  min-width: 0;
+}
+
+.fila-select select {
+  width: 100%;
+  min-width: 0;
 }
 
 select {
@@ -1424,7 +1435,12 @@ details.plan .resumen-plan {
   }
 
   .selector-tema {
-    grid-template-columns: auto repeat(3, 7.5rem);
+    grid-template-columns: auto repeat(4, 7rem);
+  }
+
+  .selector-tema legend {
+    grid-column: auto;
+    padding: 0 0.5rem 0 0;
   }
 
   .club .marca {
@@ -1651,10 +1667,12 @@ details.plan .resumen-plan {
     inset calc(var(--vol-bisel) * -1) calc(var(--vol-bisel) * -1) 0 var(--vol-sombra),
     var(--vol-dx) var(--vol-prof) 0 var(--vol-base);
   margin: 0 var(--vol-dx) var(--vol-prof) 0;
-  font-family: var(--f-titular);
+  font-family: var(--vol-fuente, var(--f-titular));
   font-weight: var(--peso-titular);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  text-align: center;
 }
 
 .boton.volumen:focus-visible {
@@ -1740,97 +1758,6 @@ details.plan .resumen-plan {
   line-height: 1;
 }
 
-/* ---------- Opción A: Centro de mando ---------- */
-
-.centro-mando {
-  display: grid;
-  gap: 1rem;
-}
-
-.centro-mando .menu-partido {
-  margin: 0;
-}
-
-.areas {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-}
-
-.area {
-  background: var(--c-superficie);
-  border: var(--borde-ancho) var(--borde-estilo) var(--c-borde);
-  border-top: var(--panel-barra-borde);
-  border-radius: var(--radio-tarjeta);
-  box-shadow: var(--panel-bisel);
-  overflow: hidden;
-  min-width: 0;
-}
-
-.area-titulo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-  padding: 0.5rem 0.6rem;
-  background: var(--panel-barra-bg);
-  color: var(--panel-barra-tx);
-  font-size: calc(0.9rem * var(--esc-titular));
-}
-
-/* Chapita clara detrás del pictograma: se lee igual sobre la barra clara de Retro y la negra de Diario. */
-.area-titulo .pictograma {
-  width: 2.25rem;
-  height: 2.25rem;
-  flex: none;
-  padding: 3px;
-  background: var(--c-superficie);
-  border: 2px solid var(--il-tinta);
-  border-radius: var(--radio-control);
-}
-
-.area-enlaces {
-  list-style: none;
-  margin: 0;
-  padding: 0.5rem;
-  display: grid;
-  gap: 0.4rem;
-}
-
-.area-enlaces a {
-  position: relative;
-  display: block;
-  min-height: 48px;
-  padding: 0.45rem 0.6rem;
-  background: var(--enlace-menu-bg);
-  border: var(--enlace-menu-borde);
-  border-radius: var(--radio-control);
-  color: var(--c-texto);
-  text-decoration: none;
-  transition: background var(--transicion);
-}
-
-.area-enlaces a .rotulo {
-  font-size: calc(0.95rem * var(--esc-titular));
-  color: var(--c-acento-2);
-}
-
-.area-enlaces a .estado {
-  color: var(--c-texto-suave);
-}
-
-.area-enlaces a:hover .rotulo {
-  text-decoration: underline;
-}
-
-.area-enlaces .alerta {
-  top: 0.4rem;
-  right: 0.4rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  font-size: 0.75rem;
-}
-
 /* ---------- Opción B: La oficina del técnico ---------- */
 
 .oficina .escena {
@@ -1912,63 +1839,11 @@ details.plan .resumen-plan {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .areas {
-    gap: 1rem;
-  }
-
-  .area-titulo {
-    font-size: calc(1.05rem * var(--esc-titular));
-  }
-
-  .area-titulo .pictograma {
-    width: 2.75rem;
-    height: 2.75rem;
-  }
 }
 
 /* ---------- Menús, 64rem: composición completa ---------- */
 
 @media (min-width: 64rem) {
-  /* A: el partido al centro, ocupando las dos filas; las cuatro áreas alrededor. */
-  .centro-mando {
-    grid-template-columns: minmax(0, 1fr) minmax(24rem, 1.15fr) minmax(0, 1fr);
-    grid-template-rows: auto auto;
-    gap: 1rem;
-  }
-
-  /* El nav ocupa toda la grilla y la hereda (subgrid): así conserva su rol y sus áreas rodean al partido. */
-  .centro-mando .areas {
-    grid-column: 1 / -1;
-    grid-row: 1 / 3;
-    grid-template-columns: subgrid;
-    grid-template-rows: subgrid;
-    gap: 1rem;
-  }
-
-  .centro-mando .menu-partido {
-    grid-column: 2;
-    grid-row: 1 / 3;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 1.5rem;
-  }
-
-  .centro-mando .menu-partido .escudo {
-    width: 5rem;
-    height: 5.75rem;
-  }
-
-  .area-equipo { grid-area: 1 / 1; }
-  .area-competencia { grid-area: 1 / 3; }
-  .area-mercado { grid-area: 2 / 1; }
-  .area-club { grid-area: 2 / 3; }
-
-  .area-enlaces a {
-    padding: 0.55rem 0.75rem;
-  }
-
   /* B: escena de la oficina con los objetos ubicados en el espacio. */
   .oficina {
     position: relative;
@@ -2011,17 +1886,36 @@ details.plan .resumen-plan {
   }
 
   .menu-partido.puerta .escudo {
-    width: 2.75rem;
-    height: 3.1rem;
+    width: 2.3rem;
+    height: 2.6rem;
   }
 
   .puerta .datos-partido {
-    font-size: 0.8125rem;
-    margin-bottom: 0.6rem;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    margin-bottom: 0.45rem;
+  }
+
+  /* La puerta es chica: volanta, título, escudos y nombre del manager, más compactos. */
+  .menu-partido.puerta > header {
+    margin-bottom: 0.2rem;
+  }
+
+  .puerta .volanta {
+    font-size: 0.6875rem;
+  }
+
+  .puerta h2 {
+    font-size: calc(1.05rem * var(--esc-titular));
+  }
+
+  .puerta .manager {
+    font-size: 0.6875rem;
   }
 
   .puerta .boton.jugar {
     min-height: 52px;
+    font-size: calc(1rem * var(--esc-titular));
   }
 
   .puerta .nota-jugar {
@@ -2073,5 +1967,612 @@ details.plan .resumen-plan {
   .en-escritorio .il {
     transform: perspective(40rem) rotateX(32deg);
     transform-origin: center bottom;
+  }
+
+  .en-lateral-der .il {
+    transform: perspective(40rem) rotateY(-20deg);
+    transform-origin: right center;
+  }
+}
+
+/* ======================================================================
+   Hito M3: opción C "La pizarra", partido contra un manager, formación con cancha,
+   pelota parada, posiciones con fixture y plantel con barras de nivel.
+   ====================================================================== */
+
+.menu-partido .manager {
+  display: block;
+  font-family: var(--f-cuerpo);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.8125rem;
+  color: var(--c-texto-suave);
+}
+
+/* ---------- Cancha a tiza (SVG) ---------- */
+
+.cancha-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cancha-svg .cesped {
+  fill: var(--cancha-fondo);
+}
+
+.cancha-svg .franja {
+  fill: var(--cancha-franja);
+}
+
+.cancha-svg :is(.cal, .deco) {
+  fill: none;
+  stroke: var(--cancha-linea);
+  stroke-width: var(--cancha-linea-ancho);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.cancha-svg .deco {
+  stroke: var(--cancha-deco);
+}
+
+.cancha-svg .punteada {
+  stroke-dasharray: 8 7;
+}
+
+.cancha-svg .cal-punto {
+  fill: var(--cancha-linea);
+}
+
+/* ---------- Opción C: La pizarra ---------- */
+
+/* El cartel es papel pegado con cinta: adentro, los colores de texto son los del papel. */
+.menu-partido.cartel {
+  --c-texto: var(--cartel-tx);
+  --c-texto-suave: var(--cartel-suave);
+  --volanta-color: var(--cartel-volanta);
+  position: relative;
+  margin: 0.5rem 0 1.25rem;
+  background: var(--cartel-bg);
+  color: var(--cartel-tx);
+  border: var(--cartel-borde);
+  border-radius: 2px;
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.25);
+  transform: rotate(-0.6deg);
+}
+
+.menu-partido.cartel::before,
+.menu-partido.cartel::after {
+  content: '';
+  position: absolute;
+  top: -0.6rem;
+  width: 4.5rem;
+  height: 1.3rem;
+  background: var(--cartel-cinta);
+}
+
+.menu-partido.cartel::before {
+  left: 1rem;
+  transform: rotate(-4deg);
+}
+
+.menu-partido.cartel::after {
+  right: 1rem;
+  transform: rotate(5deg);
+}
+
+.cancha-c > .cancha-svg {
+  display: none;
+}
+
+.cancha-c {
+  background: var(--cancha-fondo);
+  border: var(--cancha-linea-ancho) solid var(--cancha-linea);
+  border-radius: var(--radio-tarjeta);
+  padding: 0 0.75rem;
+}
+
+.linea-c {
+  padding: 0.75rem 0 1rem;
+}
+
+.cancha-c .linea-c + .linea-c {
+  border-top: var(--cancha-linea-ancho) solid var(--cancha-linea);
+}
+
+.cancha-c .linea-torneo {
+  background: var(--cancha-franja);
+  margin: 0 -0.75rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.linea-titulo {
+  font-size: calc(1.15rem * var(--esc-titular));
+  color: var(--cancha-linea);
+  margin: 0 0 0.6rem;
+}
+
+.fichas-c {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.ficha-c a {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 100%;
+  color: var(--rotulo-tx);
+  text-decoration: none;
+}
+
+.ficha-c .dibujo {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.marca-o {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 3px solid var(--cancha-linea);
+  border-radius: 50%;
+}
+
+.ficha-c .placa {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0.4rem 0.5rem;
+  background: var(--rotulo-bg);
+  border: var(--rotulo-borde);
+  border-radius: var(--rotulo-radio);
+}
+
+.ficha-c .estado {
+  color: var(--rotulo-estado);
+}
+
+.ficha-c a:hover .rotulo {
+  text-decoration: underline;
+}
+
+.ficha-c .alerta {
+  top: -0.6rem;
+  right: -0.4rem;
+}
+
+/* El palco va afuera de la línea de cal. */
+.linea-palco {
+  margin-top: 0.5rem;
+  border-top: var(--cancha-linea-ancho) dashed var(--c-borde-control);
+}
+
+.linea-palco .linea-titulo {
+  color: var(--c-texto);
+}
+
+.linea-palco .marca-o {
+  border-color: var(--c-borde-control);
+}
+
+/* ---------- Formación con cancha y pelota parada ---------- */
+
+.rival-previa {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.cancha-formacion {
+  position: relative;
+  aspect-ratio: 72 / 100;
+  max-height: 44rem;
+  margin: 0 auto;
+  border-radius: var(--radio-control);
+  overflow: hidden;
+}
+
+.cancha-formacion > .cancha-svg {
+  position: absolute;
+  inset: 0;
+}
+
+.cancha-formacion .pizarra {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 0.5rem 0.4rem;
+}
+
+/* Cada línea, centrada: el arquero solo no se estira a todo el ancho. */
+.cancha-formacion .linea-pizarra ul {
+  grid-auto-columns: minmax(0, 7.5rem);
+  justify-content: center;
+}
+
+.cancha-formacion .ficha-pizarra {
+  background: var(--rotulo-bg);
+  border: var(--rotulo-borde);
+  border-radius: var(--rotulo-radio);
+  color: var(--rotulo-estado);
+}
+
+.cancha-formacion .ficha-pizarra b {
+  color: var(--rotulo-tx);
+}
+
+.cancha-formacion .ficha-pizarra .sigla,
+.cancha-formacion .ficha-pizarra .frescura {
+  display: block;
+  color: var(--rotulo-estado);
+  font-size: 0.75rem;
+}
+
+.nota-cancha {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+}
+
+.pelota-parada {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.a-la-cancha p {
+  margin: 0.5rem 0 0;
+  text-align: center;
+}
+
+/* ---------- Fixture ---------- */
+
+.fecha-fx + .fecha-fx {
+  margin-top: 1.5rem;
+}
+
+.fecha-fx h3 {
+  margin-bottom: 0.25rem;
+}
+
+.dia-fx {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-texto-suave);
+}
+
+.partidos-fx {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.partido-fx {
+  display: grid;
+  grid-template-columns: 5.25rem minmax(0, 1fr) 3.25rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 48px;
+  padding: 0.3rem 0.25rem;
+  border-bottom: 1px solid var(--c-borde);
+  font-size: 0.9375rem;
+}
+
+.partido-fx.mio {
+  background: var(--c-superficie-2);
+  font-weight: 700;
+}
+
+.hora-fx {
+  font-family: var(--f-numeros);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  color: var(--c-texto-suave);
+}
+
+.partido-fx.mio .hora-fx {
+  color: var(--c-texto);
+}
+
+.local-fx,
+.visitante-fx {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  line-height: 1.2;
+}
+
+.local-fx {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.resultado-fx {
+  text-align: center;
+  font-family: var(--f-numeros);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-texto-suave);
+}
+
+.resultado-fx b {
+  color: var(--c-texto);
+}
+
+/* ---------- Plantel: pestañas y barras de nivel ---------- */
+
+.modo-atributos {
+  max-width: 22rem;
+  margin-bottom: 1rem;
+}
+
+.pestanas-plantel {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.25rem;
+  margin: 0 -1rem 0.75rem;
+  padding: 0 1rem;
+  border-bottom: var(--borde-ancho) var(--borde-estilo) var(--c-borde);
+}
+
+.pestanas-plantel button {
+  flex: none;
+  min-height: 48px;
+  padding: 0 0.9rem;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: none;
+  color: var(--c-texto-suave);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pestanas-plantel button[aria-selected='true'] {
+  color: var(--c-texto);
+  border-bottom-color: var(--c-acento);
+}
+
+.panel-plantel[hidden] {
+  display: none;
+}
+
+.dorsal {
+  display: inline-block;
+  min-width: 1.6rem;
+  font-family: var(--f-numeros);
+  font-weight: 700;
+  color: var(--c-texto-suave);
+}
+
+.fila-nombre {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.jugador-fijo {
+  font-weight: 600;
+}
+
+.chip.lesion {
+  color: var(--c-roja);
+  border-color: var(--c-roja);
+  white-space: normal;
+}
+
+.atributos-tabla .jugador-col {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 9.5rem;
+  background: var(--c-superficie);
+  font-weight: 400;
+}
+
+.atributos-tabla .grupo th {
+  position: sticky;
+  left: 0;
+}
+
+.atributos-tabla td {
+  min-width: 6.5rem;
+}
+
+/* La barra dice lo mismo que la palabra (RN-106): largo y tono crecen con el nivel; diez segmentos. */
+.nivel {
+  display: inline-grid;
+  gap: 3px;
+  min-width: 6rem;
+}
+
+.nivel .barra {
+  display: block;
+  min-width: 5.5rem;
+  height: 7px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--nivel-fuerte) calc(var(--n) * 10%), var(--nivel-debil)) calc(var(--n) * 10%),
+    var(--nivel-vacio) 0
+  );
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 calc(10% - 2px), transparent calc(10% - 2px) 10%);
+  mask: repeating-linear-gradient(90deg, #000 0 calc(10% - 2px), transparent calc(10% - 2px) 10%);
+}
+
+.atributos dd .nivel {
+  text-align: right;
+}
+
+.atributos dd .barra {
+  justify-self: end;
+}
+
+@media (forced-colors: active) {
+  .nivel .barra {
+    background: linear-gradient(90deg, CanvasText calc(var(--n) * 10%), transparent 0);
+  }
+}
+
+/* ---------- M3, 48rem ---------- */
+
+@media (min-width: 48rem) {
+  .fichas-c {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pelota-parada {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cancha-formacion {
+    max-width: 30rem;
+  }
+}
+
+/* ---------- M3, 64rem: la cancha completa ---------- */
+
+@media (min-width: 64rem) {
+  .menu-partido.cartel {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr) 17rem;
+    align-items: center;
+    gap: 0 1.25rem;
+    max-width: 62rem;
+    margin: 0.75rem auto 1.5rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .cartel > header {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    margin: 0;
+  }
+
+  .cartel .duelo {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    margin: 0;
+  }
+
+  .cartel .duelo .escudo {
+    width: 3rem;
+    height: 3.4rem;
+  }
+
+  .cartel .datos-partido,
+  .cartel .jugar,
+  .cartel .nota-jugar {
+    grid-column: 3;
+  }
+
+  .cartel .datos-partido {
+    margin: 0 0 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .cartel .jugar {
+    min-height: 52px;
+    font-size: calc(1.05rem * var(--esc-titular));
+  }
+
+  .cartel .nota-jugar {
+    font-size: 0.75rem;
+  }
+
+  .cancha-c {
+    position: relative;
+    aspect-ratio: 1.9;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .cancha-c > .cancha-svg {
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+
+  .cancha-c .linea-c,
+  .cancha-c .linea-c + .linea-c,
+  .cancha-c .linea-torneo {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+  }
+
+  .cancha-c .linea-titulo {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    margin: 0;
+    padding: 0 0.4rem;
+    background: var(--c-fondo);
+    font-size: calc(1rem * var(--esc-titular));
+  }
+
+  .cancha-c .fichas-c {
+    display: block;
+  }
+
+  .cancha-c .ficha-c {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 15%;
+  }
+
+  .cancha-c .ficha-c .rotulo {
+    font-size: calc(0.875rem * var(--esc-titular));
+  }
+
+  .cancha-c .ficha-c .estado {
+    font-size: 0.75rem;
+  }
+
+  .linea-palco {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0.75rem 0 0;
+  }
+
+  .linea-palco .linea-titulo {
+    margin: 0;
+  }
+
+  .linea-palco .fichas-c {
+    grid-template-columns: repeat(3, minmax(0, 15rem));
+  }
+
+  /* Formación: la cancha al 60 % y el banco al costado; pelota parada en una fila. */
+  .previa-cancha {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .pelota-parada {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .cancha-formacion {
+    max-width: none;
   }
 }

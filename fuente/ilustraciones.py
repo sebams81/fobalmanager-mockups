@@ -139,9 +139,57 @@ CARPETA = (
     + '<rect class="oscuro sin" x="122" y="58" width="5" height="52"/>'
 )
 
+SILBATO = (
+    '<ellipse class="sombra" cx="86" cy="104" rx="56" ry="8"/>'
+    '<path class="cordon" d="M44 52C20 44 14 18 34 10s52 4 62 22"/>'
+    '<circle class="metal-2" cx="44" cy="52" r="8"/><circle class="tinta" cx="44" cy="52" r="3"/>'
+    '<circle class="metal" cx="64" cy="74" r="28"/>'
+    '<path class="metal" d="M80 54h52a7 7 0 0 1 7 7v14a7 7 0 0 1-7 7H86z"/>'
+    '<rect class="tinta" x="96" y="54" width="14" height="6"/>'
+    '<path class="luz" d="M46 64a20 20 0 0 1 22-10l-4 7a13 13 0 0 0-13 6z"/>'
+    '<path class="luz" d="M90 58h38v5H90z"/>'
+)
+
+PRISMATICOS = (
+    '<ellipse class="sombra" cx="84" cy="106" rx="64" ry="8"/>'
+    '<path class="cordon" d="M30 44C14 30 22 8 44 8h72c22 0 30 22 14 36"/>'
+    '<rect class="metal" x="34" y="20" width="30" height="18" rx="4"/><rect class="metal" x="96" y="20" width="30" height="18" rx="4"/>'
+    '<rect class="metal-2" x="26" y="34" width="46" height="66" rx="12"/><rect class="metal-2" x="88" y="34" width="46" height="66" rx="12"/>'
+    '<rect class="metal" x="70" y="44" width="20" height="18" rx="4"/><rect class="tinta" x="75" y="36" width="10" height="32" rx="3"/>'
+    '<ellipse class="vidrio" cx="49" cy="96" rx="18" ry="7"/><ellipse class="vidrio" cx="111" cy="96" rx="18" ry="7"/>'
+    '<path class="luz" d="M32 44h8v44h-8zM94 44h8v44h-8z"/>'
+)
+
+FICHERO = (
+    '<rect class="sombra" x="46" y="14" width="84" height="104"/>'
+    '<rect class="metal" x="38" y="6" width="84" height="106"/>'
+    '<path class="luz" d="M40 8h80v6H40z"/>'
+    + ''.join(
+        f'<rect class="metal-2" x="46" y="{y}" width="68" height="27"/>'
+        f'<rect class="papel" x="69" y="{y + 5}" width="22" height="8"/>'
+        f'<rect class="tinta" x="71" y="{y + 18}" width="18" height="4"/>'
+        for y in (16, 49, 82)
+    )
+    + '<path class="papel" d="M50 6V0h16v6M84 6V-2h16v8"/>'
+)
+
+CUADRO = (
+    '<path d="M50 10l30-10 30 10"/>'
+    '<rect class="sombra" x="16" y="16" width="140" height="96"/>'
+    '<rect class="oro" x="10" y="10" width="140" height="96"/>'
+    '<rect class="papel-2" x="20" y="20" width="120" height="68"/>'
+    + ''.join(
+        f'<circle class="oscuro sin" cx="{x}" cy="{y}" r="7"/>'
+        f'<path class="oscuro sin" d="M{x - 11} {y + 34}c0-16 5-24 11-24s11 8 11 24z"/>'
+        for x, y in ((42, 36), (66, 36), (90, 36), (114, 36), (54, 50), (102, 50))
+    )
+    + '<rect class="metal" x="56" y="92" width="48" height="8"/>'
+)
+
 OBJETOS = {
     'pizarron': PIZARRON, 'telefono': TELEFONO, 'diario': DIARIO, 'agenda': AGENDA,
     'planilla': PLANILLA, 'sobre': SOBRE, 'ventana': VENTANA, 'carpeta': CARPETA,
+    'silbato': SILBATO, 'prismaticos': PRISMATICOS, 'fichero': FICHERO, 'cuadro': CUADRO,
 }
 
 
@@ -149,43 +197,6 @@ def objeto(nombre):
     # Apoyado abajo: en la escena de la PC el objeto queda pegado a su placa.
     return (f'<svg class="il" viewBox="0 0 160 120" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">'
             f'{OBJETOS[nombre]}</svg>')
-
-
-# ---------------------------------------------------------------- Pictogramas de las áreas (opción A)
-# Caja de 48 x 48. Gruesos y de colores llenos, sin objetos de la oficina para que A no se parezca a B.
-
-PICTOGRAMAS = {
-    'equipo': (
-        '<path class="club1" d="M16 6L5 12l4 10 6-3v23h18V19l6 3 4-10-11-6c-1 4-4 6-8 6s-7-2-8-6z"/>'
-        '<rect class="club2 sin" x="21" y="13" width="6" height="28"/>'
-        '<path class="club2" d="M16 6c1 4 4 6 8 6s7-2 8-6"/>'
-    ),
-    'competencia': (
-        '<path d="M14 9H7c0 7 3 11 8 11M34 9h7c0 7-3 11-8 11"/>'
-        '<path class="oro" d="M13 5h22v9c0 8-5 13-11 13s-11-5-11-13z"/>'
-        '<path class="luz" d="M16 7h4v8c0 4 1 7 3 9-4-1-7-5-7-9z"/>'
-        '<rect class="oro" x="21" y="27" width="6" height="7"/>'
-        '<rect class="madera" x="13" y="34" width="22" height="9"/><rect class="papel sin" x="19" y="37.5" width="10" height="2.5"/>'
-    ),
-    'mercado': (
-        '<path class="papel" d="M9 5h22l7 7v31H9z"/><path class="papel-2" d="M31 5v7h7z"/>'
-        '<path class="fino" d="M14 16h14M14 21h18M14 26h12"/>'
-        '<path d="M14 35c3-4 4 2 6-1s3-3 4 0 3 1 5-1"/>'
-        '<path class="rojo" d="M29 41l12-18 5 3-12 18-6 2z"/>'
-    ),
-    'club': (
-        '<path d="M24 11V2"/><path class="club1" d="M24 2h11l-3 3.5 3 3.5H24z"/>'
-        '<path class="papel" d="M8 21h32v22H8z"/>'
-        '<path class="rojo" d="M4 22l20-11 20 11z"/>'
-        '<rect class="vidrio" x="12" y="26" width="7" height="7"/><rect class="vidrio" x="29" y="26" width="7" height="7"/>'
-        '<rect class="madera" x="20" y="31" width="8" height="12"/>'
-    ),
-}
-
-
-def pictograma(nombre):
-    return (f'<svg class="il pictograma" viewBox="0 0 48 48" aria-hidden="true" focusable="false">'
-            f'{PICTOGRAMAS[nombre]}</svg>')
 
 
 # ---------------------------------------------------------------- Escena de la oficina (opción B, PC)
@@ -207,22 +218,78 @@ ESCENA = (
     '<rect class="vidrio" x="608" y="76" width="384" height="484"/>'
     '<circle class="metal" cx="996" cy="580" r="11"/>'
     '<rect class="lampara" x="740" y="12" width="120" height="18" rx="9"/>'
-    # banderín y reloj en la pared derecha (decorado, sin función)
-    '<path class="club1" d="M1340 120l200-40v170z"/><path class="club2 sin" d="M1340 120l200-40v28l-200 34z"/>'
-    '<path d="M1340 108v40"/>'
-    '<ellipse class="papel" cx="1440" cy="380" rx="44" ry="52"/><path d="M1440 380v-30M1440 380l20 12"/>'
     # escritorio
     '<path class="madera" d="M60 640h1480l60 160H0z"/>'
     '<path class="luz" d="M60 640h1480l8 22H52z"/>'
     '<rect class="madera-2" x="0" y="800" width="1600" height="100"/>'
     '<path class="fino" d="M0 846h1600"/>'
-    # mate y termo (decorado)
-    '<rect class="sombra" x="1406" y="606" width="54" height="170" rx="10"/>'
-    '<rect class="metal" x="1396" y="596" width="54" height="170" rx="10"/>'
-    '<rect class="metal-2" x="1390" y="580" width="66" height="34" rx="6"/>'
-    '<path class="luz" d="M1404 620h10v130h-10z"/>'
+    # mate en la punta del escritorio (decorado)
     '<path class="metal" d="M1505 640l22-90 8 2-18 88z"/>'
     '<path class="calabaza" d="M1480 650c-4 40 6 96 44 96s48-56 44-96z"/>'
     '<ellipse class="yerba" cx="1524" cy="650" rx="44" ry="10"/>'
     '</svg>'
 )
+
+
+# ---------------------------------------------------------------- Canchas (opción C y formación, hito M3)
+# Medidas reglamentarias a escala (10 unidades = 1 m, cancha de 105 x 68). Las jugadas de decorado son
+# propias: X para el rival, flecha llena para el pase y punteada para el desmarque.
+
+def _lineas_cancha(largo, ancho, vertical):
+    """Líneas de cal de una cancha de largo x ancho (en unidades), apaisada o vertical, con 20 de margen."""
+    def p(x, y):  # x a lo largo de la cancha, y a lo ancho
+        return (y, x) if vertical else (x, y)
+
+    def ruta(puntos):
+        return 'M' + ' L'.join(f'{a:g} {b:g}' for a, b in (p(x, y) for x, y in puntos))
+
+    m, L, A = 20, largo, ancho
+    medio_a = m + A / 2
+    trazos = [ruta([(m, m), (m + L, m), (m + L, m + A), (m, m + A), (m, m)]),
+              ruta([(m + L / 2, m), (m + L / 2, m + A)])]
+    for lado in (0, 1):
+        def x(d):
+            return m + d if lado == 0 else m + L - d
+        trazos.append(ruta([(x(0), medio_a - 201.5), (x(165), medio_a - 201.5), (x(165), medio_a + 201.5), (x(0), medio_a + 201.5)]))
+        trazos.append(ruta([(x(0), medio_a - 91.5), (x(55), medio_a - 91.5), (x(55), medio_a + 91.5), (x(0), medio_a + 91.5)]))
+        trazos.append(ruta([(x(0), medio_a - 36.6), (x(-12), medio_a - 36.6), (x(-12), medio_a + 36.6), (x(0), medio_a + 36.6)]))
+        a1, a2 = p(x(165), medio_a - 73.1), p(x(165), medio_a + 73.1)
+        barrido = (1 if lado == 0 else 0) ^ (1 if vertical else 0)
+        trazos.append(f'M{a1[0]:g} {a1[1]:g}A91.5 91.5 0 0 {barrido} {a2[0]:g} {a2[1]:g}')
+    centro = p(m + L / 2, medio_a)
+    penales = [p(m + 110, medio_a), p(m + L - 110, medio_a)]
+    puntos = ''.join(f'<circle class="cal-punto" cx="{cx:g}" cy="{cy:g}" r="5"/>' for cx, cy in [centro] + penales)
+    return (''.join(f'<path class="cal" d="{d}"/>' for d in trazos)
+            + f'<circle class="cal" cx="{centro[0]:g}" cy="{centro[1]:g}" r="91.5"/>' + puntos)
+
+
+def _x(cx, cy, r=16):
+    return f'<path class="deco" d="M{cx - r} {cy - r}l{2 * r} {2 * r}m0 {-2 * r}l{-2 * r} {2 * r}"/>'
+
+
+def _flecha(d, punta, punteada=False):
+    clase = 'deco punteada' if punteada else 'deco'
+    return f'<path class="{clase}" d="{d}"/><path class="deco" d="{punta}"/>'
+
+
+def cancha_apaisada():
+    """Cancha del menú C: arco propio a la izquierda, rival a la derecha. El círculo central queda vacío."""
+    franjas = ''.join(f'<rect class="franja" x="{20 + i * 105}" y="20" width="105" height="680"/>' for i in range(0, 10, 2))
+    deco = (
+        _x(760, 120) + _x(905, 330) + _x(820, 600) + _x(980, 520) + _x(700, 420)
+        + _flecha('M250 250C320 200 380 190 440 205', 'M424 190l18 15-22 8')
+        + _flecha('M260 520C330 560 400 570 470 545', 'M452 538l20 6-14 16')
+        + _flecha('M630 230C690 180 760 200 800 250', 'M786 232l16 20-24 0', punteada=True)
+        + _flecha('M640 520C700 470 760 470 820 440', 'M800 436l22 2-12 18', punteada=True)
+    )
+    return (f'<svg class="cancha-svg" viewBox="0 0 1090 720" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
+            f'<rect class="cesped" x="0" y="0" width="1090" height="720"/>{franjas}'
+            f'{_lineas_cancha(1050, 680, False)}{deco}</svg>')
+
+
+def cancha_vertical():
+    """Cancha de la formación: el equipo propio ataca hacia arriba."""
+    franjas = ''.join(f'<rect class="franja" x="20" y="{20 + i * 105}" width="680" height="105"/>' for i in range(0, 10, 2))
+    return (f'<svg class="cancha-svg" viewBox="0 0 720 1090" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
+            f'<rect class="cesped" x="0" y="0" width="720" height="1090"/>{franjas}'
+            f'{_lineas_cancha(1050, 680, True)}</svg>')

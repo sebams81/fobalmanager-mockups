@@ -4,7 +4,7 @@
 const LINK_OPINION = 'PEGAR-ACA-EL-LINK-DEL-FORMULARIO';
 // ▲▲▲ Es el único lugar donde está: todos los botones "Dar mi opinión" lo toman de acá. ▲▲▲
 
-const TEMAS = { retro: 'Retro', diario: 'Diario', moderno: 'Moderno' };
+const TEMAS = { retro: 'Retro', diario: 'Diario', moderno: 'Moderno', pizarra: 'Pizarra' };
 const estado = document.getElementById('estado-maqueta');
 
 function anunciar(texto) {
@@ -65,6 +65,28 @@ for (const boton of document.querySelectorAll('[data-ficha]')) {
     const abierta = boton.getAttribute('aria-expanded') === 'true';
     boton.setAttribute('aria-expanded', String(!abierta));
     fila.hidden = abierta;
+  });
+}
+
+// Pestañas simples (plantel): una sola visible, con flechas para moverse entre ellas.
+for (const lista of document.querySelectorAll('[data-pestanas]')) {
+  const botones = [...lista.querySelectorAll('[role="tab"]')];
+  const elegir = (i) => {
+    botones.forEach((b, j) => {
+      b.setAttribute('aria-selected', String(i === j));
+      b.tabIndex = i === j ? 0 : -1;
+      document.getElementById(b.getAttribute('aria-controls')).hidden = i !== j;
+    });
+  };
+  botones.forEach((b, i) => {
+    b.addEventListener('click', () => elegir(i));
+    b.addEventListener('keydown', (e) => {
+      const paso = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (paso === 0) return;
+      const siguiente = (i + paso + botones.length) % botones.length;
+      elegir(siguiente);
+      botones[siguiente].focus();
+    });
   });
 }
 

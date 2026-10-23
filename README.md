@@ -1,28 +1,33 @@
 # Fobalmanager: maquetas visuales
 
 Maquetas públicas de Fobalmanager, un manager de fútbol en el navegador, para pedir opiniones.
-Son ilustrativas y no tienen funciones. Todo el contenido es ficticio: clubes, jugadores, dirigentes,
-medios, estadios, escudos y resultados.
+Son ilustrativas y no tienen funciones. Todo el contenido es ficticio: clubes, jugadores, managers,
+dirigentes, medios, estadios, escudos y resultados.
 
-Hay dos propuestas de menú principal y cinco pantallas (inicio del club, plantel, previa y táctica, partido en vivo y tabla de posiciones)
-con una única estructura y tres temas visuales: Retro, Diario y Moderno. Un tema cambia solo
-colores, tipografía, texturas, íconos y bordes, mediante las variables de `css/temas.css`.
-La disposición vive en `css/base.css` y es la misma en los tres. El tema elegido se recuerda
-en el navegador. En la primera visita se elige uno al azar, para no sesgar las opiniones.
+Hay propuestas de menú principal y cinco pantallas (inicio del club, plantel, previa y táctica, partido en
+vivo y tabla de posiciones con fixture), con una única estructura y cuatro temas visuales: Retro, Diario,
+Moderno y Pizarra. Un tema cambia solo colores, tipografía, texturas, íconos y bordes, mediante las variables
+de `css/temas.css`. La disposición vive en `css/base.css` y es la misma en los cuatro. El tema elegido se
+recuerda en el navegador. En la primera visita se elige uno al azar, para no sesgar las opiniones.
 
-## Menú principal: dos propuestas
+## Menú principal: propuestas en evaluación
 
-Hay propuestas de menú principal para comparar, con acceso desde la portada. Ninguna está elegida.
+Ninguna está elegida. Las dos ofrecen las mismas doce secciones: cambia solo la forma de llegar a ellas.
 
-- `menu-a.html`: la opción A ("Centro de mando") se retiró porque se parecía demasiado al menú de un juego
-  existente. Queda solo un aviso de "propuesta en rediseño", sin enlaces que lleven a ella.
 - `menu-b.html`, "La oficina del técnico": cada sección es un objeto de la oficina (pizarrón, carpeta,
-  planilla, teléfono, diario, agenda, sobre y ventana). La puerta del centro es el próximo partido.
+  silbato, planilla, agenda, diario, teléfono, prismáticos, fichero, sobre, ventana y cuadro de la
+  comisión directiva). La puerta del centro es el próximo partido.
+- `menu-c.html`, "La pizarra": arriba, un cartel con el próximo partido; abajo, la cancha, con las
+  secciones como fichas paradas por líneas ("Los de casa", "El torneo", "Salir a buscar") y "El palco"
+  afuera de la línea de cal. El círculo central queda vacío.
+- `menu-a.html`: la opción A se retiró de la evaluación. Queda un aviso de propuesta en rediseño, sin
+  enlaces que lleven a ella.
 
-En el celular, el partido va arriba y las áreas u objetos en grilla; desde 64rem (1024 px), la composición
-completa. Las ilustraciones son SVG propios (`fuente/ilustraciones.py`). Usan clases de material (madera,
-papel, metal…) que cada tema pinta con las variables `--il-*` de `css/temas.css`: el dibujo es el mismo en
-los tres temas. Las secciones sin pantalla en la maqueta muestran un aviso.
+En el celular, el partido va arriba y las secciones en grilla o en franjas; desde 64rem (1024 px), la
+composición completa. Las ilustraciones y las canchas son SVG propios (`fuente/ilustraciones.py`). Usan
+clases de material (madera, papel, metal…) y de cancha que cada tema pinta con las variables `--il-*` y
+`--cancha-*` de `css/temas.css`: el dibujo es el mismo en los cuatro temas. Las secciones sin pantalla en la
+maqueta muestran un aviso.
 
 ## Link del formulario de opinión
 
@@ -38,7 +43,7 @@ Reemplazá el texto entre comillas por el link completo (`https://...`). Todos l
 
 ## Ver una pantalla en un tema
 
-Agregá `?tema=retro`, `?tema=diario` o `?tema=moderno` a cualquier URL, por ejemplo
+Agregá `?tema=retro`, `?tema=diario`, `?tema=moderno` o `?tema=pizarra` a cualquier URL, por ejemplo
 `partido.html?tema=diario`.
 
 ## Editar el contenido
@@ -56,10 +61,12 @@ el sitio es HTML, CSS y un JS chico.
 
 ## Fuentes
 
-Las fuentes (VT323, IBM Plex Mono, Oswald, Source Serif 4, Roboto Condensed, Space Grotesk e Inter)
-se bajaron de Google Fonts y están alojadas en `fuentes/`, sin pedidos a terceros. Todas tienen
-licencia SIL Open Font License 1.1; los textos de licencia están en `fuentes/LICENCIAS.md`.
-Cada tema carga solo su CSS de fuentes (`css/fuentes-<tema>.css`).
+Las fuentes (VT323, IBM Plex Mono, Oswald, Source Serif 4, Roboto Condensed, Space Grotesk, Inter,
+Cabin Sketch y Atkinson Hyperlegible) se bajaron de Google Fonts y están alojadas en `fuentes/`, sin pedidos
+a terceros y sin modificar los archivos. Todas tienen licencia SIL Open Font License 1.1; los textos de
+licencia están en `fuentes/LICENCIAS.md`. Cada tema carga solo su CSS de fuentes (`css/fuentes-<tema>.css`).
+En el tema Pizarra, la letra de tiza (Cabin Sketch) va solo en títulos y rótulos; el cuerpo, las tablas, los
+números y los botones van en Atkinson Hyperlegible.
 
 ## Publicación
 

@@ -119,12 +119,21 @@
   --puerta-marco: #8a5530;
   --puerta-hoja: #c98a52;
 
-  --panel-barra-bg: var(--c-superficie-2);
-  --panel-barra-tx: var(--c-texto);
-  --panel-barra-borde: 3px solid var(--c-acento);
-  --panel-bisel: 0 8px 24px rgb(0 0 0 / 0.35);
-  --enlace-menu-bg: var(--c-superficie-2);
-  --enlace-menu-borde: 1px solid var(--c-borde);
+  /* Cancha de la opción C, cartel del próximo partido y barras de nivel de los atributos (hito M3). */
+  --cancha-fondo: #10271b;
+  --cancha-franja: rgb(255 255 255 / 0.025);
+  --cancha-linea: rgb(232 236 242 / 0.6);
+  --cancha-deco: rgb(232 236 242 / 0.28);
+  --cancha-linea-ancho: 2px;
+  --cartel-bg: var(--c-superficie);
+  --cartel-tx: var(--c-texto);
+  --cartel-borde: 1px solid var(--c-borde);
+  --cartel-cinta: rgb(232 236 242 / 0.25);
+  --cartel-suave: #9aa4b2;
+  --cartel-volanta: #9aa4b2;
+  --nivel-debil: #5b7aa3;
+  --nivel-fuerte: #bfdbfe;
+  --nivel-vacio: rgb(255 255 255 / 0.1);
   --c-alerta-bg: #facc15;
   --c-alerta-tx: #0e1116;
 
@@ -164,7 +173,7 @@
   --c-borde-control: #4f7a55;
   --c-foco: #7ad7f0;
   --c-zona-ascenso: #5cff7a;
-  --c-zona-octogonal: #7ad7f0;
+  --c-zona-octogonal: #c79bff;
   --c-zona-descenso: #ff6b5e;
   --c-boton-principal-bg: var(--c-acento);
   --c-boton-principal-tx: var(--c-sobre-acento);
@@ -259,12 +268,20 @@
   --puerta-marco: #7a3f12;
   --puerta-hoja: #b5651d;
 
-  --panel-barra-bg: #7ad7f0;
-  --panel-barra-tx: #0c110d;
-  --panel-barra-borde: 0;
-  --panel-bisel: inset 3px 3px 0 rgb(255 255 255 / 0.12), inset -3px -3px 0 rgb(0 0 0 / 0.6);
-  --enlace-menu-bg: var(--c-superficie-2);
-  --enlace-menu-borde: 2px solid var(--c-borde-control);
+  --cancha-fondo: #0f5b26;
+  --cancha-franja: #0c5121;
+  --cancha-linea: #e8ffe0;
+  --cancha-deco: #ffb33a;
+  --cancha-linea-ancho: 3px;
+  --cartel-bg: #000;
+  --cartel-tx: #d8f7cf;
+  --cartel-borde: 3px double #ffb33a;
+  --cartel-cinta: #ffb33a;
+  --cartel-suave: #8fb88a;
+  --cartel-volanta: #7ad7f0;
+  --nivel-debil: #3f7a45;
+  --nivel-fuerte: #b9ffb0;
+  --nivel-vacio: rgb(216 247 207 / 0.12);
   --c-alerta-bg: #ff6b5e;
   --c-alerta-tx: #0c110d;
 
@@ -397,12 +414,20 @@
   --puerta-marco: #1c1a17;
   --puerta-hoja: #c9bfa9;
 
-  --panel-barra-bg: #1c1a17;
-  --panel-barra-tx: #fbf8f1;
-  --panel-barra-borde: 0;
-  --panel-bisel: none;
-  --enlace-menu-bg: transparent;
-  --enlace-menu-borde: 1px solid var(--c-borde);
+  --cancha-fondo: #fbf8f1;
+  --cancha-franja: rgb(0 0 0 / 0.035);
+  --cancha-linea: #1c1a17;
+  --cancha-deco: #a3161b;
+  --cancha-linea-ancho: 2px;
+  --cartel-bg: #fbf8f1;
+  --cartel-tx: #1c1a17;
+  --cartel-borde: 2px solid #1c1a17;
+  --cartel-cinta: rgb(28 26 23 / 0.18);
+  --cartel-suave: #5a5248;
+  --cartel-volanta: #a3161b;
+  --nivel-debil: #a89f8c;
+  --nivel-fuerte: #1c1a17;
+  --nivel-vacio: rgb(28 26 23 / 0.1);
   --c-alerta-bg: #a3161b;
   --c-alerta-tx: #fbf8f1;
 
@@ -417,6 +442,158 @@
   --vol-bisel: 0px;
 }
 
+/* Pizarra (hito M3, RN-742): pizarrón verde y tiza. Letra de tiza solo en títulos y rótulos;
+   el cuerpo, las tablas y los números van en letra legible. */
+[data-tema='pizarra'] {
+  color-scheme: dark;
+  --c-fondo: #1d3b2f;
+  --c-superficie: #22463a;
+  --c-superficie-2: #2a5244;
+  --c-texto: #f1f4ec;
+  --c-texto-suave: #c6d4c8;
+  --c-acento: #f7e08a;
+  --c-sobre-acento: #1d3b2f;
+  --c-acento-2: #b4e2f4;
+  --c-gol: #c8f59a;
+  --c-amarilla: #f7e08a;
+  --c-roja: #ffa596;
+  --c-etq-gol-tx: #1d3b2f;
+  --c-etq-gol-bg: #c8f59a;
+  --c-etq-amarilla-tx: #1d3b2f;
+  --c-etq-amarilla-bg: #f7e08a;
+  --c-etq-roja-tx: #1d3b2f;
+  --c-etq-roja-bg: #ffa596;
+  --c-etq-otra-tx: #1d3b2f;
+  --c-etq-otra-bg: #f1f4ec;
+  --c-borde: #4f7a66;
+  --c-borde-control: #c6d4c8;
+  --c-foco: #ffffff;
+  --c-zona-ascenso: #c8f59a;
+  --c-zona-octogonal: #f4bcd8;
+  --c-zona-descenso: #ffa596;
+  --c-boton-principal-bg: var(--c-acento);
+  --c-boton-principal-tx: var(--c-sobre-acento);
+
+  --f-titular: 'Cabin Sketch', 'Comic Sans MS', cursive;
+  --f-cuerpo: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --f-numeros: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --peso-titular: 700;
+  --tam-base: 1.0625rem;
+  --esc-titular: 1.12;
+  --titular-mayus: none;
+  --titular-espaciado: 0.01em;
+  --interlineado: 1.5;
+
+  --radio-tarjeta: 6px;
+  --radio-control: 6px;
+  --radio-chip: 999px;
+  --borde-ancho: 2px;
+  --borde-estilo: solid;
+  --regla-seccion: 2px dashed rgb(241 244 236 / 0.4);
+  --sombra-tarjeta: none;
+  --sombra-control: none;
+  --textura-fondo:
+    radial-gradient(ellipse at 18% 12%, rgb(255 255 255 / 0.07), transparent 45%),
+    radial-gradient(ellipse at 82% 68%, rgb(255 255 255 / 0.05), transparent 40%),
+    radial-gradient(ellipse at 50% 100%, rgb(0 0 0 / 0.18), transparent 60%);
+  --textura-destacada: none;
+  --borde-destacada: rgb(241 244 236 / 0.7);
+
+  --icono-trazo: 2;
+  --icono-extremos: round;
+  --icono-uniones: round;
+  --icono-render: auto;
+
+  --boton-mayus: none;
+  --boton-adorno-antes: '';
+  --boton-adorno-despues: '';
+  --volanta-color: var(--c-acento);
+  --volanta-mayus: uppercase;
+  --volanta-prefijo: '';
+  --volanta-espaciado: 0.06em;
+  --transicion: none;
+
+  /* Ilustraciones: dibujadas a tiza sobre el pizarrón. Contorno de tiza y rellenos de tiza rebajada. */
+  --il-tinta: #eef2e8;
+  --il-trazo: 2.5px;
+  --il-uniones: round;
+  --il-extremos: round;
+  --il-render: geometricPrecision;
+  --il-sombra: transparent;
+  --il-luz: rgb(255 255 255 / 0.12);
+  --il-pared: #1f3e31;
+  --il-pared-lado: #1a362a;
+  --il-pared-a: #1f3e31;
+  --il-pared-b: #1f3e31;
+  --il-piso: #17301f;
+  --il-tablon-a: #17301f;
+  --il-madera: rgb(232 196 150 / 0.32);
+  --il-madera-2: rgb(232 196 150 / 0.18);
+  --il-pizarra: #163024;
+  --il-tiza: #f1f4ec;
+  --il-papel: rgb(241 244 236 / 0.22);
+  --il-papel-2: rgb(241 244 236 / 0.12);
+  --il-kraft: rgb(240 205 150 / 0.3);
+  --il-kraft-2: rgb(240 205 150 / 0.18);
+  --il-billete: rgb(200 245 154 / 0.4);
+  --il-billete-2: rgb(200 245 154 / 0.25);
+  --il-metal: rgb(220 232 238 / 0.28);
+  --il-metal-2: rgb(220 232 238 / 0.16);
+  --il-rojo: rgb(255 165 150 / 0.55);
+  --il-rojo-2: rgb(255 165 150 / 0.4);
+  --il-azul: rgb(180 226 244 / 0.4);
+  --il-cuero: rgb(244 188 216 / 0.38);
+  --il-corcho: rgb(232 196 150 / 0.22);
+  --il-vidrio: rgb(180 226 244 / 0.16);
+  --il-cielo: rgb(180 226 244 / 0.16);
+  --il-cesped: rgb(200 245 154 / 0.3);
+  --il-oro: rgb(247 224 138 / 0.5);
+  --il-oscuro: #eef2e8;
+  --il-lampara: #f7e08a;
+  --il-persiana: rgb(241 244 236 / 0.2);
+  --il-calabaza: rgb(232 196 150 / 0.4);
+  --il-yerba: rgb(200 245 154 / 0.5);
+
+  --rotulo-bg: #1a3428;
+  --rotulo-tx: #f7e08a;
+  --rotulo-estado: #e3ebe0;
+  --rotulo-borde: 2px solid rgb(241 244 236 / 0.65);
+  --rotulo-radio: 6px;
+  --rotulo-fuente: var(--f-titular);
+  --rotulo-mayus: none;
+  --oficina-escritorio: #17301f;
+  --puerta-marco: rgb(232 196 150 / 0.5);
+  --puerta-hoja: rgb(232 196 150 / 0.3);
+
+  --cancha-fondo: transparent;
+  --cancha-franja: rgb(255 255 255 / 0.03);
+  --cancha-linea: rgb(241 244 236 / 0.85);
+  --cancha-deco: rgb(241 244 236 / 0.5);
+  --cancha-linea-ancho: 2.5px;
+  --cartel-bg: #f4efe0;
+  --cartel-tx: #1c1a17;
+  --cartel-borde: 0;
+  --cartel-cinta: rgb(240 230 180 / 0.8);
+  --cartel-suave: #4a443c;
+  --cartel-volanta: #8a1c1c;
+  --nivel-debil: #7fa596;
+  --nivel-fuerte: #f1f4ec;
+  --nivel-vacio: rgb(241 244 236 / 0.14);
+  --c-alerta-bg: #ffa596;
+  --c-alerta-tx: #1d3b2f;
+
+  --vol-fuente: var(--f-cuerpo);
+  --vol-cara: #f7e08a;
+  --vol-tx: #1d3b2f;
+  --vol-luz: rgb(255 255 255 / 0.5);
+  --vol-sombra: rgb(0 0 0 / 0.12);
+  --vol-base: #8f7d33;
+  --vol-dx: 0px;
+  --vol-prof: 4px;
+  --vol-radio: 8px;
+  --vol-bisel: 2px;
+}
+
 @media (prefers-contrast: more), (forced-colors: active) {
   :root,
   [data-tema] {
@@ -428,7 +605,7 @@
     --il-sombra: transparent;
     --il-luz: transparent;
     --oficina-escritorio: var(--c-fondo);
-    --panel-bisel: none;
+    --cancha-deco: transparent;
     --vol-luz: transparent;
     --vol-sombra: transparent;
   }
