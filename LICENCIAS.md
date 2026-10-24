@@ -1,14 +1,21 @@
 # Licencias
 
-## Pixel art de la opción D
+## Imágenes generadas con IA
 
-Personajes del cuerpo técnico, íconos de las secciones, logo y pizarrón de `menu-d.html`: elaboración propia
-del proyecto, generados por código en `fuente/pixelart.py` y `fuente/ilustraciones.py`. No se usan assets,
-sprites ni fuentes de terceros para el pixel art. Los textos de los carteles usan Russo One y PT Sans (OFL,
-ver `fuentes/LICENCIAS.md`).
+Cada imagen del sitio que sale de una herramienta de generación queda registrada acá al integrarla con
+`herramientas/integrar_arte.py`: archivo publicado, herramienta, modelo, fecha de generación y original. Las
+originales se guardan fuera del repositorio, en `F:\Arte-fobalmanager\`. El script elimina los metadatos al
+optimizar; la procedencia queda en esta tabla.
 
-Procedencia: el código que dibuja el pixel art se escribió con asistencia de IA (Claude Code), bajo la dirección
-de Sebastián, que fijó la composición a partir de un diseño propio que no se publica.
+La columna "Original" es la ruta dentro de `F:\Arte-fobalmanager\`.
+
+| Archivo | Herramienta | Modelo | Fecha | Original |
+|---|---|---|---|---|
+
+## Imágenes de referencia (no publicadas)
+
+`portada.png`: generada por Sebastián con Gemini. Se usó solo como guía de composición de la opción D del
+menú (hoy en rediseño). No se publica ni forma parte del sitio.
 
 ## Íconos
 

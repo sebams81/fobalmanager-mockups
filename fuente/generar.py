@@ -9,8 +9,7 @@ import random
 from pathlib import Path
 
 from iconos import ICONOS
-from ilustraciones import cancha_apaisada, cancha_vertical, pizarron_tiza
-import pixelart
+from ilustraciones import cancha_apaisada, cancha_vertical
 
 RAIZ = Path(__file__).resolve().parent.parent
 e = html.escape
@@ -349,15 +348,12 @@ def selector_tema(con_club):
     return f'<fieldset class="selector-tema"><legend>Estilo visual</legend>{opciones}{invertir}</fieldset>'
 
 
-NOTA_D = '<p class="nota-tema">La opción D tiene estética propia: se ve igual en los cuatro estilos.</p>'
-
-
-def barra_maqueta(portada, nota=''):
+def barra_maqueta(portada):
     volver = '<span>Fobalmanager</span>' if portada else '<a href="index.html">← Portada</a>'
     return (
         '<div class="barra-maqueta">'
         f'<p class="aviso">{volver}<strong>Maqueta: diseño ilustrativo, sin funciones</strong></p>'
-        f'{selector_tema(not portada)}{nota}</div>'
+        f'{selector_tema(not portada)}</div>'
     )
 
 
@@ -393,19 +389,15 @@ def pie(extra=''):
 
 
 def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main='', menu=None):
-    """activa: pantalla resaltada en la navegación; None es la portada. menu: 'b', 'c' o 'd' en las páginas de menú."""
+    """activa: pantalla resaltada en la navegación; None es la portada. menu: 'a' o 'b' en las páginas de menú."""
     portada = activa is None and menu is None
-    if menu == 'd':
-        # La D tiene el club, el logo y el próximo partido en su propia escena.
-        cabecera = ''
-    elif menu:
+    if menu:
         # El menú ya es la navegación: no lleva la barra de pantallas.
         cabecera = encabezado_club(con_etapa=False)
     else:
         cabecera = '' if portada else encabezado_club() + navegacion(activa)
-    opciones = {'b': 'Ver la opción B: La oficina del técnico', 'c': 'Ver la opción C: La cancha', 'd': 'Ver la opción D: El pizarrón'}
-    extra_pie = ''.join(f'<a href="menu-{k}.html">{v} →</a>' for k, v in opciones.items() if menu in opciones and k != menu)
-    fuentes_d = '\n<link rel="stylesheet" href="css/fuentes-retro.css">' if menu == 'd' else ''
+    otra = {'b': ('menu-c.html', 'Ver la opción C: La cancha'), 'c': ('menu-b.html', 'Ver la opción B: La oficina del técnico')}
+    extra_pie = f'<a href="{otra[menu][0]}">{otra[menu][1]} →</a>' if menu in otra else ''
     # Los colores del club van en <html>, donde se declaran los temas. La portada no tiene club: valor por defecto.
     base, acento = colores_identidad(MI_CLUB)
     identidad = '' if portada else (f' style="--club-1:{CLUB[MI_CLUB][2]};--club-2:{CLUB[MI_CLUB][3]};'
@@ -419,11 +411,11 @@ def pagina(archivo, titulo, cuerpo, activa=None, clase_body='', antes_de_main=''
 <meta name="description" content="Maqueta visual de Fobalmanager, un manager de fútbol en el navegador. Diseño ilustrativo, sin funciones.">
 <script>{SCRIPT_TEMA}</script>
 <link rel="stylesheet" href="css/temas.css">
-<link rel="stylesheet" href="css/base.css">{fuentes_d}
+<link rel="stylesheet" href="css/base.css">
 </head>
 <body class="{clase_body}">
 {sprite()}
-{barra_maqueta(portada, NOTA_D if menu == 'd' else '')}
+{barra_maqueta(portada)}
 {cabecera}
 {antes_de_main}
 <main id="contenido">
@@ -468,8 +460,6 @@ def portada():
              'Cada sección es un objeto de tu oficina: en la pared, en el escritorio y por la ventana. El partido, detrás de la puerta.'),
             ('menu-c.html', cancha_apaisada(), 'Opción C', 'La cancha',
              'Tu formación en el centro de la pantalla y todas las secciones a los costados, agrupadas por uso.'),
-            ('menu-d.html', f'<span class="muestra-d">{pizarron_tiza(False, "-muestra")}{pixelart.svg_personaje("asistente")}</span>', 'Opción D', 'El pizarrón',
-             'La cancha es un pizarrón: las secciones son carteles a tiza y tu cuerpo técnico te espera abajo.'),
         )
     )
     comparar = f'''<section class="comparar-menus" aria-labelledby="t-menus">
@@ -1011,12 +1001,12 @@ def panel_partido(clase=''):
 </section>'''
 
 
-def menu_a():
-    """La opción A se retiró (RN-740): queda solo un aviso, sin enlaces que lleven a ella."""
-    cuerpo = '''<h1 class="titulo-pantalla">Propuesta en rediseño</h1>
-<section class="seccion"><p>La opción A del menú principal se está rediseñando y por ahora no está disponible.</p>
+def menu_en_rediseno(letra):
+    """Opción retirada de la evaluación (A: RN-740; D: RN-759): queda solo un aviso, sin enlaces que lleven a ella."""
+    cuerpo = f'''<h1 class="titulo-pantalla">Propuesta en rediseño</h1>
+<section class="seccion"><p>La opción {letra.upper()} del menú principal se está rediseñando y por ahora no está disponible.</p>
 <p>Mientras tanto, mirá las otras propuestas del menú desde la <a href="index.html">portada</a>.</p></section>'''
-    pagina('menu-a.html', 'Propuesta en rediseño', cuerpo, clase_body='portada')
+    pagina(f'menu-{letra}.html', 'Propuesta en rediseño', cuerpo, clase_body='portada')
 
 
 # Opción B: la oficina, con pared, escritorio, puerta y ventana hechos con superficies (sin dibujos a mano).
@@ -1101,88 +1091,12 @@ def menu_c():
     pagina('menu-c.html', 'Menú principal (opción C)', cuerpo, clase_body='menu-pantalla menu-c', menu='c')
 
 
-
-# Opción D, "El pizarrón" (diseño de Sebastián): la cancha ocupa la pantalla como pizarrón a tiza, las doce
-# secciones son carteles sobre la cancha y el cuerpo técnico, abajo, da acceso directo a cada área.
-# Estética propia en pixel art (fuente/pixelart.py), igual en los cuatro temas.
-# Lugar de cada cartel en la PC, sobre una grilla de 24 columnas: columna de inicio (cada cartel ocupa 4), fila y un
-# desfasaje vertical. Filas de 4, 2 y 6 carteles, sin espejo ni cuadrantes (criterio de legal, RN-739); la del
-# medio deja libre el círculo central. El orden de lectura es el de importancia, igual que el foco y el celular.
-CARTELES_D = {
-    'formacion': (1, 1, 0), 'plantel': (7, 1, 10), 'entrenamiento': (13, 1, -4), 'tabla': (20, 1, 6),
-    'calendario': (6, 2, 0), 'noticias': (15, 2, 8),
-    'fichajes': (1, 3, 4), 'ojeadores': (5, 3, -6), 'contratos': (9, 3, 6), 'caja': (13, 3, -2), 'estadio': (17, 3, 8),
-    'dirigencia': (21, 3, -4),
-}
-# Cuerpo técnico: rol, a qué área lleva (destino; vacío = sin pantalla en la maqueta) y su nombre para el aviso.
-CUERPO_D = [
-    ('asistente', 'Asistente técnico', 'previa.html', 'Formación y táctica'),
-    ('entrenadores', 'Entrenadores', '', 'Entrenamiento'),
-    ('preparador', 'Preparador físico', 'plantel.html', 'Plantel: estado físico'),
-    ('ojeador', 'Ojeador', '', 'Ojeadores'),
-    ('medico', 'Médico', 'plantel.html', 'Plantel: lesiones'),
-    ('representante', 'Representante', '', 'Fichajes'),
-]
-MENU_ESQUINA = ['Grabar', 'Opciones', 'Salir']
-
-
-def cartel_d(clave, s, verde, crema):
-    rotulo, destino, estado, alerta = s[clave]
-    col, fila, dy = CARTELES_D[clave]
-    atributos = f'href="{destino}"' if destino else f'href="#" data-maqueta="{e(rotulo)}"'
-    marca = '<span class="alerta-px" aria-hidden="true">!</span>' if alerta else ''
-    novedad = '<span class="sr">, con novedades</span>' if alerta else ''
-    return (f'<li style="--col:{col};--fila:{fila};--dy:{dy}px">'
-            f'<a class="d-cartel" {atributos}><span class="d-ic">{pixelart.svg_icono(clave, verde, crema)}{marca}</span>'
-            f'<span class="rotulo">{e(rotulo)}</span><span class="sr">: </span><span class="estado">{e(estado)}</span>'
-            f'{novedad}</a></li>')
-
-
-def menu_d():
-    s = secciones()
-    verde, crema = CLUB[MI_CLUB][2], CLUB[MI_CLUB][3]
-    # En orden de importancia (es el orden del foco y el de la grilla del celular); en la PC, cada uno en su lugar.
-    carteles = ''.join(cartel_d(clave, s, verde, crema) for clave in s)
-    cuerpo_tecnico = ''
-    for clave, rol, destino, area in CUERPO_D:
-        atributos = f'href="{destino}"' if destino else f'href="#" data-maqueta="{e(area)}"'
-        cuerpo_tecnico += (f'<li><a class="d-persona" {atributos}>{pixelart.svg_personaje(clave, verde=verde, crema=crema)}'
-                           f'<span class="d-rol">{e(rol)}</span><span class="sr">: {e(area)}</span></a></li>')
-    esquina = ''.join(f'<li><a href="#" data-maqueta>{e(o)}</a></li>' for o in MENU_ESQUINA)
-    cuerpo = f'''<h1 class="sr">Menú principal, opción D: El pizarrón</h1>
-<div class="pizarron-d">
-<header class="d-arriba">
-<div class="d-club">{escudo(MI_CLUB)}<div><p class="d-nombre">{e(CLUB[MI_CLUB][1])}</p>
-<p class="d-contexto">{LIGA} · {POSICION[MI_CLUB]}°</p></div></div>
-<div class="d-marca"><a class="d-logo" href="index.html" aria-label="Fobalmanager: volver a la portada">{pixelart.svg_logo()}</a></div>
-<section class="d-partido" aria-labelledby="d-t-prox">
-<p class="d-volanta">{ETAPA} · Fecha {FECHA} de {FECHAS}</p>
-<h2 id="d-t-prox">Próximo partido</h2>
-<p class="d-rival">{escudo(RIVAL)}<span><b>vs {e(CLUB[RIVAL][1])}</b><span class="d-manager">Manager: {e(MANAGER_RIVAL)}</span></span></p>
-<p class="d-cuando"><b>Se juega el {HORARIO}</b>. Lo elegiste vos: jugamos de local, en el Estadio del Bajo.</p>
-<a class="d-boton" href="previa.html" aria-describedby="d-jugar-nota">Preparar el partido</a>
-<p id="d-jugar-nota" class="d-nota">Si a esa hora no estás, lo dirige tu asistente.</p>
-</section>
-<details class="d-menu" data-cerrable><summary><span class="d-hamburguesa" aria-hidden="true"></span><span class="d-menu-texto">Juego</span></summary>
-<ul role="list">{esquina}</ul></details>
-</header>
-<nav class="d-tablero" aria-labelledby="d-t-secciones"><h2 id="d-t-secciones" class="sr">Secciones del club</h2>
-{pizarron_tiza(False, '-pc')}{pizarron_tiza(True, '-celu')}
-<ul class="d-carteles" role="list">{carteles}</ul>
-</nav>
-<nav class="d-cuerpo" aria-labelledby="d-t-cuerpo"><h2 id="d-t-cuerpo" class="d-cuerpo-titulo">Tu cuerpo técnico<span class="d-deslizar" aria-hidden="true"> · deslizá →</span></h2>
-<ul role="list">{cuerpo_tecnico}</ul>
-</nav>
-</div>'''
-    pagina('menu-d.html', 'Menú principal (opción D)', cuerpo, clase_body='menu-d', menu='d')
-
-
 if __name__ == '__main__':
     portada()
-    menu_a()
+    menu_en_rediseno('a')
+    menu_en_rediseno('d')
     menu_b()
     menu_c()
-    menu_d()
     pantalla_club()
     pantalla_plantel()
     pantalla_previa()

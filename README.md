@@ -12,20 +12,15 @@ recuerda en el navegador. En la primera visita se elige uno al azar, para no ses
 
 ## Menú principal: propuestas en evaluación
 
-Ninguna está elegida. Las tres ofrecen las mismas doce secciones: cambia solo la forma de llegar a ellas.
+Ninguna está elegida. Las dos ofrecen las mismas doce secciones: cambia solo la forma de llegar a ellas.
 
 - `menu-b.html`, "La oficina del técnico": una oficina armada con superficies (pared, escritorio, ventana y
   puerta), con cada sección como una placa con su ícono, en la pared o en el escritorio. Detrás de la
   puerta, el próximo partido.
 - `menu-c.html`, "La cancha": arriba, un cartel con el próximo partido; en el centro, la cancha con la
   formación propia (lleva a la táctica); alrededor, las demás secciones con su ícono, agrupadas por uso.
-- `menu-d.html`, "El pizarrón": la cancha ocupa la pantalla como un pizarrón a tiza; las secciones son
-  carteles sobre la cancha y, abajo, el cuerpo técnico (en pixel art) lleva a cada área. Arriba, el club, el
-  logo, la fecha y el próximo partido; Grabar, Opciones y Salir van en un menú en la esquina. Tiene estética
-  propia y se ve igual en los cuatro temas. El pixel art es de elaboración propia, generado por código en
-  `fuente/pixelart.py`.
-- `menu-a.html`: la opción A se retiró de la evaluación. Queda un aviso de propuesta en rediseño, sin
-  enlaces que lleven a ella.
+- `menu-a.html` y `menu-d.html`: las opciones A y D se retiraron de la evaluación. Queda un aviso de
+  propuesta en rediseño, sin enlaces que lleven a ellas.
 
 En el celular, el partido va arriba y las secciones en grilla o en franjas; desde 64rem (1024 px), la
 composición completa. Los íconos son de Phosphor Icons (licencia MIT; ver `LICENCIAS.md`), en
@@ -62,6 +57,20 @@ python fuente/generar.py
 Los datos ficticios están en ese archivo. El relato del partido (`fuente/relato.json`) usa frases
 tal cual de la crónica del juego, con nombres ficticios. No hay dependencias ni paso de armado:
 el sitio es HTML, CSS y un JS chico.
+
+## Imágenes
+
+Las imágenes ilustradas se generan con herramientas de IA a partir de los prompts del director de arte y se
+integran con `herramientas/integrar_arte.py` (Python 3 con Pillow): recorta, quita el fondo liso, saca los
+tamaños, optimiza y registra cada archivo en `LICENCIAS.md` con herramienta, modelo y fecha. Las originales
+quedan fuera del repo, en `F:\Arte-fobalmanager\`.
+
+```sh
+python herramientas/integrar_arte.py F:/Arte-fobalmanager/aprobadas/preparador.png --nombre preparador-fisico --anchos 96,192 --herramienta ChatGPT --modelo gpt-image-1 --fecha 2026-10-24
+```
+
+Con `--fondo conservar` no quita el fondo (fondos de pantalla) y con `--pixel` escala sin suavizar, a
+múltiplos enteros (el archivo lleva el ancho real en el nombre). `-h` lista todas las opciones.
 
 ## Fuentes
 

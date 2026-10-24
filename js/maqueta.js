@@ -46,22 +46,6 @@ for (const caja of document.querySelectorAll('input[name="invertir-club"]')) {
   });
 }
 
-// Menús desplegables que se cierran al tocar afuera o con Escape (menú de la esquina, opción D).
-for (const menu of document.querySelectorAll('details[data-cerrable]')) {
-  document.addEventListener('click', (e) => {
-    if (menu.open && !menu.contains(e.target)) menu.open = false;
-  });
-  menu.addEventListener('focusout', (e) => {
-    if (!menu.contains(e.relatedTarget)) menu.open = false;
-  });
-  menu.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && menu.open) {
-      menu.open = false;
-      menu.querySelector('summary').focus();
-    }
-  });
-}
-
 // Botón "Dar mi opinión".
 const linkListo = /^https?:\/\//.test(LINK_OPINION);
 for (const enlace of document.querySelectorAll('[data-opinion]')) {
