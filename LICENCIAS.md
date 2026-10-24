@@ -1,5 +1,15 @@
 # Licencias
 
+## Pixel art de la opción D
+
+Personajes del cuerpo técnico, íconos de las secciones, logo y pizarrón de `menu-d.html`: elaboración propia
+del proyecto, generados por código en `fuente/pixelart.py` y `fuente/ilustraciones.py`. No se usan assets,
+sprites ni fuentes de terceros para el pixel art. Los textos de los carteles usan Russo One y PT Sans (OFL,
+ver `fuentes/LICENCIAS.md`).
+
+Procedencia: el código que dibuja el pixel art se escribió con asistencia de IA (Claude Code), bajo la dirección
+de Sebastián, que fijó la composición a partir de un diseño propio que no se publica.
+
 ## Íconos
 
 Phosphor Icons, paquete `@phosphor-icons/core` versión 2.1.1 (https://phosphoricons.com), licencia MIT.

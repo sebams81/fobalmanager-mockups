@@ -2717,3 +2717,645 @@ details.plan .resumen-plan {
     max-height: calc(100vh - 6rem);
   }
 }
+
+/* ---------- Opción D: El pizarrón ----------
+   Estética propia, igual en los cuatro temas: pizarrón verde, tiza y pixel art (fuente/pixelart.py).
+   Por eso usa colores fijos y no las variables de los temas. El pixel art se muestra siempre a escala entera de
+   su viewBox (1x, 2x o 3x), para que todos los píxeles midan lo mismo. */
+
+.menu-d {
+  padding-bottom: 0;
+}
+
+.menu-d main {
+  max-width: 80rem;
+  padding: var(--e-3) var(--e-3) 0;
+}
+
+.menu-d .aviso-maqueta {
+  bottom: var(--e-5);
+}
+
+/* La D no usa los colores del club en el tema: el control de invertirlos no aplica. */
+.menu-d .invertir-club {
+  display: none;
+}
+
+.nota-tema {
+  margin: 0;
+  font-size: var(--t-14);
+  color: var(--c-texto-suave);
+}
+
+.pizarron-d {
+  --d-tiza: rgb(240 244 236 / 0.8);
+  --d-tiza-amarilla: #f2d64b;
+  --d-crema: #f4efd8;
+  --d-suave: #cfe0c8;
+  --d-cartel: rgb(9 26 18 / 0.92);
+  --d-cartel-borde: #0a1710;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--d-crema);
+  font-family: 'PT Sans', 'Trebuchet MS', sans-serif;
+  background:
+    radial-gradient(ellipse at 22% 18%, rgb(255 255 255 / 0.07), transparent 45%),
+    radial-gradient(ellipse at 78% 62%, rgb(255 255 255 / 0.05), transparent 42%),
+    radial-gradient(ellipse 18% 10% at 12% 70%, rgb(255 255 255 / 0.05), transparent),
+    radial-gradient(ellipse 14% 8% at 70% 22%, rgb(255 255 255 / 0.04), transparent),
+    radial-gradient(ellipse at 50% 120%, rgb(0 0 0 / 0.35), transparent 60%),
+    var(--grano-claro),
+    #24503a;
+  border: 6px solid #4a2f1a;
+  box-shadow: inset 0 0 0 2px #2c1a0d, inset 0 0 60px rgb(0 0 0 / 0.45), 0 8px 0 #2c1a0d;
+}
+
+.pizarron-d .pixel {
+  display: block;
+  image-rendering: pixelated;
+}
+
+.pizarron-d a:focus-visible,
+.pizarron-d summary:focus-visible {
+  outline: 3px solid var(--d-tiza-amarilla);
+  outline-offset: 3px;
+}
+
+/* Arriba: mi club, el logo, el próximo partido y el menú de la esquina. */
+.d-arriba {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'club menu' 'marca marca' 'partido partido';
+  gap: var(--e-3) var(--e-4);
+  align-items: center;
+  padding: var(--e-3) var(--e-3) var(--e-4);
+  background: linear-gradient(180deg, rgb(6 18 12 / 0.7), rgb(6 18 12 / 0.25) 80%, transparent);
+}
+
+.d-club {
+  grid-area: club;
+  display: flex;
+  gap: var(--e-3);
+  align-items: center;
+  min-width: 0;
+}
+
+.d-club .escudo {
+  flex: none;
+  width: 40px;
+  height: 46px;
+  filter: drop-shadow(2px 2px 0 rgb(0 0 0 / 0.5));
+}
+
+.d-nombre,
+.d-partido h2,
+.d-rol,
+.d-cartel .rotulo,
+.d-boton,
+.d-menu summary,
+.d-cuerpo-titulo {
+  font-family: 'Russo One', 'Arial Black', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.d-nombre {
+  margin: 0;
+  font-size: var(--t-16);
+  line-height: 1.1;
+  text-shadow: 2px 2px 0 #0b1a12;
+}
+
+.d-contexto {
+  margin: 2px 0 0;
+  font-size: var(--t-14);
+  color: var(--d-suave);
+}
+
+.d-marca {
+  grid-area: marca;
+  display: grid;
+  justify-items: center;
+}
+
+.d-logo {
+  display: block;
+}
+
+.d-logo .logo-px {
+  width: 175px;
+  height: 21px;
+}
+
+/* El próximo partido: el único elemento con el amarillo de acento en el borde. */
+.d-partido {
+  grid-area: partido;
+  display: grid;
+  gap: 6px;
+  padding: var(--e-3);
+  background: var(--d-cartel);
+  border: 2px solid var(--d-tiza-amarilla);
+  box-shadow: 0 0 0 2px var(--d-cartel-borde), 4px 4px 0 2px rgb(0 0 0 / 0.35);
+}
+
+.d-volanta {
+  margin: 0;
+  font-size: var(--t-12);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--d-tiza-amarilla);
+}
+
+.d-partido h2 {
+  margin: 0;
+  font-size: var(--t-16);
+}
+
+.d-rival {
+  display: flex;
+  gap: var(--e-2);
+  align-items: center;
+  margin: 0;
+}
+
+.d-rival .escudo {
+  flex: none;
+  width: 34px;
+  height: 39px;
+}
+
+.d-rival b {
+  display: block;
+  font-family: 'Russo One', 'Arial Black', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+
+.d-manager {
+  display: block;
+  font-size: var(--t-14);
+  color: var(--d-suave);
+}
+
+.d-cuando {
+  margin: 0;
+  font-size: var(--t-14);
+  line-height: 1.35;
+}
+
+.d-nota {
+  margin: 0;
+  font-size: var(--t-12);
+  color: var(--d-suave);
+}
+
+.d-boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin-top: 4px;
+  padding: 0 var(--e-4);
+  background: #efe3c2;
+  color: #2a1c12;
+  text-decoration: none;
+  font-size: var(--t-16);
+  border: 2px solid transparent;
+  box-shadow: inset -3px -3px 0 #c9b98f, inset 3px 3px 0 #fff8e0, 0 0 0 2px #2a1c12, 0 5px 0 2px #5c4326;
+}
+
+.d-boton:hover {
+  background: #fff3cf;
+}
+
+.d-boton:active {
+  transform: translateY(3px);
+  box-shadow: inset -3px -3px 0 #c9b98f, inset 3px 3px 0 #fff8e0, 0 0 0 2px #2a1c12, 0 2px 0 2px #5c4326;
+}
+
+/* Menú de la esquina: grabar, opciones y salir (sin barra de sistema). En el celular, solo el ícono. */
+.d-menu {
+  grid-area: menu;
+  position: relative;
+  justify-self: end;
+}
+
+.d-menu summary {
+  display: flex;
+  gap: var(--e-2);
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 var(--e-3);
+  list-style: none;
+  cursor: pointer;
+  font-size: var(--t-14);
+  background: var(--d-cartel);
+  border: 2px solid rgb(240 244 236 / 0.45);
+}
+
+.d-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.d-menu-texto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.d-hamburguesa {
+  width: 16px;
+  height: 2px;
+  background: currentColor;
+  box-shadow: 0 -5px 0 currentColor, 0 5px 0 currentColor;
+}
+
+.d-menu ul {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 5;
+  min-width: 11rem;
+  margin: 0;
+  padding: var(--e-1);
+  list-style: none;
+  background: #0d2117;
+  border: 2px solid rgb(240 244 236 / 0.45);
+  box-shadow: 4px 4px 0 2px rgb(0 0 0 / 0.4);
+}
+
+.d-menu li a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--e-3);
+  color: var(--d-crema);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.d-menu li a:hover {
+  background: rgb(255 255 255 / 0.08);
+  color: var(--d-tiza-amarilla);
+}
+
+/* El pizarrón con la cancha a tiza, en su proporción real; los carteles van encima. */
+.d-tablero {
+  position: relative;
+  flex: 1;
+}
+
+.tiza-svg {
+  position: absolute;
+  inset: var(--e-3);
+  width: calc(100% - 2 * var(--e-3));
+  height: calc(100% - 2 * var(--e-3));
+  pointer-events: none;
+}
+
+.tiza-svg.apaisada {
+  display: none;
+}
+
+.tiza-svg .cal,
+.tiza-svg .cal-punto {
+  fill: none;
+  stroke: var(--d-tiza);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.tiza-svg .cal-punto {
+  fill: var(--d-tiza);
+}
+
+.tiza-svg .tiza-marcas {
+  fill: none;
+  stroke: var(--d-tiza-amarilla);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+
+.tiza-svg .tiza-flecha {
+  stroke-dasharray: 12 9;
+}
+
+.d-carteles {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-7) var(--e-3);
+  margin: 0;
+  padding: var(--e-7) var(--e-3) var(--e-6);
+  list-style: none;
+}
+
+.d-cartel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 30px var(--e-2) var(--e-3);
+  background: var(--d-cartel);
+  color: var(--d-crema);
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid rgb(240 244 236 / 0.6);
+  box-shadow: 0 0 0 2px var(--d-cartel-borde), 4px 4px 0 2px rgb(0 0 0 / 0.3);
+  transition: transform 120ms steps(2);
+}
+
+.d-cartel:hover {
+  transform: translateY(-3px);
+  border-color: var(--d-tiza-amarilla);
+}
+
+.d-ic {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.d-ic .icono-px {
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(2px 2px 0 rgb(0 0 0 / 0.45));
+}
+
+.alerta-px {
+  position: absolute;
+  top: -2px;
+  right: -12px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  background: #d8432f;
+  color: #fff;
+  font: 400 12px/1 'Russo One', 'Arial Black', sans-serif;
+  box-shadow: 0 0 0 2px #2a0d08, inset -2px -2px 0 #9e2a1c, inset 2px 2px 0 #f07a62;
+}
+
+.d-cartel .rotulo {
+  font-size: var(--t-14);
+  line-height: 1.15;
+  text-shadow: 2px 2px 0 #050d09;
+}
+
+.d-cartel .estado {
+  margin-top: 4px;
+  font-size: var(--t-14);
+  line-height: 1.3;
+  color: var(--d-suave);
+}
+
+/* Abajo, el cuerpo técnico parado sobre el piso de madera. En el celular, una fila que se desliza. */
+.d-cuerpo {
+  position: relative;
+  z-index: 1;
+  padding: var(--e-3) 0 var(--e-4);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 94px, rgb(0 0 0 / 0.28) 94px 96px),
+    repeating-linear-gradient(180deg, #6b4423 0 10px, #603c1e 10px 20px);
+  box-shadow: inset 0 4px 0 #8a5a2e, inset 0 8px 0 #3e2612;
+}
+
+.d-cuerpo-titulo {
+  margin: var(--e-2) var(--e-3) var(--e-1);
+  font-size: var(--t-12);
+  color: var(--d-crema);
+  text-shadow: 2px 2px 0 #2a1709;
+}
+
+.d-deslizar {
+  color: var(--d-tiza-amarilla);
+}
+
+.d-cuerpo ul {
+  display: flex;
+  gap: var(--e-1);
+  margin: 0;
+  padding: 0 var(--e-3) var(--e-2);
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--e-3);
+  scrollbar-width: thin;
+  scrollbar-color: #c9b98f #3e2612;
+  mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+}
+
+.d-cuerpo li {
+  flex: 0 0 5.75rem;
+  scroll-snap-align: start;
+}
+
+.d-persona {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e-1);
+  padding: var(--e-2) 2px;
+  color: var(--d-crema);
+  text-decoration: none;
+  text-align: center;
+}
+
+.d-persona .personaje {
+  width: auto;
+  height: 100px;
+  filter: drop-shadow(0 4px 0 rgb(0 0 0 / 0.35));
+  transition: transform 120ms steps(2);
+}
+
+.d-persona:hover .personaje {
+  transform: translateY(-4px);
+}
+
+.d-rol {
+  font-size: var(--t-12);
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-shadow: 2px 2px 0 #2a1709;
+}
+
+.d-persona:hover .d-rol {
+  color: var(--d-tiza-amarilla);
+}
+
+.muestra-d {
+  position: relative;
+  display: grid;
+  place-items: end center;
+  width: 6rem;
+  height: 4.5rem;
+  overflow: hidden;
+  background: #24503a;
+  box-shadow: inset 0 0 0 3px #4a2f1a;
+}
+
+.muestra-d .tiza-svg {
+  inset: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+}
+
+.muestra-d .tiza-svg .cal,
+.muestra-d .tiza-svg .cal-punto {
+  fill: none;
+  stroke: rgb(240 244 236 / 0.75);
+  stroke-width: 8;
+}
+
+.muestra-d .tiza-svg .tiza-marcas {
+  fill: none;
+  stroke: #f2d64b;
+  stroke-width: 8;
+  opacity: 0.7;
+}
+
+.muestra-d .personaje {
+  position: relative;
+  width: 34px;
+  height: 50px;
+  margin-bottom: 4px;
+}
+
+@media (forced-colors: active) {
+  .d-cartel,
+  .d-partido,
+  .d-menu summary {
+    border-color: CanvasText;
+  }
+}
+
+@media (min-width: 48rem) {
+  .pizarron-d {
+    min-height: calc(100dvh - 7rem);
+  }
+
+  .d-arriba {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+    grid-template-areas: 'club marca partido menu';
+    align-items: start;
+    padding: var(--e-4) var(--e-4) var(--e-2);
+  }
+
+  .d-nombre {
+    font-size: var(--t-18);
+  }
+
+  .d-club .escudo {
+    width: 44px;
+    height: 51px;
+  }
+
+  .d-logo .logo-px {
+    width: 350px;
+    height: 42px;
+  }
+
+  .d-partido {
+    justify-self: end;
+    max-width: 21rem;
+  }
+
+  .d-menu-texto {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+  }
+
+  .tiza-svg.vertical {
+    display: none;
+  }
+
+  .tiza-svg.apaisada {
+    display: block;
+  }
+
+  .d-carteles {
+    grid-template-columns: repeat(24, minmax(0, 1fr));
+    grid-template-rows: auto auto auto;
+    gap: var(--e-7) var(--e-3);
+    padding: 48px 2% 92px;
+  }
+
+  .d-carteles li {
+    grid-column: var(--col) / span 4;
+    grid-row: var(--fila);
+    justify-self: center;
+    width: 100%;
+    max-width: 11.5rem;
+    transform: translateY(var(--dy));
+  }
+
+  .d-cuerpo {
+    padding-top: 0;
+  }
+
+  .d-cuerpo-titulo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .d-cuerpo ul {
+    justify-content: space-around;
+    overflow: visible;
+    mask-image: none;
+  }
+
+  .d-cuerpo ul {
+    gap: var(--e-2);
+  }
+
+  .d-cuerpo li {
+    flex: 0 1 9rem;
+  }
+
+  .d-persona .personaje {
+    height: 150px;
+    margin-top: -80px;
+  }
+
+  .d-rol {
+    font-size: var(--t-14);
+  }
+
+  .tarjetas-menu {
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  }
+}
+
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .d-arriba {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'club menu' 'marca marca' 'partido partido';
+  }
+
+  .d-partido {
+    justify-self: stretch;
+    max-width: none;
+  }
+}

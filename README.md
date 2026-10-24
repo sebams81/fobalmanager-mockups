@@ -12,13 +12,18 @@ recuerda en el navegador. En la primera visita se elige uno al azar, para no ses
 
 ## Menú principal: propuestas en evaluación
 
-Ninguna está elegida. Las dos ofrecen las mismas doce secciones: cambia solo la forma de llegar a ellas.
+Ninguna está elegida. Las tres ofrecen las mismas doce secciones: cambia solo la forma de llegar a ellas.
 
 - `menu-b.html`, "La oficina del técnico": una oficina armada con superficies (pared, escritorio, ventana y
   puerta), con cada sección como una placa con su ícono, en la pared o en el escritorio. Detrás de la
   puerta, el próximo partido.
 - `menu-c.html`, "La cancha": arriba, un cartel con el próximo partido; en el centro, la cancha con la
   formación propia (lleva a la táctica); alrededor, las demás secciones con su ícono, agrupadas por uso.
+- `menu-d.html`, "El pizarrón": la cancha ocupa la pantalla como un pizarrón a tiza; las secciones son
+  carteles sobre la cancha y, abajo, el cuerpo técnico (en pixel art) lleva a cada área. Arriba, el club, el
+  logo, la fecha y el próximo partido; Grabar, Opciones y Salir van en un menú en la esquina. Tiene estética
+  propia y se ve igual en los cuatro temas. El pixel art es de elaboración propia, generado por código en
+  `fuente/pixelart.py`.
 - `menu-a.html`: la opción A se retiró de la evaluación. Queda un aviso de propuesta en rediseño, sin
   enlaces que lleven a ella.
 
