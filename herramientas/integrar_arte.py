@@ -132,6 +132,8 @@ def main():
                    help='quitar: vuelve transparente el fondo liso (personajes, íconos); conservar: fondos de pantalla')
     p.add_argument('--tolerancia', type=int, default=24, help='cuánto puede variar el color del fondo (0 a 255)')
     p.add_argument('--pixel', action='store_true', help='pixel art: escala sin suavizar, a múltiplos enteros')
+    p.add_argument('--nativo', help='pixel art: resolución nativa a la que se reduce antes de escalar (ej. 32x48)')
+    p.add_argument('--colores', type=int, default=16, help='con --nativo: colores máximos de la paleta')
     p.add_argument('--destino', type=Path, default=RAIZ / 'img' / 'arte', help='carpeta del sitio')
     p.add_argument('--licencias', type=Path, default=RAIZ / 'LICENCIAS.md')
     p.add_argument('--fuera-de-arte', action='store_true', help='acepta una original fuera de F:\\Arte-fobalmanager\\ (pruebas)')
@@ -145,10 +147,22 @@ def main():
     if not re.fullmatch(r'[a-z0-9]+(-[a-z0-9]+)*', a.nombre):
         sys.exit('El nombre va en minúsculas, sin acentos, con guiones (ej. preparador-fisico).')
     date.fromisoformat(a.fecha)
+    if a.nativo and not re.fullmatch(r'\d+[xX]\d+', a.nativo):
+        sys.exit('--nativo va como ANCHOxALTO (ej. 32x48).')
+    if a.nativo:
+        a.pixel = True
     anchos = sorted({int(x) for x in a.anchos.split(',')})
 
     img = Image.open(original)
     img.load()
+    if a.nativo:
+        # Los generadores no respetan una grilla real: se reduce a la resolución nativa tomando un color por celda
+        # (vecino más cercano, sin promediar) y se limita la paleta. El retoque a mano, si hace falta, va después.
+        ancho_n, alto_n = (int(v) for v in a.nativo.lower().split('x'))
+        img = img.convert('RGBA').resize((ancho_n, alto_n), Image.NEAREST)
+        alfa = img.getchannel('A').point(lambda v: 255 if v >= 128 else 0)
+        img = img.convert('RGB').quantize(colors=a.colores, method=Image.Quantize.MEDIANCUT).convert('RGBA')
+        img.putalpha(alfa)
     if a.fondo == 'quitar':
         tiene_alfa = img.mode in ('RGBA', 'LA') and img.getchannel('A').getextrema()[0] < 255
         img = recortar(img.convert('RGBA') if tiene_alfa else quitar_fondo(img, a.tolerancia))

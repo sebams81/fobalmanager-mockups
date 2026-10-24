@@ -70,7 +70,9 @@ python herramientas/integrar_arte.py F:/Arte-fobalmanager/aprobadas/preparador.p
 ```
 
 Con `--fondo conservar` no quita el fondo (fondos de pantalla) y con `--pixel` escala sin suavizar, a
-múltiplos enteros (el archivo lleva el ancho real en el nombre). `-h` lista todas las opciones.
+múltiplos enteros (el archivo lleva el ancho real en el nombre). Con `--nativo 32x48`, el pixel art generado
+se reduce primero a su grilla real, un color por celda, y a una paleta limitada (`--colores`, 16 por
+defecto). `-h` lista todas las opciones.
 
 ## Fuentes
 
