@@ -4,10 +4,10 @@
 
 Cada imagen del sitio que sale de una herramienta de generación queda registrada acá al integrarla con
 `herramientas/integrar_arte.py`: archivo publicado, herramienta, modelo, fecha de generación y original. Las
-originales se guardan fuera del repositorio, en `F:\Arte-fobalmanager\`. El script elimina los metadatos al
+originales se guardan fuera del repositorio, en `F:\Nube\Dropbox\fobal-privado\Arte\`. El script elimina los metadatos al
 optimizar; la procedencia queda en esta tabla.
 
-La columna "Original" es la ruta dentro de `F:\Arte-fobalmanager\`.
+La columna "Original" es la ruta dentro de `F:\Nube\Dropbox\fobal-privado\Arte\`.
 
 | Archivo | Herramienta | Modelo | Fecha | Original |
 |---|---|---|---|---|

@@ -1,10 +1,12 @@
 # Integra al sitio una imagen generada con IA y aprobada por el director de arte.
 # Recorta, quita el fondo liso, saca los tamaños pedidos, optimiza y registra el archivo en LICENCIAS.md.
-# La original no se toca y queda fuera del repo, en F:\Arte-fobalmanager\.
+# La original no se toca y queda fuera del repo, en la carpeta privada de arte: F:\Nube\Dropbox\fobal-privado\Arte\,
+# o la que indique la variable de entorno FOBAL_ARTE en otra máquina.
 # Uso: python herramientas/integrar_arte.py ORIGINAL --nombre N --anchos 96,192 --herramienta H --modelo M --fecha AAAA-MM-DD
 # Requiere Pillow.
 
 import argparse
+import os
 import re
 import sys
 from collections import deque
@@ -14,7 +16,7 @@ from pathlib import Path
 from PIL import Image
 
 RAIZ = Path(__file__).resolve().parent.parent
-ARTE = Path('F:/Arte-fobalmanager')
+ARTE = Path(os.environ.get('FOBAL_ARTE', 'F:/Nube/Dropbox/fobal-privado/Arte'))
 MARGEN = 2  # píxeles transparentes que quedan alrededor de la figura después de recortar
 
 
@@ -122,7 +124,7 @@ def registrar(licencias, archivos, herramienta, modelo, fecha, original):
 
 def main():
     p = argparse.ArgumentParser(description='Integra al sitio una imagen generada con IA y aprobada.')
-    p.add_argument('original', type=Path, help='imagen aprobada, dentro de F:\\Arte-fobalmanager\\')
+    p.add_argument('original', type=Path, help=f'imagen aprobada, dentro de {ARTE}')
     p.add_argument('--nombre', required=True, help='nombre del archivo publicado, sin extensión (ej. preparador-fisico)')
     p.add_argument('--anchos', required=True, help='anchos en píxeles, separados por coma (ej. 96,192)')
     p.add_argument('--herramienta', required=True, help='ej. ChatGPT, Gemini')
@@ -136,9 +138,12 @@ def main():
     p.add_argument('--colores', type=int, default=16, help='con --nativo: colores máximos de la paleta')
     p.add_argument('--destino', type=Path, default=RAIZ / 'img' / 'arte', help='carpeta del sitio')
     p.add_argument('--licencias', type=Path, default=RAIZ / 'LICENCIAS.md')
-    p.add_argument('--fuera-de-arte', action='store_true', help='acepta una original fuera de F:\\Arte-fobalmanager\\ (pruebas)')
+    p.add_argument('--fuera-de-arte', action='store_true', help='acepta una original fuera de la carpeta de arte (pruebas)')
     a = p.parse_args()
 
+    if not a.fuera_de_arte and not ARTE.is_dir():
+        sys.exit(f'No encuentro la carpeta de arte {ARTE}. Si en esta máquina está en otro lugar, definí la variable '
+                 'de entorno FOBAL_ARTE con la ruta de fobal-privado\\Arte.')
     original = a.original.resolve()
     if not original.is_file():
         sys.exit(f'No existe {original}.')

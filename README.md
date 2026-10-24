@@ -63,10 +63,11 @@ el sitio es HTML, CSS y un JS chico.
 Las imágenes ilustradas se generan con herramientas de IA a partir de los prompts del director de arte y se
 integran con `herramientas/integrar_arte.py` (Python 3 con Pillow): recorta, quita el fondo liso, saca los
 tamaños, optimiza y registra cada archivo en `LICENCIAS.md` con herramienta, modelo y fecha. Las originales
-quedan fuera del repo, en `F:\Arte-fobalmanager\`.
+quedan fuera del repo, en `F:\Nube\Dropbox\fobal-privado\Arte\`. En otra máquina, la variable de entorno `FOBAL_ARTE` indica
+dónde está esa carpeta; si no existe, el script avisa y no hace nada.
 
 ```sh
-python herramientas/integrar_arte.py F:/Arte-fobalmanager/aprobadas/preparador.png --nombre preparador-fisico --anchos 96,192 --herramienta ChatGPT --modelo gpt-image-1 --fecha 2026-10-24
+python herramientas/integrar_arte.py F:/Nube/Dropbox/fobal-privado/Arte/aprobadas/preparador.png --nombre preparador-fisico --anchos 96,192 --herramienta ChatGPT --modelo gpt-image-1 --fecha 2026-10-24
 ```
 
 Con `--fondo conservar` no quita el fondo (fondos de pantalla) y con `--pixel` escala sin suavizar, a
